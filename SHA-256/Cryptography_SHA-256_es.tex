@@ -28,7 +28,7 @@
     Es la información que procesará la función SHA-256 para calcular el \textit{digest} o \textit{hash} correspondiente. $M$ puede tener longitud variable\footnote{El esquema de relleno que utiliza SHA-256 requiere que el tamaño de la entrada se exprese como un número de 64 bits, es decir: $(2^{64}-1)/8 \approx 2.091.752$ terabytes.}, puede ser un archivo, una cadena de texto como \textit{"Hola mundo"} e incluso una cadena vacía, obteniendo como resultado una cadena $\omega$ de 256 bits de longitud expresada en 64 caracteres hexadecimales o base 16.
         \begin{figure}[H]
         \centering
-            $sha256(M) = |\omega|^{256}_{16}$
+            $sha256(M) = |\omega|^{64}_{16}$
         \end{figure}
         
         \begin{figure}[H]
@@ -43,7 +43,7 @@
             \end{array}$
         \end{figure}
         
-    La cadena hexadecimal generada se obtiene mediante una serie de cálculos en los que se emplean entre otros datos los bits de entrada, es decir, para un mismo mensaje $M$ siempre se obtendrá el mismo \textit{hash} criptográfico. Por el contrario, si se modifica un solo \textit{bit}, por ejemplo cambiando o añadiendo un caracter (los espacios y los saltos de línea también son caracteres), se obtendrá un \textit{hash} distinto.
+    La cadena hexadecimal generada se obtiene mediante una serie de cálculos en los que se emplean entre otros datos los bits de entrada, es decir, para un mismo mensaje $M$ siempre se obtendrá el mismo \textit{hash} criptográfico. Por el contrario, si se modifica un solo \textit{bit}, por ejemplo cambiando o añadiendo un carácter (los espacios y los saltos de línea también son caracteres), se obtendrá un \textit{hash} distinto.
         \begin{figure}[H]
         \centering
             $\begin{array}{rcl}
@@ -72,7 +72,7 @@
     De este modo, se garantiza la integridad de los datos. Si estos cambian también lo hará el \textit{hash}.
 
     \subsection{Conversión a hexadecimal}
-        Para procesar el mensaje de entrada $M$ hay que realizar en primer lugar una conversión a formato hexadecimal de la misma. En este proceso se ha de sustituir cada caracter ASCII por su número hexadecimal equivalente. Esta información se puede consultar en una tabla ASCII\footnote{https://www.ieee.li/computer/ascii.htm}. Véase el siguiente ejemplo:
+        Para procesar el mensaje de entrada $M$ hay que realizar en primer lugar una conversión a formato hexadecimal de la misma. En este proceso se ha de sustituir cada carácter ASCII por su número hexadecimal equivalente. Esta información se puede consultar en una tabla ASCII\footnote{https://www.ieee.li/computer/ascii.htm}. Véase el siguiente ejemplo:
             \begin{figure}[H]
             \centering
                 $\begin{array}{lclcl}
@@ -89,7 +89,7 @@
                 o & \Rightarrow & 111 & \Rightarrow & 6f
                 \end{array}$
             \end{figure}
-        Uniendo cada código hexadecimal correspondiente a cada caracter se obtiene la conversión del mensaje de entrada a hexadecimal o base 16. Nótese que los espacios en blanco, o los signos de puntuación si los hubiere, también son caracteres ASCII, por lo tanto también tienen una equivalencia numérica.
+        Uniendo cada código hexadecimal correspondiente a cada carácter se obtiene la conversión del mensaje de entrada a hexadecimal o base 16. Nótese que los espacios en blanco, o los signos de puntuación si los hubiere, también son caracteres ASCII, por lo tanto también tienen una equivalencia numérica.
             \begin{figure}[H]
             \centering
                 $\begin{array}{rcl}
@@ -98,10 +98,10 @@
                     Te \ gusta \ cifrar? & = & 5465206775737461206369667261723f \\
                 \end{array}$
             \end{figure}
-        Una vez se obtiene el mensaje de entrada en formato hexadecimal se ha de reservar el resultado a parte para utilizarlo mas adelante en otras funciones.
+        Una vez se obtiene el mensaje de entrada en formato hexadecimal se ha de reservar el resultado a parte para utilizarlo más adelante en otras funciones.
 
     \subsection{Cálculo de la longitud de $M$}
-        En el proceso para hallar el \textit{digest} o \textit{hash}, será necesario calcular la longitud del mensaje de entrada $|M|$. Primero hay que calcular la longitud en \textit{bits}. Lo mas sencillo es multiplicar el número total de caracteres ASCII del mensaje de entrada por 8, ya que cada caracter ASCII equivale a 8 bits.
+        En el proceso para hallar el \textit{digest} o \textit{hash}, será necesario calcular la longitud del mensaje de entrada $|M|$. Primero hay que calcular la longitud en \textit{bits}. Lo más sencillo es multiplicar el número total de caracteres ASCII del mensaje de entrada por 8, ya que cada carácter ASCII equivale a 8 bits.
             \begin{figure}[H]
             \centering
                 $\begin{array}{rccclclcl}
@@ -141,7 +141,7 @@
         \end{figure}
 
     \subsection{Los primeros 16 registros de $W_t$}
-        En el primer intervalo de $W_{t}$ se reservan los 16 primeros registros para almacenar el mensaje de entrada $M$ en formato hexadecimal dividido en bloques de 32 bits. Tiene un tamaño o longitud de 512 bits. En el punto 2 de este documento se explica que el mensaje de entrada $M$ puede tener una longitud variable, e incluso no tener longitud (cadena vacía). Sea cual sea la longitud, se ha de utilizar su representación hexadecimal, y se ha de dividir en palabras de 32 bits de izquierda a derecha. Si alguno de los bloques no llega a ocupar los 32 bits, los bits restantes se han de dejar vacíos para completarlos mas adelante.
+        En el primer intervalo de $W_{t}$ se reservan los 16 primeros registros para almacenar el mensaje de entrada $M$ en formato hexadecimal dividido en bloques de 32 bits. Tiene un tamaño o longitud de 512 bits. En el punto 2 de este documento se explica que el mensaje de entrada $M$ puede tener una longitud variable, e incluso no tener longitud (cadena vacía). Sea cual sea la longitud, se ha de utilizar su representación hexadecimal, y se ha de dividir en palabras de 32 bits de izquierda a derecha. Si alguno de los bloques no llega a ocupar los 32 bits, los bits restantes se han de dejar vacíos para completarlos más adelante.
             \begin{figure}[H]
             \centering
                 $Hola \ mundo = \overbrace{486f6c61}^{32 \ bits} \ \overbrace{206d756e}^{32 \ bits} \ \overbrace{646f \ \ \ \ \ \ }^{32 \ bits}$
@@ -226,7 +226,7 @@
                 \centering
                     $\lfloor \sqrt[3]{2} \rfloor = 0.259921049894873$
                 \end{figure}
-                Una vez se obtiene el resultado se reserva a parte para utilizarlo mas adelante.
+                Una vez se obtiene el resultado se reserva a parte para utilizarlo más adelante.
             
             \item Por otro lado se toma del array $K$ la primera palabra $K_{0}$, es decir $0x428a2f98$, y se convierte a decimal o base 10.
                 \begin{figure}[H]
@@ -398,7 +398,7 @@
                         \caption{La operación $mod \ 2^{32}$ con $W_{t}$, $K_{t}$, $H$, $Ch$, $\Sigma1$ y $D$.}
                     \end{figure}
                 \end{figure}
-            El ejemplo anterior muestra los datos con los que se ha de operar en la primera ronda criptográfica para el mensaje de entrada $M = "abc"$. El resultado que se obtiene es el valor que tendrá $E_{1}$ (la palabra $E$ en la segunda ronda). Los números en color rojo de la parte superior son el acarreo de la suma de cada caracter hexadecimal, y el número rojo de la parte inferior izquierda es el número hexadecimal que es excluido.
+            El ejemplo anterior muestra los datos con los que se ha de operar en la primera ronda criptográfica para el mensaje de entrada $M = "abc"$. El resultado que se obtiene es el valor que tendrá $E_{1}$ (la palabra $E$ en la segunda ronda). Los números en color rojo de la parte superior son el acarreo de la suma de cada carácter hexadecimal, y el número rojo de la parte inferior izquierda es el número hexadecimal que es excluido.
             
         \subsubsection{Operaciones con $E$}
             La palabra $E$ se va a utilizar en tres casos por cada ronda:
@@ -424,7 +424,7 @@
             \end{itemize}
         
         \subsubsection{Operaciones con $H$}
-            La palabra $H$ se va a utilizar en un único caso por cada ronda. Su valor actual será un elemento más en la operación $mod \ 2^{32}$ junto con los valores de $W_{t}$, $K_{t}$, el resultado de las funciónes $Ch$, $\Sigma1$, $Maj$ y $\Sigma0$ para obtener el valor de $A_{i+1}$
+            La palabra $H$ se va a utilizar en un único caso por cada ronda. Su valor actual será un elemento más en la operación $mod \ 2^{32}$ junto con los valores de $W_{t}$, $K_{t}$, el resultado de las funciones $Ch$, $\Sigma1$, $Maj$ y $\Sigma0$ para obtener el valor de $A_{i+1}$
         
     \subsection{Función $Ch$}
         Se trata de una función booleana que realizará operaciones lógicas tomando como datos de entrada las palabras $E$, $F$ y $G$. Se opera con cada bit de la palabra hexadecimal aplicando la siguiente fórmula de lógica proposicional:
@@ -559,7 +559,7 @@
             \end{figure}
     
     \subsection{Las 8 nuevas palabras resultantes}
-        Como resultado de las anteriores operaciones se obtienen los nuevos valores de las 8 palabras $A$, $B$, $C$, $D$, $E$, $F$, $G$ y $H$ para las siguient ronda.
+        Como resultado de las anteriores operaciones se obtienen los nuevos valores de las 8 palabras $A$, $B$, $C$, $D$, $E$, $F$, $G$ y $H$ para las siguiente ronda.
             \begin{figure}[H]
             \centering
                 $\begin{array}{lcl}
@@ -606,3 +606,4 @@
                 \right .$
         \end{figure}
 \end{document}
+
