@@ -1,5 +1,5 @@
-i
-nentiationBySquaring.c v0.01
+/* 
+ * exponentiationBySquaring.c v0.01
  * Copyleft - 2019  Javier Dominguez Gomez
  * Written by Javier Dominguez Gomez <jdg@member.fsf.org>
  * GnuPG fingerprint: 94AD 19F4 9005 EEB2 3384 C20F 5BDC C668 D664 8E2B
