@@ -3,12 +3,13 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{minted}
+\usepackage{courier}
 
 \title{\textbf{Criptografía aplicada: Función SHA-256}}
 \author{Javier Domínguez Gómez \\
 \small{jdg@member.fsf.org} \\
 \small{Fingerprint: 94AD 19F4 9005 EEB2 3384 C20F 5BDC C668 D664 8E2B}}
-\date{v0.1.03 - Febrero 2019}
+\date{v0.1.05 - Marzo 2019}
 
 \begin{document}
 \maketitle
@@ -36,8 +37,8 @@
             $\begin{array}{rcl}
                  sha256('Hola \ mundo') & = & \left \{
                 \begin{array}{c}
-                    ca8f60b2cc7f05837d98b208b57fb648 \\
-                    1553fc5f1219d59618fd025002a66f5c
+                    \texttt{ca8f60b2cc7f05837d98b208b57fb648} \\
+                    \texttt{1553fc5f1219d59618fd025002a66f5c}
                 \end{array}
                 \right .
             \end{array}$
@@ -49,22 +50,22 @@
             $\begin{array}{rcl}
                 sha256('Hola \ mundo.') & = & \left \{
                 \begin{array}{c}
-                    8a3b7da2428acbc74623fb5a7b306a83 \\
-                    b62b513371171e78c048fc12fbdb6ddf
+                    \texttt{8a3b7da2428acbc74623fb5a7b306a83} \\
+                    \texttt{b62b513371171e78c048fc12fbdb6ddf}
                 \end{array}
                 \right . \\
                  & \\
                  sha256('abc') & = & \left \{
                 \begin{array}{c}
-                    ba7816bf8f01cfea414140de5dae2223 \\
-                    b00361a396177a9cb410ff61f20015ad
+                    \texttt{ba7816bf8f01cfea414140de5dae2223} \\
+                    \texttt{b00361a396177a9cb410ff61f20015ad}
                 \end{array}
                 \right . \\
                  & \\
                  sha256('Abc') & = & \left \{
                 \begin{array}{c}
-                    06d90109c8cce34ec0c776950465421e \\
-                    176f08b831a938b3c6e76cb7bee8790b
+                    \texttt{06d90109c8cce34ec0c776950465421e} \\
+                    \texttt{176f08b831a938b3c6e76cb7bee8790b}
                 \end{array}
                 \right .
             \end{array}$
@@ -93,9 +94,9 @@
             \begin{figure}[H]
             \centering
                 $\begin{array}{rcl}
-                    Hola \ mundo & = & 486f6c61206d756e646f \\
-                    abc & = & 616263 \\
-                    Te \ gusta \ cifrar? & = & 5465206775737461206369667261723f \\
+                    Hola \ mundo & = & \texttt{486f6c61206d756e646f} \\
+                    abc & = & \texttt{616263} \\
+                    Te \ gusta \ cifrar? & = & \texttt{5465206775737461206369667261723f} \\
                 \end{array}$
             \end{figure}
         Una vez se obtiene el mensaje de entrada en formato hexadecimal se ha de reservar el resultado a parte para utilizarlo más adelante en otras funciones.
@@ -144,19 +145,19 @@
         En el primer intervalo de $W_{t}$ se reservan los 16 primeros registros para almacenar el mensaje de entrada $M$ en formato hexadecimal dividido en bloques de 32 bits. Tiene un tamaño o longitud de 512 bits. En el punto 2 de este documento se explica que el mensaje de entrada $M$ puede tener una longitud variable, e incluso no tener longitud (cadena vacía). Sea cual sea la longitud, se ha de utilizar su representación hexadecimal, y se ha de dividir en palabras de 32 bits de izquierda a derecha. Si alguno de los bloques no llega a ocupar los 32 bits, los bits restantes se han de dejar vacíos para completarlos más adelante.
             \begin{figure}[H]
             \centering
-                $Hola \ mundo = \overbrace{486f6c61}^{32 \ bits} \ \overbrace{206d756e}^{32 \ bits} \ \overbrace{646f \ \ \ \ \ \ }^{32 \ bits}$
+                $Hola \ mundo = \overbrace{\texttt{486f6c61}}^{32 \ bits} \ \overbrace{\texttt{206d756e}}^{32 \ bits} \ \overbrace{\texttt{646f\ \ \ \ }}^{32 \ bits}$
             \end{figure}
         
         A continuación hay que tomar un bit que represente el número 1 decimal o base 10, es decir $00000001$, este se desplaza al bit más alto del byte, con lo que se obtiene $10000000$ y finalmente se calcula el valor hexadecimal, que es $80$.
             \begin{figure}[H]
             \centering
-                $10000000_{2} = 80_{16}$
+                $10000000_{2} = \texttt{80}_{16}$
             \end{figure}
         
         Independientemente de la longitud de cadena hexadecimal de la palabra de entrada, se añade $80$ por la derecha.
             \begin{figure}[H]
             \centering
-                $486f6c61 + 206d756e + 646f + 80$
+                $\texttt{486f6c61} + \texttt{206d756e} + \texttt{646f} + \texttt{80}$
             \end{figure}
         
         Ahora hay que añadir a la cadena una cantidad de bits con valor $0$ hasta llegar a 448 bits en total, que es la longitud que abarca todos los intervalos que van desde $W_{0}$ hasta $W_{13}$.
@@ -164,13 +165,13 @@
             \centering
                 $\left .
                 \begin{array}{l}
-                    \overbrace{486f6c61}^{32 \ bits}+\overbrace{206d756e}^{32 \ bits}+\overbrace{646f + 80 + 00}^{32 \ bits}+ \\
-                    00000000+00000000+00000000+ \\
-                    00000000+00000000+00000000+ \\
-                    00000000+00000000+00000000+ \\
-                    00000000+00000000
+                    \overbrace{\texttt{486f6c61}}^{32 \ bits}+\overbrace{\texttt{206d756e}}^{32 \ bits}+\overbrace{\texttt{646f} + \texttt{80} + \texttt{00}}^{32 \ bits}+ \\
+                    \texttt{00000000}+\texttt{00000000}+\texttt{00000000}+ \\
+                    \texttt{00000000}+\texttt{00000000}+\texttt{00000000}+ \\
+                    \texttt{00000000}+\texttt{00000000}+\texttt{00000000}+ \\
+                    \texttt{00000000}+\texttt{00000000}
                 \end{array}
-                \right \} = 448 \ bits$
+                \right \} = \texttt{448} \ bits$
             \end{figure}
 
         Para terminar de completar $W_{t}$ solo queda rellenar los últimos dos bloques de 32 bits $W_{14}$ y $W_{15}$ con la longitud del mensaje de entrada $|M|$ en hexadecimal, con tantos ceros por la izquierda como sean necesario para alcanzar 64 bits de longitud. La obtención de este dato se explica en el punto 2.2 de este documento.
@@ -189,7 +190,7 @@
             43 & 47 & 53 & 59 & 61 & 67 & 71 & 73 & 79 & 83 & 89 & 97 & 101 \\
             103 & 107 & 109 & 113 & 127 & 131 & 137 & 139 & 149 & 151 & 157 & 163 & 167 \\
             173 & 179 & 181 & 191 & 193 & 197 & 199 & 211 & 223 & 227 & 229 & 233 & 239 \\
-            241 & 251 & 257 & 263 & 269 & 271 & 277 & 281 & 283 & 293 & 307 & 311 & & & &
+            241 & 251 & 257 & 263 & 269 & 271 & 277 & 281 & 283 & 293 & 307 & 311 & 
         \end{array}$
         \end{figure}
     
@@ -197,24 +198,24 @@
         \begin{figure}[H]
         \centering
             \begin{minted}{c}
-        static const unsigned int k[64] = {
-        	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
-        	0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
-        	0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
-        	0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
-        	0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
-        	0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
-        	0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7,
-        	0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
-        	0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
-        	0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-        	0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3,
-        	0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
-        	0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5,
-        	0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
-        	0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
-        	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
-        };
+    static const unsigned int k[64] = {
+    	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
+    	0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+    	0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
+    	0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+    	0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
+    	0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+    	0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7,
+    	0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+    	0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
+    	0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+    	0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3,
+    	0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+    	0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5,
+    	0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+    	0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+    	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+    };
             \end{minted}
         \end{figure}
 
@@ -260,8 +261,8 @@
                 \begin{figure}[H]
                 \centering
                     $\begin{array}{lcl}
-                    0.25992104969919_{10} & = & 0.\underbrace{428a2f98}_{32 \ bits}0000c4163f52_{16} \\
-                    0.259921049894873_{10} & = & 0.\underbrace{428a2f98}_{32 \ bits}d728a242d2b4_{16}
+                    0.25992104969919_{10} & = & \texttt{0.}\underbrace{\texttt{428a2f98}}_{32 \ bits}\texttt{0000c4163f52}_{16} \\
+                    0.259921049894873_{10} & = & \texttt{0.}\underbrace{\texttt{428a2f98}}_{32 \ bits}\texttt{d728a242d2b4}_{16}
                     \end{array}$
                 \end{figure}
             
@@ -272,12 +273,12 @@
             \begin{figure}[H]
             \centering
                 $\begin{array}{lccl}
-                    K_{0} & 0x428a2f98 & = & \lfloor \sqrt[3]{2} \rfloor \\
-                        K_{1} & 0x71374491 & = & \lfloor \sqrt[3]{3} \rfloor \\
-                    K_{2} & 0xb5c0fbcf & = & \lfloor \sqrt[3]{5} \rfloor \\
-                    K_{3} & 0xe9b5dba5 & = & \lfloor \sqrt[3]{7} \rfloor \\
+                    K_{0} & \texttt{0x428a2f98} & = & \lfloor \sqrt[3]{2} \rfloor \\
+                        K_{1} & \texttt{0x71374491} & = & \lfloor \sqrt[3]{3} \rfloor \\
+                    K_{2} & \texttt{0xb5c0fbcf} & = & \lfloor \sqrt[3]{5} \rfloor \\
+                    K_{3} & \texttt{0xe9b5dba5} & = & \lfloor \sqrt[3]{7} \rfloor \\
                     & \vdots & \\
-                    K_{63} & 0xc67178f2 & = & \lfloor \sqrt[3]{311} \rfloor
+                    K_{63} & \texttt{0xc67178f2} & = & \lfloor \sqrt[3]{311} \rfloor
                 \end{array}$
             \end{figure}
 
@@ -295,11 +296,11 @@
         \begin{figure}[H]
         \centering
             \begin{minted}{c}
-            unsigned int p[8] = {
-            	0x6a09e667, 0xbb67ae85, 0x3c6ef372,
-            	0xa54ff53a, 0x510e527f, 0x9b05688c,
-            	0x1f83d9ab, 0x5be0cd19
-            };
+    unsigned int p[8] = {
+    	0x6a09e667, 0xbb67ae85, 0x3c6ef372,
+    	0xa54ff53a, 0x510e527f, 0x9b05688c,
+    	0x1f83d9ab, 0x5be0cd19
+    };
             \end{minted}
         \end{figure}
     
@@ -327,14 +328,14 @@
                 \begin{figure}[H]
                 \centering
                     $\begin{array}{lcl}
-                        0.414213562373095_{10} & = & 0.6A09E667_{16} \\
-                        0.732050807568877_{10} & = & 0.BB67AE85_{16} \\
-                        0.236067977499790_{10} & = & 0.3C6EF372_{16} \\
-                        0.645751311064591_{10} & = & 0.A54FF53A_{16} \\
-                        0.316624790355400_{10} & = & 0.510E527F_{16} \\
-                        0.605551275463989_{10} & = & 0.9B05688C_{16} \\
-                        0.123105625617661_{10} & = & 0.1F83D9AB_{16} \\
-                        0.358898943540674_{10} & = & 0.5BE0CD19_{16}
+                        0.414213562373095_{10} & = & \texttt{0.6A09E667}_{16} \\
+                        0.732050807568877_{10} & = & \texttt{0.BB67AE85}_{16} \\
+                        0.236067977499790_{10} & = & \texttt{0.3C6EF372}_{16} \\
+                        0.645751311064591_{10} & = & \texttt{0.A54FF53A}_{16} \\
+                        0.316624790355400_{10} & = & \texttt{0.510E527F}_{16} \\
+                        0.605551275463989_{10} & = & \texttt{0.9B05688C}_{16} \\
+                        0.123105625617661_{10} & = & \texttt{0.1F83D9AB}_{16} \\
+                        0.358898943540674_{10} & = & \texttt{0.5BE0CD19}_{16}
                     \end{array}$
                 \end{figure}
             
@@ -342,10 +343,10 @@
                 \begin{figure}[H]
                 \centering
                     $\begin{array}{rclcrcl}
-                        A & = & 0x6A09E667 & \ & E & = & 0x510E527F \\
-                        B & = & 0xBB67AE85 & \ & F & = & 0x9B05688C \\
-                        C & = & 0x3C6EF372 & \ & G & = & 0x1F83D9AB \\
-                        D & = & 0xA54FF53A & \ & H & = & 0x5BE0CD19
+                        A & = & \texttt{0x6A09E667} & \ & E & = & \texttt{0x510E527F} \\
+                        B & = & \texttt{0xBB67AE85} & \ & F & = & \texttt{0x9B05688C} \\
+                        C & = & \texttt{0x3C6EF372} & \ & G & = & \texttt{0x1F83D9AB} \\
+                        D & = & \texttt{0xA54FF53A} & \ & H & = & \texttt{0x5BE0CD19}
                     \end{array}$
                 \end{figure}
         \end{enumerate}
@@ -463,7 +464,7 @@
         Se puede comprobar en la \textit{tabla de la verdad} los resultados de las operaciones de 3 bits en cada caso. El resultado siempre se expresará en hexadecimal.
             \begin{figure}[H]
             \centering
-                $Ch_{0} = 0x1F85C98C$
+                $Ch_{0} = \texttt{0x1F85C98C}$
             \end{figure}
         
     \subsection{Función $\Sigma1$}
@@ -481,7 +482,7 @@
         En el ejemplo anterior se realiza una operación $XOR$ de tres inputs, que son cada uno de los bits de $E_{0}$ tras realizar una operación de rotación de 25 bits a la derecha, 11 bits a la derecha y 6 bits a la derecha también. El resultado siempre se expresará en hexadecimal.
             \begin{figure}[H]
             \centering
-                $\Sigma1_{0} = 0x3587272B$
+                $\Sigma1_{0} = \texttt{0x3587272B}$
             \end{figure}
         
     \subsection{Función $Maj$}
@@ -521,7 +522,7 @@
         El resultado siempre se expresará en hexadecimal.
             \begin{figure}[H]
             \centering
-                $Maj_{0} = 0x3A6FE667$
+                $Maj_{0} = \texttt{0x3A6FE667}$
             \end{figure}
         
     \subsection{Función $\Sigma0$}
@@ -539,7 +540,7 @@
         En el ejemplo anterior se realiza una operación $XOR$ de tres inputs, que son cada uno de los bits de $A_{0}$ tras realizar una operación de rotación de 2 bits a la derecha, 13 bits a la derecha y 22 bits a la derecha también. El resultado siempre se expresará en hexadecimal.
             \begin{figure}[H]
             \centering
-                $\Sigma1_{0} = 0xCE20B47E$
+                $\Sigma1_{0} = \texttt{0xCE20B47E}$
             \end{figure}
     
     \subsection{Las 8 nuevas palabras resultantes}
@@ -574,8 +575,8 @@
         \centering
             $A+B+C+D+E+F+G+H = \left \{
                 \begin{array}{c}
-                    ba7816bf8f01cfea414140de5dae2223 \\
-                    b00361a396177a9cb410ff61f20015ad
+                    \texttt{ba7816bf8f01cfea414140de5dae2223} \\
+                    \texttt{b00361a396177a9cb410ff61f20015ad}
                 \end{array}
                 \right .$
         \end{figure}
@@ -584,8 +585,8 @@
         \centering
             $sha256('abc') = \left \{
                 \begin{array}{c}
-                    ba7816bf8f01cfea414140de5dae2223 \\
-                    b00361a396177a9cb410ff61f20015ad
+                    \texttt{ba7816bf8f01cfea414140de5dae2223} \\
+                    \texttt{b00361a396177a9cb410ff61f20015ad}
                 \end{array}
                 \right .$
         \end{figure}
