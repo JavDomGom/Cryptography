@@ -9,7 +9,7 @@
 \author{Javier Domínguez Gómez \\
 \small{jdg@member.fsf.org} \\
 \small{Fingerprint: 94AD 19F4 9005 EEB2 3384 C20F 5BDC C668 D664 8E2B}}
-\date{v0.1.05 - Marzo 2019}
+\date{v0.1.07 - Marzo 2019}
 
 \begin{document}
 \maketitle
@@ -115,7 +115,7 @@
         La longitud del mensaje de entrada $|M|$ en formato hexadecimal es un dato que se ha de reservar, ya que se utilizará para algunos cálculos en otras funciones.
 
 \section{Construcción de la variable $W_{t}$}
-    La variable $W_{t}$ es un array de 64 elementos que contiene palabras hexadecimales de 32 bits. Tiene un tamaño o longitud de 2048 bits (256 bytes) y se obtiene mediante la siguiente función recursiva definida por intervalos.
+    La variable $W_{t}$ es un vector de 64 elementos que contiene palabras hexadecimales de 32 bits. Tiene un tamaño o longitud de 2048 bits (256 bytes) y se obtiene mediante la siguiente función recursiva definida por intervalos.
         \begin{figure}[H]
         \centering
             $W_{t} = \left \{
@@ -229,10 +229,10 @@
                 \end{figure}
                 Una vez se obtiene el resultado se reserva a parte para utilizarlo más adelante.
             
-            \item Por otro lado se toma del array $K$ la primera palabra $K_{0}$, es decir $0x428a2f98$, y se convierte a decimal o base 10.
+            \item Por otro lado se toma del vector $K$ la primera palabra $K_{0}$, es decir $0x428a2f98$, y se convierte a decimal o base 10.
                 \begin{figure}[H]
                 \centering
-                    $0x428a2f98 = \frac{4}{16^{1}} + \frac{2}{16^{2}} + \frac{8}{16^{3}} + \frac{10(a)}{16^{4}} + \frac{2}{16^{5}} + \frac{15(f)}{16^{6}} + \frac{9}{16^{7}} + \frac{8}{16^{8}}$
+                    $\texttt{0x428a2f98} = \frac{4}{16^{1}} + \frac{2}{16^{2}} + \frac{8}{16^{3}} + \frac{10(a)}{16^{4}} + \frac{2}{16^{5}} + \frac{15(f)}{16^{6}} + \frac{9}{16^{7}} + \frac{8}{16^{8}}$
                 \end{figure}
                 \begin{figure}[H]
                 \centering
@@ -267,6 +267,7 @@
                 \end{figure}
             
             \item Por lo tanto se puede decir que $0x428a2f98 = \lfloor \sqrt[3]{2} \rfloor$.
+            \vspace{3mm}
         \end{enumerate}
         
         Para comprobar las otras 63 palabras hexadecimales solo hay que repetir los cálculos de los puntos anteriores con cada uno de los 63 números primos restantes, y comprobar su equivalencia respectiva con las palabras de la constante $K_{t}$:
@@ -283,7 +284,7 @@
             \end{figure}
 
 \section{Las 8 palabras iniciales}
-    La función SHA-256 utiliza una grupo inicial de 8 palabras correlacionadas una a una con las variables $A$, $B$, $C$, $D$, $E$, $F$, $G$ y $H$. Cada una de estas palabras representa los 32 primeros bits en hexadecimal o base 16 de la parte fraccionaria de las raíces cuadradas de los primeros 8 números primos. Se trata de los 8 valores iniciales que se reciben en la primera ronda criptográfica y que se asignarán a un array de 8 elementos denominado $P_{t}$, donde:
+    La función SHA-256 utiliza una grupo inicial de 8 palabras correlacionadas una a una con las variables $A$, $B$, $C$, $D$, $E$, $F$, $G$ y $H$. Cada una de estas palabras representa los 32 primeros bits en hexadecimal o base 16 de la parte fraccionaria de las raíces cuadradas de los primeros 8 números primos. Se trata de los 8 valores iniciales que se reciben en la primera ronda criptográfica y que se asignarán a un vector de 8 elementos denominado $P_{t}$, donde:
         \begin{figure}[H]
         \centering
             $\begin{array}{llll}
@@ -292,7 +293,7 @@
             \end{array}$
         \end{figure}
     
-    Se puede representar en código C el array de 8 elementos con su valor inicial de la siguiente forma:
+    Se puede representar en código C la constante de tipo array de 8 elementos con su valor inicial de la siguiente forma:
         \begin{figure}[H]
         \centering
             \begin{minted}{c}
