@@ -125,7 +125,7 @@
             \end{array}
             \right .$
         \end{figure}
-    Las funciones  $\sigma_{0}$ y $\sigma_{1}$ realizan las siguientes operaciones lógicas de compresión.
+    Donde las funciones  $\sigma_{0}$ y $\sigma_{1}$ realizan las siguientes operaciones lógicas de compresión.
         \begin{figure}[H]
         \centering
             $\begin{array}{l}
@@ -174,13 +174,43 @@
                 \right \} = \texttt{448} \ bits$
             \end{figure}
 
-        Para terminar de completar $W_{t}$ solo queda rellenar los últimos dos bloques de 32 bits $W_{14}$ y $W_{15}$ con la longitud del mensaje de entrada $|M|$ en hexadecimal, con tantos ceros por la izquierda como sean necesario para alcanzar 64 bits de longitud. La obtención de este dato se explica en el punto 2.2 de este documento.
+        Para terminar de completar los primeros 16 bloques de $W_{t}$ solo queda rellenar los últimos dos bloques de 32 bits $W_{14}$ y $W_{15}$ con la longitud del mensaje de entrada $|M|$ en hexadecimal, con tantos ceros por la izquierda como sean necesario para alcanzar 64 bits de longitud. La obtención de este dato se explica en el punto 2.2 de este documento.
             \begin{figure}[H]
             \centering
                 \includegraphics[scale=0.49]{img/SHA-256-W0-W15}
                 \caption{Tres ejemplos distintos de esquemas de relleno para las 16 primeras posiciones de $W_{t}$.}
             \end{figure}
+    \subsection{Los 48 registros restantes de $W_t$}
+        Para hallar el valor de cualquiera de los segmentos que van desde $W_{16}$ hasta $W_{63}$ se han de realizar las siguientes operaciones, donde $i$ tiene por valor el valor de $t$ en el segmento que se quiere calcular de $W_t$. Por ejemplo, para $W_{16}$:
     
+        \begin{figure}[H]
+        \centering
+            $\sigma_{1}(W_{i-2})+W_{i-7}+\sigma_{0}(W_{i-15})+W_{i-16}$ \\
+            $\Downarrow$ \\
+            $\sigma_{1}(W_{16-2})+W_{16-7}+\sigma_{0}(W_{16-15})+W_{16-16}$ \\
+            $\Downarrow$ \\
+            $\sigma_{1}(W_{14})+W_{9}+\sigma_{0}(W_{1})+W_{0}$
+        \end{figure}
+        
+        Por ejemplo, para el mensaje de entrada \textit{"Hola mundo"} los segmentos $W_{14}$, $W_{9}$, $W_{1}$ y $W_{0}$ que ya se han calculado anteriormente tienen asignados los siguientes valores:
+        
+        \begin{figure}[H]
+        \centering
+            $\begin{array}{rl}
+                W_{14} = \texttt{0x00000000} & W_{9} = \texttt{0x00000000} \\
+                W_{1}\  = \texttt{0x206d756e} & W_{0} = \texttt{0x486f6c61}
+            \end{array}$
+        \end{figure}
+        
+        A continuación se muestra una representación gráfica la operación lógica de compresión $\sigma_{1}$, que aplica sobre el valor del segmento $W_{14}$.
+        \begin{figure}[H]
+        \centering
+            \includegraphics[scale=0.445]{img/SHA-256-Wt_operation_sigma1.png}
+            \caption{Operación $ROT \ R^{17}(x) \oplus ROT \ R^{19}(x) \oplus SHR^{10}(x)$ con cada bit.}
+        \end{figure}
+        
+        Tras el cálculo de $\sigma_{1}(W_{14})$ se obtiene la palabra hexadecimal de 32 bits $\texttt{0x00000000}$. Se ha de reservar este valor para calcular el resultado final. También se muestra la la representación gráfica la operación lógica de compresión $\sigma_{0}$, que aplica sobre el valor del segmento $W_{1}$.
+        
 \section{Constante $K_{t}$}
     La constante $K_{t}$ se compone de $64$ palabras hexadecimales. Cada una de esas palabras representa los 32 primeros bits (en hexadecimal) de la parte fraccionaria de la raíz cúbica de cada uno de los primeros 64 números primos. Estos números primos son:
         \begin{figure}[H]
