@@ -1,4 +1,4 @@
-\documentclass{article}
+ss{article}
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -210,7 +210,11 @@
         \end{figure}
         
         Tras el cálculo de $\sigma_{1}(W_{14})$ se obtiene la palabra hexadecimal de 32 bits $\texttt{0x00000000}$. Se ha de reservar este valor para calcular el resultado final. También se muestra la la representación gráfica la operación lógica de compresión $\sigma_{0}$, que aplica sobre el valor del segmento $W_{1}$.
-        
+        \begin{figure}[H]
+        \centering
+            \includegraphics[scale=0.445]{img/SHA-256-Wt_operation_sigma0.png}
+            \caption{Operación $ROT \ R^{17}(x) \oplus ROT \ R^{19}(x) \oplus SHR^{10}(x)$ con cada bit.}
+        \end{figure}
 \section{Constante $K_{t}$}
     La constante $K_{t}$ se compone de $64$ palabras hexadecimales. Cada una de esas palabras representa los 32 primeros bits (en hexadecimal) de la parte fraccionaria de la raíz cúbica de cada uno de los primeros 64 números primos. Estos números primos son:
         \begin{figure}[H]
