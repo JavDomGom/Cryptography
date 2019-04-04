@@ -9,7 +9,7 @@
 \author{Javier Domínguez Gómez \\
 \small{jdg@member.fsf.org} \\
 \small{Fingerprint: 94AD 19F4 9005 EEB2 3384 C20F 5BDC C668 D664 8E2B}}
-\date{v0.1.09 - Abril 2019}
+\date{v0.1.11 - Abril 2019}
 
 \begin{document}
 \maketitle
@@ -107,9 +107,9 @@
             \centering
                 $\begin{array}{rccclclcl}
                     \underline{\qquad \qquad \qquad M} & & \underline{Bits \times Chars} & & \underline{Dec} & & \underline{Hex} & & \underline{Longitud}\\
-                    Hola \ mundo & = & 8 \times 10 & = & 80 & \Rightarrow & 50 & & |M|_{16} = 50 \\
-                    abc & = & 8 \times 3 \ & = & 24 & \Rightarrow & 18 & & |M|_{16} = 18  \\
-                    Te \ gusta \ cifrar? & = & 8 \times 16 & = & 128 & \Rightarrow & 80 & & |M|_{16} = 80
+                    Hola \ mundo & = & 8 \times 10 & = & 80 & \Rightarrow & \texttt{0x50} & & |M|_{16} = 50 \\
+                    abc & = & 8 \times 3 \ & = & 24 & \Rightarrow & \texttt{0x18} & & |M|_{16} = 18  \\
+                    Te \ gusta \ cifrar? & = & 8 \times 16 & = & 128 & \Rightarrow & \texttt{0x80} & & |M|_{16} = 80
                 \end{array}$
             \end{figure}
         La longitud del mensaje de entrada $|M|$ en formato hexadecimal es un dato que se ha de reservar, ya que se utilizará para algunos cálculos en otras funciones.
@@ -154,7 +154,7 @@
                 $10000000_{2} = \texttt{80}_{16}$
             \end{figure}
         
-        Independientemente de la longitud de cadena hexadecimal de la palabra de entrada, se añade $80$ por la derecha.
+        Independientemente de la longitud de cadena hexadecimal de la palabra de entrada, se añade $\texttt{80}$ por la derecha.
             \begin{figure}[H]
             \centering
                 $\texttt{486f6c61} + \texttt{206d756e} + \texttt{646f} + \texttt{80}$
@@ -216,7 +216,7 @@
             \caption{Operación $ROT \ R^{7}(x) \oplus ROT \ R^{18}(x) \oplus SHR^{3}(x)$ con cada bit.}
         \end{figure}
         
-        Tras el cálculo de $\sigma_{0}(W_{1})$ se obtiene la palabra hexadecimal de 32 bits $\texttt{8516fc5c}$. Una vez realizados los cálculos necesarios para obtener el valor de $\sigma_{1}(W_{14})$ y $\sigma_{0}(W_{1})$ finalmente se ha de realizar la siguiente operación final.
+        Tras el cálculo de $\sigma_{0}(W_{1})$ se obtiene la palabra hexadecimal de 32 bits $\texttt{0x8516fc5c}$. Una vez realizados los cálculos necesarios para obtener el valor de $\sigma_{1}(W_{14})$ y $\sigma_{0}(W_{1})$ finalmente se ha de realizar la siguiente operación final.
         \begin{figure}[H]
         \centering
             \includegraphics[scale=0.445]{img/SHA-256-Wt_operation_mod2_32_final.png}
@@ -273,7 +273,7 @@
                 \end{figure}
                 Una vez se obtiene el resultado se reserva a parte para utilizarlo más adelante.
             
-            \item Por otro lado se toma del vector $K$ la primera palabra $K_{0}$, es decir $0x428a2f98$, y se convierte a decimal o base 10.
+            \item Por otro lado se toma del vector $K$ la primera palabra $K_{0}$, es decir $\texttt{0x428a2f98}$, y se convierte a decimal o base 10.
                 \begin{figure}[H]
                 \centering
                     $\texttt{0x428a2f98} = \frac{4}{16^{1}} + \frac{2}{16^{2}} + \frac{8}{16^{3}} + \frac{10(a)}{16^{4}} + \frac{2}{16^{5}} + \frac{15(f)}{16^{6}} + \frac{9}{16^{7}} + \frac{8}{16^{8}}$
@@ -310,7 +310,7 @@
                     \end{array}$
                 \end{figure}
             
-            \item Por lo tanto se puede decir que $0x428a2f98 = \lfloor \sqrt[3]{2} \rfloor$.
+            \item Por lo tanto se puede decir que $\texttt{0x428a2f98} = \lfloor \sqrt[3]{2} \rfloor$.
             \vspace{3mm}
         \end{enumerate}
         
@@ -407,7 +407,7 @@
     Los recuadros de color rojo del diagrama representan una suma $mod \ 2^{32}$, o lo que es lo mismo, una suma binaria de los inputs de 32 bits que reciba sin tener en cuanta las unidades que se deban llevar al siguiente nivel.
     
     \subsection{Operaciones con las 8 palabras}
-        En la primera ronda criptográfica las palabras $A$, $B$, $C$, $D$, $E$, $F$, $G$ y $H$ tendrán siempre el mismo valor inicial, tal y como se explica en el punto 5 de este documento. Hay que hacer una serie de operaciones y movimientos con los valores de cada una de las palabras, de modo que se obtenga un nuevo valor de las mismas para la siguiente ronda. Es decir, en la primera ronda $A_{0}$ siempre tendrá como valor $6A09E667$, pero en la segunda ronda $A_{1}$ tendrá un valor muy distinto, dependerá del resultado de una serie de movimientos y operaciones, y esto sucederá con el todas y cada una de las palabras.
+        En la primera ronda criptográfica las palabras $A$, $B$, $C$, $D$, $E$, $F$, $G$ y $H$ tendrán siempre el mismo valor inicial, tal y como se explica en el punto 5 de este documento. Hay que hacer una serie de operaciones y movimientos con los valores de cada una de las palabras, de modo que se obtenga un nuevo valor de las mismas para la siguiente ronda. Es decir, en la primera ronda $A_{0}$ siempre tendrá como valor $\texttt{0x6A09E667}$, pero en la segunda ronda $A_{1}$ tendrá un valor muy distinto, dependerá del resultado de una serie de movimientos y operaciones, y esto sucederá con el todas y cada una de las palabras.
         
         \subsubsection{Operaciones con $A$}
             La palabra $A$ se va a utilizar en tres casos por cada ronda:
@@ -497,7 +497,7 @@
             \caption{\textit{Tabla de la verdad de la función $Ch$}}
             \label{table:1}
             \end{table}
-        En el \textit{álgebra de Boole}\footnote{Álgebra de Boole: https://en.wikipedia.org/wiki/Boolean\_algebra} la anterior tabla se denomina \textit{tabla de la verdad}, y en este caso representa las 16 posibilidades binarias existentes en el caso de un input de tres entradas $\delta_{x}$, $\delta_{y}$ y $\delta_{z}$. Además muestra el resultado en cada una de las posibilidades para la operación lógica $(\delta_{x} \land \delta_{y}) \lor (\lnot \delta_{x} \land \delta_{z})$.
+        En el \textit{álgebra de Boole}\footnote{Álgebra de Boole: https://en.wikipedia.org/wiki/Boolean\_algebra} la anterior tabla se denomina \textit{tabla de la verdad}, y en este caso representa las 8 combinaciones binarias posibles en el caso de un input de tres entradas $\delta_{x}$, $\delta_{y}$ y $\delta_{z}$. Además muestra el resultado en cada una de las posibilidades para la operación lógica $(\delta_{x} \land \delta_{y}) \lor (\lnot \delta_{x} \land \delta_{z})$.
         
         \vspace{3mm}
         En la primera ronda criptográfica los valores de las palabras $E$, $F$ y $G$ son constantes, tal y como se indica en el punto 5.1 de este documento. El resultado de la función $Ch(E_{0}, F_{0}, G_{0})$ es el siguiente:
@@ -518,7 +518,7 @@
             \centering
                 $\Sigma1(x) = ROT \ R^{6}(x) \oplus ROT \ R^{11}(x) \oplus ROT \ R^{25}(x)$
             \end{figure}
-        Tal y como se explica en el punto 5.1 de este documento, la palabra $E_{0}$ es una constante con valor hexadecimal $0x510E527F$ únicamente en la primera ronda. A continuación un ejemplo del cálculo de la función $\Sigma1_{0}$.
+        Tal y como se explica en el punto 5.1 de este documento, la palabra $E_{0}$ es una constante con valor hexadecimal $\texttt{0x510E527F}$ únicamente en la primera ronda. A continuación un ejemplo del cálculo de la función $\Sigma1_{0}$.
             \begin{figure}[H]
             \centering
                 \includegraphics[scale=0.41]{img/SHA-256-function_Sigma1.png}
@@ -555,7 +555,7 @@
             \caption{\textit{Tabla de la verdad de la función $Maj$}}
             \label{table:2}
             \end{table}
-        La tabla anterior muestra el resultado en cada una de las 16 posibilidades binarias para la operación lógica $(\delta_{x} \land \delta_{y}) \lor (\delta_{x} \land \delta_{z}) \lor (\delta_{y} \land \delta_{z})$.
+        La tabla anterior muestra el resultado en cada una de las 8 combinaciones binarias posibles para la operación lógica $(\delta_{x} \land \delta_{y}) \lor (\delta_{x} \land \delta_{z}) \lor (\delta_{y} \land \delta_{z})$.
         
         \vspace{3mm}
         En la primera ronda criptográfica los valores de las palabras $A$, $B$ y $C$ son constantes, tal y como se indica en el punto 5.1 de este documento. El resultado de la función $Maj(A_{0}, B_{0}, C_{0})$ es el siguiente:
@@ -576,7 +576,7 @@
             \centering
                 $\Sigma0(x) = ROT \ R^{2}(x) \oplus ROT \ R^{13}(x) \oplus ROT \ R^{22}(x)$
             \end{figure}
-        Tal y como se explica en el punto 5.1 de este documento, la palabra $A_{0}$ es una constante con valor hexadecimal $0x6A09E667$ únicamente en la primera ronda. A continuación un ejemplo del cálculo de la función $\Sigma0_{0}$.
+        Tal y como se explica en el punto 5.1 de este documento, la palabra $A_{0}$ es una constante con valor hexadecimal $\texttt{0x6A09E667}$ únicamente en la primera ronda. A continuación un ejemplo del cálculo de la función $\Sigma0_{0}$.
             \begin{figure}[H]
             \centering
                 \includegraphics[scale=0.41]{img/SHA-256-function_Sigma0.png}
