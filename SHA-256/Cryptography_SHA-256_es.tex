@@ -1,4 +1,4 @@
-ss{article}
+\documentclass{article}
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -9,7 +9,7 @@ ss{article}
 \author{Javier Domínguez Gómez \\
 \small{jdg@member.fsf.org} \\
 \small{Fingerprint: 94AD 19F4 9005 EEB2 3384 C20F 5BDC C668 D664 8E2B}}
-\date{v0.1.07 - Marzo 2019}
+\date{v0.1.09 - Abril 2019}
 
 \begin{document}
 \maketitle
@@ -213,8 +213,18 @@ ss{article}
         \begin{figure}[H]
         \centering
             \includegraphics[scale=0.445]{img/SHA-256-Wt_operation_sigma0.png}
-            \caption{Operación $ROT \ R^{17}(x) \oplus ROT \ R^{19}(x) \oplus SHR^{10}(x)$ con cada bit.}
+            \caption{Operación $ROT \ R^{7}(x) \oplus ROT \ R^{18}(x) \oplus SHR^{3}(x)$ con cada bit.}
         \end{figure}
+        
+        Tras el cálculo de $\sigma_{0}(W_{1})$ se obtiene la palabra hexadecimal de 32 bits $\texttt{8516fc5c}$. Una vez realizados los cálculos necesarios para obtener el valor de $\sigma_{1}(W_{14})$ y $\sigma_{0}(W_{1})$ finalmente se ha de realizar la siguiente operación final.
+        \begin{figure}[H]
+        \centering
+            \includegraphics[scale=0.445]{img/SHA-256-Wt_operation_mod2_32_final.png}
+            \caption{Operación final $mod \ 2^{32} (\sigma_{1}(W_{14}), W_{9}, \sigma_{0}(W_{1}), W_{0})$.}
+        \end{figure}
+        
+        De este modo se obtiene el valor que se almacenará en el segmento $W_{16}$ del vector $W_t$. Será necesario repetir el mismo proceso por cada uno de los segmentos hasta llegar a $W_{63}$.
+        
 \section{Constante $K_{t}$}
     La constante $K_{t}$ se compone de $64$ palabras hexadecimales. Cada una de esas palabras representa los 32 primeros bits (en hexadecimal) de la parte fraccionaria de la raíz cúbica de cada uno de los primeros 64 números primos. Estos números primos son:
         \begin{figure}[H]
