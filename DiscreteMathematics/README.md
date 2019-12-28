@@ -1,4 +1,4 @@
-# Discrete mathematics
+# Matemáticas discretas
 
 1. Reducción a módulo.
 2. Cálculos inversos.
@@ -49,6 +49,8 @@ X ↔ 23   →   23 mod 27 = 23
 Y ↔ 24   →   24 mod 27 = 24
 Z ↔ 25   →   25 mod 27 = 25
 ```
+
+
 
 ## Conjunto completo y reducido de restos.
 ## Función de Euler.
