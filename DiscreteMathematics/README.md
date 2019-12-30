@@ -50,7 +50,20 @@ Y ↔ 24   →   24 mod 27 = 24
 Z ↔ 25   →   25 mod 27 = 25
 ```
 
+```python
+cols = 8
+rows = 32
+hline = f'{"+".ljust(12, "-")*cols}+'
+header = 'ASCII + extended code table'
 
+print(hline)
+print(f'|{header:^{cols*12-1}}|')
+print(hline)
+for i in range(rows):
+    row = '|'.join(f'{n*rows+i:>4} {chr(n*rows+i)!r:6}' for n in range(cols))
+    print(f'|{row}|')
+print(hline)
+```
 
 ## Conjunto completo y reducido de restos.
 ## Función de Euler.
