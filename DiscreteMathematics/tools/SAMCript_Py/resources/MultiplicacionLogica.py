@@ -23,18 +23,18 @@ class MultiplicacionLogica():
             :89 * 67:
 
                 # Forma estándar:
-                sl.MultiplicacionLogica(base).multiplicacionEnteros(a, b)
+                ml.MultiplicacionLogica(base).multiplicacionEnteros(a, b)
 
                 # En base 2 o binario:
-                sl.MultiplicacionLogica(2).multiplicacionEnteros('01011001', '01000011')
+                ml.MultiplicacionLogica(2).multiplicacionEnteros('01011001', '01000011')
                 # Devuelve 0b1011101001011
 
                 # En base 10 o decimal:
-                sl.MultiplicacionLogica(10).multiplicacionEnteros('89', '67')
+                ml.MultiplicacionLogica(10).multiplicacionEnteros('89', '67')
                 # Devuelve 5963
 
                 # En base 16 o hexadecimal:
-                sl.MultiplicacionLogica(16).multiplicacionEnteros('59', '43')
+                ml.MultiplicacionLogica(16).multiplicacionEnteros('59', '43')
                 # Devuelve 0x174b
         '''
         return self.tb(int(a, self.base)*int(b, self.base))
@@ -49,23 +49,23 @@ class MultiplicacionLogica():
             :a: Primer número entero.
             :b: Segundo número entero.
             :n: Número dentro del cuerpo de cifra o módulo.
-            
+
         Ejemplos:
             :89 * 67 mod 121:
 
                 # Forma estándar:
-                sl.MultiplicacionLogica(base).multiplicacionModulo(a, b, n)
+                ml.MultiplicacionLogica(base).multiplicacionModulo(a, b, n)
 
                 # En base 2 o binario:
-                sl.MultiplicacionLogica(2).multiplicacionModulo('01011001', '01000011', '01111001')
+                ml.MultiplicacionLogica(2).multiplicacionModulo('01011001', '01000011', '01111001')
                 # Devuelve 0b100010
 
                 # En base 10 o decimal:
-                sl.MultiplicacionLogica(10).multiplicacionModulo('89', '67', '121')
+                ml.MultiplicacionLogica(10).multiplicacionModulo('89', '67', '121')
                 # Devuelve 34
 
                 # En base 16 o hexadecimal:
-                sl.MultiplicacionLogica(16).multiplicacionModulo('59', '43', '79')
+                ml.MultiplicacionLogica(16).multiplicacionModulo('59', '43', '79')
                 # Devuelve 0x22
         '''
         return self.tb((int(a, self.base)*int(b, self.base))%int(n, self.base))
