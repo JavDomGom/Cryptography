@@ -1,5 +1,5 @@
 class SumaLogica():
-    from resources.common import transformaBase as tb
+    from resources.common import baseTransform as bt
 
     def __init__(self, base):
         ''' Constructor de la clase.
@@ -36,14 +36,14 @@ class SumaLogica():
                 sl.SumaLogica(16).sumaEnteros('53', '96')
                 # Devuelve 0xe9
         '''
-        return self.tb(int(a, self.base)+int(b, self.base))
+        return self.bt(int(a, self.base)+int(b, self.base))
 
 
     def sumaModulo(self, a, b, n):
         ''' Método que realiza la suma modular de dos números enteros. El
         resultado se puede devolver en base 2 (binario), 10 (decimal) o 16
         (hexadecimal) dependiendo del valor de la variable self.base.
-        
+
         Atributos:
             :a: Primer número entero.
             :b: Segundo número entero.
@@ -67,4 +67,4 @@ class SumaLogica():
                 sl.SumaLogica(16).sumaModulo('53', '96', '6B')
                 # Devuelve 0x13
         '''
-        return self.tb((int(a, self.base)+int(b, self.base))%int(n, self.base))
+        return self.bt((int(a, self.base)+int(b, self.base))%int(n, self.base))

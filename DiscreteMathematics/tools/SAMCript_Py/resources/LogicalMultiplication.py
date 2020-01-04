@@ -1,11 +1,11 @@
 class MultiplicacionLogica():
-    from resources.common import transformaBase as tb
+    from resources.common import baseTransform as bt
 
     def __init__(self, base):
-        ''' Constructor de la clase.
+        ''' Class constructor.
 
-        Atributos:
-            :base: La base numérica que se empleará en los cálculos de la clase.
+         Attributes:
+             :base: The numerical base to be used in class calculations.
         '''
         self.base = base
 
@@ -37,7 +37,7 @@ class MultiplicacionLogica():
                 ml.MultiplicacionLogica(16).multiplicacionEnteros('59', '43')
                 # Devuelve 0x174b
         '''
-        return self.tb(int(a, self.base)*int(b, self.base))
+        return self.bt(int(a, self.base)*int(b, self.base))
 
 
     def multiplicacionModulo(self, a, b, n):
@@ -68,4 +68,4 @@ class MultiplicacionLogica():
                 ml.MultiplicacionLogica(16).multiplicacionModulo('59', '43', '79')
                 # Devuelve 0x22
         '''
-        return self.tb((int(a, self.base)*int(b, self.base))%int(n, self.base))
+        return self.bt((int(a, self.base)*int(b, self.base))%int(n, self.base))

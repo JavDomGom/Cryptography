@@ -1,5 +1,5 @@
 class RestaLogica():
-    from resources.common import transformaBase as tb
+    from resources.common import baseTransform as bt
 
     def __init__(self, base):
         ''' Constructor de la clase.
@@ -37,7 +37,7 @@ class RestaLogica():
                 sl.RestaLogica(16).restaEnteros('53', '96')
                 # Devuelve 0x4e
         '''
-        return self.tb(int(a, self.base)-int(b, self.base))
+        return self.bt(int(a, self.base)-int(b, self.base))
 
 
     def restaModulo(self, a, b, n):
@@ -49,7 +49,7 @@ class RestaLogica():
             :a: Primer número entero.
             :b: Segundo número entero.
             :n: Número dentro del cuerpo de cifra o módulo.
-            
+
         Ejemplos:
             :83 - 150 mod 107:
 
@@ -68,4 +68,4 @@ class RestaLogica():
                 sl.RestaLogica(16).restaModulo('53', '96', '6B')
                 # Devuelve 0x1
         '''
-        return self.tb((int(a, self.base)-int(b, self.base))%int(n, self.base))
+        return self.bt((int(a, self.base)-int(b, self.base))%int(n, self.base))
