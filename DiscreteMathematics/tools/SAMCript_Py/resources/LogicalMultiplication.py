@@ -1,71 +1,63 @@
-class MultiplicacionLogica():
-    from resources.common import baseTransform as bt
+from resources.Common import Common
 
-    def __init__(self, base):
-        ''' Class constructor.
+class LogicalMultiplication(Common):
 
-         Attributes:
-             :base: The numerical base to be used in class calculations.
-        '''
-        self.base = base
+    def integerMultiplication(self, a, b):
+        ''' This method multiplies two integers. The result can be returned in
+        base 2 (binary), 10 (decimal) or 16 (hexadecimal), depending on the
+        self.base value.
 
+        Attributes:
+            :a: First integer.
+            :b: Second integer.
 
-    def multiplicacionEnteros(self, a, b):
-        ''' Método que realiza la multiplicación de dos números enteros. El
-        resultado se puede devolver en base 2 (binario), 10 (decimal) o 16
-        (hexadecimal), dependiendo del valor de la variable self.base.
-
-        Atributos:
-            :a: Primer número entero.
-            :b: Segundo número entero.
-
-        Ejemplos:
+        Examples:
             :89 * 67:
 
-                # Forma estándar:
-                ml.MultiplicacionLogica(base).multiplicacionEnteros(a, b)
+                # Standard form:
+                lm.LogicalMultiplication(base).integerMultiplication(a, b)
 
-                # En base 2 o binario:
-                ml.MultiplicacionLogica(2).multiplicacionEnteros('01011001', '01000011')
-                # Devuelve 0b1011101001011
+                # Base-2 numeral system or binary:
+                lm.LogicalMultiplication(2).integerMultiplication('01011001', '01000011')
+                # Returns 0b1011101001011
 
-                # En base 10 o decimal:
-                ml.MultiplicacionLogica(10).multiplicacionEnteros('89', '67')
-                # Devuelve 5963
+                # Base-10 numeral system or decimal:
+                lm.LogicalMultiplication(10).integerMultiplication('89', '67')
+                # Returns 5963
 
-                # En base 16 o hexadecimal:
-                ml.MultiplicacionLogica(16).multiplicacionEnteros('59', '43')
-                # Devuelve 0x174b
+                # Base-16 numeral system or hexadecimal:
+                lm.LogicalMultiplication(16).integerMultiplication('59', '43')
+                # Returns 0x174b
         '''
-        return self.bt(int(a, self.base)*int(b, self.base))
+        return self.baseTransform(int(a, self.base)*int(b, self.base))
 
 
-    def multiplicacionModulo(self, a, b, n):
-        ''' Método que realiza la multiplicación modular de dos números
-        enteros. El resultado se puede devolver en base 2 (binario), 10
-        (decimal) o 16 (hexadecimal) dependiendo del valor de la variable self.base.
+    def modularMultiplication(self, a, b, n):
+        ''' Method that performs the modular multiplication of two integers.
+        The result can be returned in base 2 (binary), 10 (decimal) or 16
+        (hexadecimal), depending on the self.base value.
 
-        Atributos:
-            :a: Primer número entero.
-            :b: Segundo número entero.
-            :n: Número dentro del cuerpo de cifra o módulo.
+        Attributes:
+            :a: First integer.
+            :b: Second integer.
+            :n: Module number.
 
-        Ejemplos:
+        Examples:
             :89 * 67 mod 121:
 
-                # Forma estándar:
-                ml.MultiplicacionLogica(base).multiplicacionModulo(a, b, n)
+                # Standard form:
+                lm.LogicalMultiplication(base).modularMultiplication(a, b, n)
 
-                # En base 2 o binario:
-                ml.MultiplicacionLogica(2).multiplicacionModulo('01011001', '01000011', '01111001')
-                # Devuelve 0b100010
+                # Base-2 numeral system or binary:
+                lm.LogicalMultiplication(2).modularMultiplication('01011001', '01000011', '01111001')
+                # Returns 0b100010
 
-                # En base 10 o decimal:
-                ml.MultiplicacionLogica(10).multiplicacionModulo('89', '67', '121')
-                # Devuelve 34
+                # Base-10 numeral system or decimal:
+                lm.LogicalMultiplication(10).modularMultiplication('89', '67', '121')
+                # Returns 34
 
-                # En base 16 o hexadecimal:
-                ml.MultiplicacionLogica(16).multiplicacionModulo('59', '43', '79')
-                # Devuelve 0x22
+                # Base-16 numeral system or hexadecimal:
+                lm.LogicalMultiplication(16).modularMultiplication('59', '43', '79')
+                # Returns 0x22
         '''
-        return self.bt((int(a, self.base)*int(b, self.base))%int(n, self.base))
+        return self.baseTransform((int(a, self.base)*int(b, self.base))%int(n, self.base))

@@ -1,70 +1,63 @@
-class SumaLogica():
-    from resources.common import baseTransform as bt
+from resources.Common import Common
 
-    def __init__(self, base):
-        ''' Constructor de la clase.
+class LogicalAddition(Common):
 
-        Atributos:
-            :base: La base numérica que se empleará en los cálculos de la clase.
-        '''
-        self.base = base
+    def integerAddition(self, a, b):
+        ''' This method adds two integers. The result can be returned in
+        base 2 (binary), 10 (decimal) or 16 (hexadecimal), depending on the
+        self.base value.
 
+        Attributes:
+            :a: First integer.
+            :b: Second integer.
 
-    def sumaEnteros(self, a, b):
-        ''' Método que realiza la suma de dos números enteros. El resultado se
-        puede devolver en base 2 (binario), 10 (decimal) o 16 (hexadecimal),
-        dependiendo del valor de la variable self.base.
-
-        Atributos:
-            :a: Primer número entero.
-            :b: Segundo número entero.
-        Ejemplos:
+        Examples:
             :83 + 150:
 
-                # Forma estándar:
-                sl.SumaLogica(base).sumaEnteros(a, b)
+                # Standard form:
+                la.LogicalAddition(base).integerAddition(a, b)
 
-                # En base 2 o binario:
-                sl.SumaLogica(2).sumaEnteros('01010011', '10010110')
-                # Devuelve 0b11101001
+                # Base-2 numeral system or binary:
+                la.LogicalAddition(2).integerAddition('01010011', '10010110')
+                # Returns 0b11101001
 
-                # En base 10 o decimal:
-                sl.SumaLogica(10).sumaEnteros('83', '150')
-                # Devuelve 233
+                # Base-10 numeral system or ecimal:
+                la.LogicalAddition(10).integerAddition('83', '150')
+                # Returns 233
 
-                # En base 16 o hexadecimal:
-                sl.SumaLogica(16).sumaEnteros('53', '96')
-                # Devuelve 0xe9
+                # Base-16 numeral system or hexadecimal:
+                la.LogicalAddition(16).integerAddition('53', '96')
+                # Returns 0xe9
         '''
-        return self.bt(int(a, self.base)+int(b, self.base))
+        return self.baseTransform(int(a, self.base)+int(b, self.base))
 
 
-    def sumaModulo(self, a, b, n):
-        ''' Método que realiza la suma modular de dos números enteros. El
-        resultado se puede devolver en base 2 (binario), 10 (decimal) o 16
-        (hexadecimal) dependiendo del valor de la variable self.base.
+    def modularAddition(self, a, b, n):
+        ''' Method that performs the modular addition of two integers.
+        The result can be returned in base 2 (binary), 10 (decimal) or 16
+        (hexadecimal), depending on the self.base value.
 
-        Atributos:
-            :a: Primer número entero.
-            :b: Segundo número entero.
-            :n: Número dentro del cuerpo de cifra o módulo.
+        Attributes:
+            :a: First integer.
+            :b: Second integer.
+            :n: Module number.
 
-        Ejemplos:
+        Examples:
             :83 + 150 mod 107:
 
-                # Forma estándar:
-                sl.SumaLogica(base).sumaModulo(a, b, n)
+                # Standard form:
+                la.LogicalAddition(base).modularAddition(a, b, n)
 
-                # En base 2 o binario:
-                sl.SumaLogica(2).sumaModulo('01010011', '10010110', '1101011')
-                # Devuelve 0b10010
+                # Base-2 numeral system or binary:
+                la.LogicalAddition(2).modularAddition('01010011', '10010110', '1101011')
+                # Returns 0b10010
 
-                # En base 10 o decimal:
-                sl.SumaLogica(10).sumaModulo('83', '150', '107')
-                # Devuelve 19
+                # Base-10 numeral system or ecimal:
+                la.LogicalAddition(10).modularAddition('83', '150', '107')
+                # Returns 19
 
-                # En base 16 o hexadecimal:
-                sl.SumaLogica(16).sumaModulo('53', '96', '6B')
-                # Devuelve 0x13
+                # Base-16 numeral system or hexadecimal:
+                la.LogicalAddition(16).modularAddition('53', '96', '6B')
+                # Returns 0x13
         '''
-        return self.bt((int(a, self.base)+int(b, self.base))%int(n, self.base))
+        return self.baseTransform((int(a, self.base)+int(b, self.base))%int(n, self.base))

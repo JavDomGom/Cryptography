@@ -1,14 +1,6 @@
-class LogicalDivision():
-    from resources.common import baseTransform as bt
+from resources.Common import Common
 
-    def __init__(self, base):
-        ''' Class constructor.
-
-         Attributes:
-             :base: The numerical base to be used in class calculations.
-        '''
-        self.base = base
-
+class LogicalDivision(Common):
 
     def bin2float(self, b):
         ''' Convert binary string to a float.
@@ -40,12 +32,12 @@ class LogicalDivision():
         base 2 (binary), 10 (decimal) or 16 (hexadecimal), depending on the
         self.base value.
 
-         Attributes:
-             :a: First integer.
-             :b: Second integer.
+        Attributes:
+            :a: First integer.
+            :b: Second integer.
 
         Examples:
-            :89/67:
+            :89 / 67:
 
                 # Standard form:
                 ld.LogicalDivision(base).integerDivision(a, b)
@@ -54,7 +46,7 @@ class LogicalDivision():
                 ld.LogicalDivision(2).integerDivision('01011001', '01000011')
                 # Returns 0b1011101001011
 
-                # Base-10 numeral system or ecimal:
+                # Base-10 numeral system or decimal:
                 ld.LogicalDivision(10).integerDivision('89', '67')
                 # Returns 5963
 
@@ -62,4 +54,4 @@ class LogicalDivision():
                 ld.LogicalDivision(16).integerDivision('59', '43')
                 # Returns 0x174b
         '''
-        return self.bt(int(a, self.base)/int(b, self.base), True)
+        return self.baseTransform(int(a, self.base)/int(b, self.base), True)

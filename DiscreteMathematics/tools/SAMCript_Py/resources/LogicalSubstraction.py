@@ -1,71 +1,63 @@
-class RestaLogica():
-    from resources.common import baseTransform as bt
+from resources.Common import Common
 
-    def __init__(self, base):
-        ''' Constructor de la clase.
+class LogicalSubstraction(Common):
 
-        Atributos:
-            :base: La base numérica que se empleará en los cálculos de la clase.
-        '''
-        self.base = base
+    def integerSubtraction(self, a, b):
+        ''' This method substract two integers. The result can be returned in
+        base 2 (binary), 10 (decimal) or 16 (hexadecimal), depending on the
+        self.base value.
 
+        Attributes:
+            :a: First integer.
+            :b: Second integer.
 
-    def restaEnteros(self, a, b):
-        ''' Método que realiza la resta de dos números enteros. El resultado se
-        puede devolver en base 2 (binario), 10 (decimal) o 16 (hexadecimal),
-        dependiendo del valor de la variable self.base.
-
-        Atributos:
-            :a: Primer número entero.
-            :b: Segundo número entero.
-
-        Ejemplos:
+        Examples:
             :83 - 150:
 
-                # Forma estándar:
-                sl.RestaLogica(base).restaEnteros(a, b)
+                # Standard form:
+                ls.LogicalSubstraction(base).integerSubtraction(a, b)
 
-                # En base 2 o binario:
-                sl.RestaLogica(2).restaEnteros('01010011', '10010110')
-                # Devuelve 0b1001110
+                # Base-2 numeral system or binary:
+                ls.LogicalSubstraction(2).integerSubtraction('01010011', '10010110')
+                # Returns 0b1001110
 
-                # En base 10 o decimal:
-                sl.RestaLogica(10).restaEnteros('83', '150')
-                # Devuelve 78
+                # Base-10 numeral system or ecimal:
+                ls.LogicalSubstraction(10).integerSubtraction('83', '150')
+                # Returns 78
 
-                # En base 16 o hexadecimal:
-                sl.RestaLogica(16).restaEnteros('53', '96')
-                # Devuelve 0x4e
+                # Base-16 numeral system or hexadecimal:
+                ls.LogicalSubstraction(16).integerSubtraction('53', '96')
+                # Returns 0x4e
         '''
-        return self.bt(int(a, self.base)-int(b, self.base))
+        return self.baseTransform(int(a, self.base)-int(b, self.base))
 
 
-    def restaModulo(self, a, b, n):
-        ''' Método que realiza la resta modular de dos números enteros. El
-        resultado se puede devolver en base 2 (binario), 10 (decimal) o 16
-        (hexadecimal) dependiendo del valor de la variable self.base.
+    def modularSubstraction(self, a, b, n):
+        ''' Method that performs the modular substraction of two integers.
+        The result can be returned in base 2 (binary), 10 (decimal) or 16
+        (hexadecimal), depending on the self.base value.
 
-        Atributos:
-            :a: Primer número entero.
-            :b: Segundo número entero.
-            :n: Número dentro del cuerpo de cifra o módulo.
+        Attributes:
+            :a: First integer.
+            :b: Second integer.
+            :n: Module number.
 
-        Ejemplos:
+        Examples:
             :83 - 150 mod 107:
 
-                # Forma estándar:
-                sl.RestaLogica(base).restaModulo(a, b, n)
+                # Standard form:
+                ls.LogicalSubstraction(base).modularSubstraction(a, b, n)
 
-                # En base 2 o binario:
-                sl.RestaLogica(2).restaModulo('01010011', '10010110', '1101011')
-                # Devuelve 0b1
+                # Base-2 numeral system or binary:
+                ls.LogicalSubstraction(2).modularSubstraction('01010011', '10010110', '1101011')
+                # Returns 0b1
 
-                # En base 10 o decimal:
-                sl.RestaLogica(10).restaModulo('83', '150', '107')
-                # Devuelve 1
+                # Base-10 numeral system or ecimal:
+                ls.LogicalSubstraction(10).modularSubstraction('83', '150', '107')
+                # Returns 1
 
-                # En base 16 o hexadecimal:
-                sl.RestaLogica(16).restaModulo('53', '96', '6B')
-                # Devuelve 0x1
+                # Base-16 numeral system or hexadecimal:
+                ls.LogicalSubstraction(16).modularSubstraction('53', '96', '6B')
+                # Returns 0x1
         '''
-        return self.bt((int(a, self.base)-int(b, self.base))%int(n, self.base))
+        return self.baseTransform((int(a, self.base)-int(b, self.base))%int(n, self.base))
