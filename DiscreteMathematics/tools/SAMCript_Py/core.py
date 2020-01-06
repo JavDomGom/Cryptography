@@ -5,7 +5,10 @@ import resources.LogicalAddition as la
 import resources.LogicalSubstraction as ls
 import resources.LogicalMultiplication as lm
 import resources.LogicalDivision as ld
+import resources.LogicalSquareRoot as lsr
+import resources.LogicalPrimitiveRoot as lpr
 
+# Standard input data:
 a = '932765972365713265327654732'
 b = '327165253763657365736954238'
 n = '435765377635373652'
@@ -38,3 +41,25 @@ print(lm.LogicalMultiplication(16).integerMultiplication(ha, hb))
 print(lm.LogicalMultiplication(2).modularMultiplication(ba, bb, bn))
 print(lm.LogicalMultiplication(10).modularMultiplication(a, b, n))
 print(lm.LogicalMultiplication(16).modularMultiplication(ha, hb, hn))
+
+print(ld.LogicalDivision(2).integerDivision(ba, bb))
+print(ld.LogicalDivision(10).integerDivision(a, b))
+print(ld.LogicalDivision(16).integerDivision(ha, hb))
+
+# Logical square root input data:
+a = '2677959256956917386540306'
+ba = '1000110111000101000111011001010011011101100001010110000110001000110111010100010010'
+ha = '237147653761586237512'
+
+print(lsr.LogicalSquareRoot(2).integerSquareRoot('110110011001'))
+print(lsr.LogicalSquareRoot(10).integerSquareRoot('3481'))
+print(lsr.LogicalSquareRoot(16).integerSquareRoot('D99'))
+
+# Logical primitive root input data:
+a = '131'
+ba = '10000011'
+ha = '83'
+
+print(lpr.LogicalPrimitiveRoot(2).integerPrimitiveRoot(ba))
+print(lpr.LogicalPrimitiveRoot(10).integerPrimitiveRoot(a))
+print(lpr.LogicalPrimitiveRoot(16).integerPrimitiveRoot(ha))

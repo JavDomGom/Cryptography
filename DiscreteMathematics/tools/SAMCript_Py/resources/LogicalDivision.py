@@ -8,11 +8,10 @@ class LogicalDivision(Common):
         Attributes:
             :b: Binary string to transform.
         '''
-        from codecs import decode
         import struct
 
-        h = int(b, 2).to_bytes(8, byteorder="big")
-        return struct.unpack('>d', h)[0]
+        f = int(b, 2).to_bytes(8, byteorder='big')
+        return struct.unpack('>d', f)[0]
 
 
     def float2bin(self, f):
@@ -23,8 +22,29 @@ class LogicalDivision(Common):
         '''
         import struct
 
-        [d] = struct.unpack(">Q", struct.pack(">d", f))
+        [d] = struct.unpack('>Q', struct.pack('>d', f))
         return f'{d:064b}'
+
+
+    def hex2float(self, h):
+        import struct
+        ''' Convert hexadecimal string to a float.
+
+        Attributes:
+            :h: Hexadecimal string to transform.
+        '''
+        return struct.unpack('>f', bytes.fromhex(h))[0]
+
+
+    def float2hex(self, f):
+        ''' Convert float to hexadecimal string.
+
+        Attributes:
+            :f: Float number to transform.
+        '''
+        import struct
+
+        return hex(struct.unpack('<I', struct.pack('<f', f))[0])
 
 
     def integerDivision(self, a, b):
@@ -44,14 +64,21 @@ class LogicalDivision(Common):
 
                 # Base-2 numeral system or binary:
                 ld.LogicalDivision(2).integerDivision('01011001', '01000011')
-                # Returns 0b1011101001011
+                # Returns 0011111111110101010000001111010010001001100011010101111110000110
 
                 # Base-10 numeral system or decimal:
                 ld.LogicalDivision(10).integerDivision('89', '67')
-                # Returns 5963
+                # Returns 1.328358208955224
 
                 # Base-16 numeral system or hexadecimal:
                 ld.LogicalDivision(16).integerDivision('59', '43')
-                # Returns 0x174b
+                # Returns 0x3faa07a4
         '''
-        return self.baseTransform(int(a, self.base)/int(b, self.base), True)
+        float_result = int(a, self.base)/int(b, self.base)
+
+        if self.base == 2:
+            return self.float2bin(float_result)
+        elif self.base == 10:
+            return float_result
+        elif self.base == 16:
+            return self.float2hex(float_result)
