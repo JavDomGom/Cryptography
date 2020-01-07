@@ -3,8 +3,8 @@ from resources.Common import Common
 class LogicalAddition(Common):
 
     def integerAddition(self, a, b):
-        ''' This method adds two integers. The result can be returned in
-        base 2 (binary), 10 (decimal) or 16 (hexadecimal), depending on the
+        ''' This method adds two integers. The result can be returned in base 2
+        (binary), 10 (decimal) or 16 (hexadecimal), depending on the
         self.base value.
 
         Attributes:

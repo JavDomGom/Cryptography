@@ -7,6 +7,7 @@ import resources.LogicalMultiplication as lm
 import resources.LogicalDivision as ld
 import resources.LogicalSquareRoot as lsr
 import resources.LogicalPrimitiveRoot as lpr
+import resources.LogicalXOR as lxor
 
 # Standard input data:
 a = '932765972365713265327654732'
@@ -63,3 +64,15 @@ ha = '83'
 print(lpr.LogicalPrimitiveRoot(2).integerPrimitiveRoot(ba))
 print(lpr.LogicalPrimitiveRoot(10).integerPrimitiveRoot(a))
 print(lpr.LogicalPrimitiveRoot(16).integerPrimitiveRoot(ha))
+
+# Logical XOR input data:
+a = '291576365716537651973656375212'
+b = '918653637516537365126359767263'
+ba = '0011101011100010001001010001000110011100001111010000101111010001101110100100011000110110111110101100'
+bb = '1011100110000101010001111010100001011101101101100111010101101100000000110110000010110101100011011111'
+ha = '3AE225119C3D0BD1BA4636FAC'
+hb = 'B98547A85DB6756C0360B58DF'
+
+print(lxor.LogicalXOR(2).xor('10111', '111001'))
+print(lxor.LogicalXOR(10).xor('23', '57'))
+print(lxor.LogicalXOR(16).xor('17', '39'))
