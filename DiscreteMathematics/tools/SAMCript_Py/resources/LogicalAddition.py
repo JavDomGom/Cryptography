@@ -12,7 +12,7 @@ class LogicalAddition(Common):
             :b: Second integer.
 
         Examples:
-            :83 + 150:
+            :a + b:
 
                 # Standard form:
                 la.LogicalAddition(base).integerAddition(a, b)
@@ -43,7 +43,7 @@ class LogicalAddition(Common):
             :n: Module number.
 
         Examples:
-            :83 + 150 mod 107:
+            :a + b mod n:
 
                 # Standard form:
                 la.LogicalAddition(base).modularAddition(a, b, n)

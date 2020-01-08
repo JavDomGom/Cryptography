@@ -57,7 +57,7 @@ class LogicalDivision(Common):
             :b: Second integer.
 
         Examples:
-            :89 / 67:
+            :a / b:
 
                 # Standard form:
                 ld.LogicalDivision(base).integerDivision(a, b)

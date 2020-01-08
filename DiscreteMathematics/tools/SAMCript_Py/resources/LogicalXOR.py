@@ -12,7 +12,7 @@ class LogicalXOR(Common):
             :b: Second numerical expresion.
 
         Examples:
-            :23 XOR 57:
+            :a XOR b:
 
                 # Standard form:
                 lpr.LogicalXOR(base).xor(n)

@@ -12,7 +12,7 @@ class LogicalSubstraction(Common):
             :b: Second integer.
 
         Examples:
-            :159 - 77:
+            :a - b:
 
                 # Standard form:
                 ls.LogicalSubstraction(base).integerSubtraction(a, b)
@@ -43,7 +43,7 @@ class LogicalSubstraction(Common):
             :n: Module number.
 
         Examples:
-            :159 - 77 mod 33:
+            :a - b mod n:
 
                 # Standard form:
                 ls.LogicalSubstraction(base).modularSubstraction(a, b, n)

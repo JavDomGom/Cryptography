@@ -11,7 +11,7 @@ class LogicalSquareRoot(Common):
             :x: Numeric expression.
 
         Examples:
-            :√3481:
+            :√x:
 
                 # Standard form:
                 lsr.LogicalSquareRoot(base).integerSquareRoot(a)

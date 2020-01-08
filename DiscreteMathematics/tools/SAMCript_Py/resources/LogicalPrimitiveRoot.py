@@ -25,7 +25,7 @@ class LogicalPrimitiveRoot(Common):
             :n: Module number.
 
         Examples:
-            :primitive root mod 131:
+            :primitive root mod n:
 
                 # Standard form:
                 lpr.LogicalPrimitiveRoot(base).integerPrimitiveRoot(n)

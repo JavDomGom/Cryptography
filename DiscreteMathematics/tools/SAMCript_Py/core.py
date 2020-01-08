@@ -8,8 +8,13 @@ import resources.LogicalDivision as ld
 import resources.LogicalSquareRoot as lsr
 import resources.LogicalPrimitiveRoot as lpr
 import resources.LogicalXOR as lxor
+import resources.LogicalModInverse as lmi
+import resources.LogicalExponentiation as le
+import resources.LogicalModule as lmod
+import resources.LogicalGCD as lgcd
+import resources.LogicalLCM as llcm
 
-# Standard input data:
+# Logical addition, substraction, multiplication and division input data:
 a = '932765972365713265327654732'
 b = '327165253763657365736954238'
 n = '435765377635373652'
@@ -73,6 +78,84 @@ bb = '10111001100001010100011110101000010111011011011001110101011011000000001101
 ha = '3AE225119C3D0BD1BA4636FAC'
 hb = 'B98547A85DB6756C0360B58DF'
 
-print(lxor.LogicalXOR(2).xor('10111', '111001'))
-print(lxor.LogicalXOR(10).xor('23', '57'))
-print(lxor.LogicalXOR(16).xor('17', '39'))
+print(lxor.LogicalXOR(2).xor(ba, bb))
+print(lxor.LogicalXOR(10).xor(a, b))
+print(lxor.LogicalXOR(16).xor(ha, hb))
+
+# Logical mod inverse input data:
+a = '29278875574454292837'
+n = '1034257732296675869801674804'
+ba = '11001011001010011011101100011010101110110001101011001000101100101'
+bn = '110101011110000100100110000000001101100111100101100100010100100011100001010111100000110100'
+ha = '19653763576359165'
+hn = '35784980367964523857834'
+
+print(lmi.LogicalModInverse(2).modInverse(ba, bn))
+print(lmi.LogicalModInverse(10).modInverse(a, n))
+print(lmi.LogicalModInverse(16).modInverse(ha, hn))
+
+# Logical exponentiation input data:
+a = '546434'
+b = '12'
+n = '324677263917236527471232'
+ba = '10000101011010000010'
+bb = '1100'
+bn = '1000100110000001100101000101100101101101101101101111011010001101001101010000000'
+ha = '85682'
+hb = 'C'
+hn = '44C0CA2CB6DB7B469A80'
+
+print(le.LogicalExponentiation(2).integerExponentiation(ba, bb))
+print(le.LogicalExponentiation(10).integerExponentiation(a, b))
+print(le.LogicalExponentiation(16).integerExponentiation(ha, hb))
+print(le.LogicalExponentiation(2).modularExponentiation(ba, bb, bn))
+print(le.LogicalExponentiation(10).modularExponentiation(a, b, n))
+print(le.LogicalExponentiation(16).modularExponentiation(ha, hb, hn))
+
+# Logical module input data:
+a = '8793268576239856239652376529837574'
+n = '731647642385773654826375962375'
+ba = '11011000110001010101001110010011100111100110001001000011111010010101110000110000100000010011000111001111000000110'
+bn = '1001001111000001010010111110101110000110110101111011001110111101101010011010100010111101111100000111'
+ha = '1B18AA7273CC487D2B86102639E06'
+hn = '93C14BEB86D7B3BDA9A8BDF07'
+
+print(lmod.LogicalModule(2).module(ba, bn))
+print(lmod.LogicalModule(10).module(a, n))
+print(lmod.LogicalModule(16).module(ha, hn))
+
+# Logical GCD input data:
+a = '12973649172562463257826182'
+b = '923675182536754245625680'
+c = '9315662357236572365736765'
+ba = '101010111011010001101110111001001111010100100100101101110010101100001001001110000110'
+bb = '11000011100110001000100000101111110001000101001000000010110011110110011101010000'
+bc = '11110110100101010110001000101111011101001000010101110001001000110110100101100111101'
+ha = 'ABB46EE4F524B72B09386'
+hb = 'C398882FC45202CF6750'
+hc = '7B4AB117BA42B891B4B3D'
+
+print(lgcd.LogicalGCD(2).greatestCommonDivisor(ba, bb))
+print(lgcd.LogicalGCD(10).greatestCommonDivisor(a, b))
+print(lgcd.LogicalGCD(16).greatestCommonDivisor(ha, hb))
+print(lgcd.LogicalGCD(2).greatestCommonDivisor(ba, bb, bc))
+print(lgcd.LogicalGCD(10).greatestCommonDivisor(a, b, c))
+print(lgcd.LogicalGCD(16).greatestCommonDivisor(ha, hb, hc))
+
+# Logical LCM input data:
+a = '3796576235726'
+b = '263515476235'
+c = '65385479823546'
+ba = '110111001111110101100100111111000011001110'
+bb = '11110101011010101111110001000100001011'
+bc = '1110110111011110111110010011000110000010111010'
+ha = '373F593F0CE'
+hb = '3D5ABF110B'
+hc = '3B77BE4C60BA'
+
+print(llcm.LogicalLCM(2).leastCommonMultiple(ba, bb))
+print(llcm.LogicalLCM(10).leastCommonMultiple(a, b))
+print(llcm.LogicalLCM(16).leastCommonMultiple(ha, hb))
+print(llcm.LogicalLCM(2).leastCommonMultiple(ba, bb, bc))
+print(llcm.LogicalLCM(10).leastCommonMultiple(a, b, c))
+print(llcm.LogicalLCM(16).leastCommonMultiple(ha, hb, hc))

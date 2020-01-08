@@ -12,7 +12,7 @@ class LogicalMultiplication(Common):
             :b: Second integer.
 
         Examples:
-            :89 * 67:
+            :a * b:
 
                 # Standard form:
                 lm.LogicalMultiplication(base).integerMultiplication(a, b)
@@ -43,7 +43,7 @@ class LogicalMultiplication(Common):
             :n: Module number.
 
         Examples:
-            :89 * 67 mod 121:
+            :a * b mod n:
 
                 # Standard form:
                 lm.LogicalMultiplication(base).modularMultiplication(a, b, n)
