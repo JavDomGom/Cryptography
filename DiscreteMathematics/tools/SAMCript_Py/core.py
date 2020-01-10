@@ -13,6 +13,7 @@ import resources.LogicalExponentiation as le
 import resources.LogicalModule as lmod
 import resources.LogicalGCD as lgcd
 import resources.LogicalLCM as llcm
+import resources.LogicalPrimality as lp
 
 # Logical addition, substraction, multiplication and division input data:
 a = '932765972365713265327654732'
@@ -159,3 +160,18 @@ print(llcm.LogicalLCM(16).leastCommonMultiple(ha, hb))
 print(llcm.LogicalLCM(2).leastCommonMultiple(ba, bb, bc))
 print(llcm.LogicalLCM(10).leastCommonMultiple(a, b, c))
 print(llcm.LogicalLCM(16).leastCommonMultiple(ha, hb, hc))
+
+# Logical primality input data:
+a = '442499826945303593556473164314770689'
+b = '1725367825470892357176235723652'
+ba = '10101010011100011101101000001100101001100111001100101110111011111011000000011010101000011100101000010001111110100000001'
+bb = '10101110001101111011011010000100100111001101101001010100111011011000010010000100001010000101110000100'
+ha = '5538ED0653399777D80D50E508FD01'
+hb = '15C6F6D0939B4A9DB090850B84'
+
+print(lp.LogicalPrimality(2).is_prime(ba))
+print(lp.LogicalPrimality(2).is_prime(bb))
+print(lp.LogicalPrimality(10).is_prime(a))
+print(lp.LogicalPrimality(10).is_prime(b))
+print(lp.LogicalPrimality(16).is_prime(ha))
+print(lp.LogicalPrimality(16).is_prime(hb))

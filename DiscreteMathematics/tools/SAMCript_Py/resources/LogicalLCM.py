@@ -18,19 +18,19 @@ class LogicalLCM(Common):
             :lcm(a, b):
 
                 # Standard form:
-                lgcd.LogicalLCM(base).leastCommonMultiple(a, b)
+                llcm.LogicalLCM(base).leastCommonMultiple(a, b)
 
                 # Base-2 numeral system or binary:
-                lgcd.LogicalLCM(2).leastCommonMultiple('110100011011', '1111011001')
-                # Returns 0b101
+                llcm.LogicalLCM(2).leastCommonMultiple('110100011011', '1111011001')
+                # Returns 0b10100001010111000111
 
                 # Base-10 numeral system or ecimal:
-                lgcd.LogicalLCM(10).leastCommonMultiple('3355', '985')
-                # Returns 5
+                llcm.LogicalLCM(10).leastCommonMultiple('3355', '985')
+                # Returns 660935
 
                 # Base-16 numeral system or hexadecimal:
-                lgcd.LogicalLCM(16).leastCommonMultiple('D1B', '3D9'))
-                # Returns 0x5
+                llcm.LogicalLCM(16).leastCommonMultiple('D1B', '3D9'))
+                # Returns 0xa15c7
         '''
         from functools import reduce
 
