@@ -14,6 +14,7 @@ import resources.LogicalModule as lmod
 import resources.LogicalGCD as lgcd
 import resources.LogicalLCM as llcm
 import resources.LogicalPrimality as lp
+import resources.LogicalFactorization as lf
 
 # Logical addition, substraction, multiplication and division input data:
 a = '932765972365713265327654732'
@@ -175,3 +176,12 @@ print(lp.LogicalPrimality(10).is_prime(a))
 print(lp.LogicalPrimality(10).is_prime(b))
 print(lp.LogicalPrimality(16).is_prime(ha))
 print(lp.LogicalPrimality(16).is_prime(hb))
+
+# Logical primality input data:
+a = '23756965471926357236576238546'
+ba = '10011001100001101001101000111101101000011110111111101111010000100011011010110010011101111010010'
+ha = '4CC34D1ED0F7F7A11B593BD2'
+
+print(lf.LogicalFactorization(2).factorization(ba))
+print(lf.LogicalFactorization(10).factorization(a))
+print(lf.LogicalFactorization(16).factorization(ha))
