@@ -3,15 +3,41 @@ from resources.Common import Common
 class LogicalFactorization(Common):
 
     def factorization(self, n):
-        
+        ''' This method uses Pollard's rho integer factorization algorithm and
+        returns a list of factors in which a number can be decomposed. The
+        result can be returned in base 2 (binary), 10 (decimal) or 16
+        (hexadecimal), depending on the self.base value.
+
+        Attributes:
+            :n: Number to decompose into factors.
+
+        Examples:
+            :factorization(n):
+
+                # Standard form:
+                lf.LogicalFactorization(base).factorization(n)
+
+                # Base-2 numeral system or binary:
+                lf.LogicalFactorization(2).factorization('1010001010001100')
+                # Returns ['0b100', '0b1100101', '0b1100111']
+
+                # Base-10 numeral system or ecimal:
+                lf.LogicalFactorization(10).factorization('41612')
+                # Returns [4, 101, 103]
+
+                # Base-16 numeral system or hexadecimal:
+                lf.LogicalFactorization(16).factorization('A28C'))
+                # Returns ['0x4', '0x65', '0x67']
+        '''
         from math import gcd
 
         n = int(n, self.base)
+        factors = []
 
         def get_factor(n):
             x_fixed = 2
-            x = 2
             cycle_size = 2
+            x = 2
             factor = 1
 
             while factor == 1:
@@ -25,9 +51,9 @@ class LogicalFactorization(Common):
 
             return factor
 
-        factors = []
         while n > 1:
             next = get_factor(n)
             factors.append(self.baseTransform(next))
             n //= next
-        return sorted(factors)
+
+        return factors

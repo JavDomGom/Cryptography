@@ -15,6 +15,7 @@ import resources.LogicalGCD as lgcd
 import resources.LogicalLCM as llcm
 import resources.LogicalPrimality as lp
 import resources.LogicalFactorization as lf
+import resources.LogicalDiscreteLogarithm as ldl
 
 # Logical addition, substraction, multiplication and division input data:
 a = '932765972365713265327654732'
@@ -177,7 +178,7 @@ print(lp.LogicalPrimality(10).is_prime(b))
 print(lp.LogicalPrimality(16).is_prime(ha))
 print(lp.LogicalPrimality(16).is_prime(hb))
 
-# Logical primality input data:
+# Logical factorization input data:
 a = '23756965471926357236576238546'
 ba = '10011001100001101001101000111101101000011110111111101111010000100011011010110010011101111010010'
 ha = '4CC34D1ED0F7F7A11B593BD2'
@@ -185,3 +186,18 @@ ha = '4CC34D1ED0F7F7A11B593BD2'
 print(lf.LogicalFactorization(2).factorization(ba))
 print(lf.LogicalFactorization(10).factorization(a))
 print(lf.LogicalFactorization(16).factorization(ha))
+
+# Logical Discrete Logarithmic Problem input data:
+a = '2'
+y = '9386983767379'
+n = '842941143517861'
+ba = '10'
+by = '10001000100110010011110101010011110101010011'
+bn = '10111111101010011010000111011011010000101010100101'
+ha = '2'
+hy = '88993D53D53'
+hn = '2FEA6876D0AA5'
+
+print(ldl.LogicalDiscreteLogarithm(2).discreteLogarithm(ba, by, bn))
+print(ldl.LogicalDiscreteLogarithm(10).discreteLogarithm(a, y, n))
+print(ldl.LogicalDiscreteLogarithm(16).discreteLogarithm(ha, hy, hn))
