@@ -1,6 +1,7 @@
 from resources.Common import Common
 
-class LogicalLCM(Common):
+
+class LCM(Common):
 
     def lcm(self, a, b):
         from math import gcd
@@ -18,22 +19,22 @@ class LogicalLCM(Common):
             :lcm(a, b):
 
                 # Standard form:
-                llcm.LogicalLCM(base).leastCommonMultiple(a, b)
+                llcm.LCM(base).leastCommonMultiple(a, b)
 
                 # Base-2 numeral system or binary:
-                llcm.LogicalLCM(2).leastCommonMultiple('110100011011', '1111011001')
+                llcm.LCM(2).leastCommonMultiple('110100011011', '1111011001')
                 # Returns 0b10100001010111000111
 
                 # Base-10 numeral system or ecimal:
-                llcm.LogicalLCM(10).leastCommonMultiple('3355', '985')
+                llcm.LCM(10).leastCommonMultiple('3355', '985')
                 # Returns 660935
 
                 # Base-16 numeral system or hexadecimal:
-                llcm.LogicalLCM(16).leastCommonMultiple('D1B', '3D9'))
+                llcm.LCM(16).leastCommonMultiple('D1B', '3D9'))
                 # Returns 0xa15c7
         '''
         from functools import reduce
 
         return self.baseTransform(
-            reduce(self.lcm, map(lambda n:int(n, self.base), args))
+            reduce(self.lcm, map(lambda n: int(n, self.base), args))
         )

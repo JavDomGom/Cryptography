@@ -8,7 +8,6 @@ class Common():
         '''
         self.base = base
 
-
     def baseTransform(self, x):
         ''' Method that receives a int() number, and depending on the self.base
         value transforms it to bin(), int() or hex().

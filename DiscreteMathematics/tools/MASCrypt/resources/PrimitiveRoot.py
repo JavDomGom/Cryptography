@@ -1,6 +1,7 @@
 from resources.Common import Common
 
-class LogicalPrimitiveRoot(Common):
+
+class PrimitiveRoot(Common):
 
     def gcd(self, a, b):
         ''' Return the greatest common divisor of the integers a and b. If
@@ -15,7 +16,6 @@ class LogicalPrimitiveRoot(Common):
             a, b = b, a % b
         return a
 
-
     def integerPrimitiveRoot(self, n):
         ''' This method method returns the primitive root of x. The result can
         be returned in base 2 (binary), 10 (decimal) or 16 (hexadecimal),
@@ -28,18 +28,18 @@ class LogicalPrimitiveRoot(Common):
             :primitive root mod n:
 
                 # Standard form:
-                lpr.LogicalPrimitiveRoot(base).integerPrimitiveRoot(n)
+                lpr.PrimitiveRoot(base).integerPrimitiveRoot(n)
 
                 # Base-2 numeral system or binary:
-                lpr.LogicalPrimitiveRoot(2).integerPrimitiveRoot('10000011')
+                lpr.PrimitiveRoot(2).integerPrimitiveRoot('10000011')
                 # Returns ['0b10000000', '0b1111111', ..., '0b110', '0b10']
 
                 # Base-10 numeral system or ecimal:
-                lpr.LogicalPrimitiveRoot(10).integerPrimitiveRoot('131')
+                lpr.PrimitiveRoot(10).integerPrimitiveRoot('131')
                 # Returns [128, 127, ..., 6, 2]
 
                 # Base-16 numeral system or hexadecimal:
-                lpr.LogicalPrimitiveRoot(16).integerPrimitiveRoot('83'))
+                lpr.PrimitiveRoot(16).integerPrimitiveRoot('83'))
                 # Returns ['0x80', '0x7f', ..., '0x6', '0x2']
         '''
         m = int(n, self.base)

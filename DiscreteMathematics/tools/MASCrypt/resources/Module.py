@@ -1,6 +1,7 @@
 from resources.Common import Common
 
-class LogicalModule(Common):
+
+class Module(Common):
 
     def module(self, a, b):
         ''' This method execute a modular operation between two numbers. The
@@ -15,18 +16,20 @@ class LogicalModule(Common):
             :a mod b:
 
                 # Standard form:
-                lmod.LogicalModule(base).module(n)
+                lmod.Module(base).module(n)
 
                 # Base-2 numeral system or binary:
-                lmod.LogicalModule(2).module('10111', '111001')
+                lmod.Module(2).module('10111', '111001')
                 # Returns 0b10111
 
                 # Base-10 numeral system or ecimal:
-                lmod.LogicalModule(10).module('23', '57')
+                lmod.Module(10).module('23', '57')
                 # Returns 23
 
                 # Base-16 numeral system or hexadecimal:
-                lmod.LogicalModule(16).module('17', '39'))
+                lmod.Module(16).module('17', '39'))
                 # Returns 0x17
         '''
-        return self.baseTransform(int(a, self.base)%int(b, self.base))
+        return self.baseTransform(
+            int(a, self.base) % int(b, self.base)
+        )

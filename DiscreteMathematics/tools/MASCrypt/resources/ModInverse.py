@@ -1,6 +1,7 @@
 from resources.Common import Common
 
-class LogicalModInverse(Common):
+
+class ModInverse(Common):
 
     def modInverse(self, a, n):
         ''' This method returns modulo inverse of a with respect to m using
@@ -16,18 +17,18 @@ class LogicalModInverse(Common):
             :a x ≡ 1 (mod n):
 
                 # Standard form:
-                lmi.LogicalModInverse(base).modInverse(n)
+                lmi.ModInverse(base).modInverse(n)
 
                 # Base-2 numeral system or binary:
-                lmi.LogicalModInverse(2).modInverse('00000011', '00001011')
+                lmi.ModInverse(2).modInverse('00000011', '00001011')
                 # Returns 0b100
 
                 # Base-10 numeral system or ecimal:
-                lmi.LogicalModInverse(10).modInverse('3', '11')
+                lmi.ModInverse(10).modInverse('3', '11')
                 # Returns 4
 
                 # Base-16 numeral system or hexadecimal:
-                lmi.LogicalModInverse(16).modInverse('3', 'B'))
+                lmi.ModInverse(16).modInverse('3', 'B'))
                 # Returns 0x4
         '''
         a = int(a, self.base)
@@ -37,10 +38,10 @@ class LogicalModInverse(Common):
         y = 0
         x = 1
 
-        if (n == 1) :
+        if (n == 1):
             return self.baseTransform(0)
 
-        while (a > 1) :
+        while (a > 1):
             q = a // n
             t = n
             n = a % n
@@ -49,7 +50,7 @@ class LogicalModInverse(Common):
             y = x - q * y
             x = t
 
-        if (x<0):
+        if (x < 0):
             x = x + n0
 
         return self.baseTransform(x)
