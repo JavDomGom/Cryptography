@@ -5,13 +5,21 @@ from tkinter import messagebox as MessageBox
 import resources.operations as operation
 
 program_name = 'MASCrypt'
-programa_description = 'Modular Arithmetic Software for Cryptography'
+program_description = 'Modular Arithmetic Software for Cryptography'
 padx = 3
 pady = 3
 font = ('Courier New', 10)
+bg_color = '#423A2C'
+fg_color = '#F5F5F5'
 
 
 def set_base(event):
+    # Empty fields when combobox is modified.
+    op1.set('')
+    op2.set('')
+    module.set('')
+    res.set('')
+
     b = cb_base.get()
 
     if b == cb_base_op_base2:
@@ -25,23 +33,40 @@ def set_base(event):
 
 
 def set_operation(event):
+    # Empty only res field when combobox is modified.
+    res.set('')
     print(f'cb_operation.get() = {cb_operation.get()}')
 
-    if cb_operation.current() == 2:
-        label3.grid(row=2, column=0, padx=padx, pady=pady, sticky='e')
-        entry3.grid(row=2, column=1, padx=padx, pady=pady, sticky='we')
+    if 'module' in cb_operation.get().lower():
+        module_label.grid(row=3, column=0, padx=padx, pady=pady, sticky='e')
+        module_entry.grid(row=3, column=1, padx=padx, pady=pady, sticky='we')
     else:
-        label3.grid_remove()
-        entry3.grid_remove()
+        module_label.grid_remove()
+        module_entry.grid_remove()
+
+    if 'GCD 3' in cb_operation.get():
+        op3_label.grid(row=2, column=0, padx=padx, pady=pady, sticky='e')
+        op3_entry.grid(row=2, column=1, padx=padx, pady=pady, sticky='we')
+    else:
+        op3_label.grid_remove()
+        op3_entry.grid_remove()
+
+    if 'root' not in cb_operation.get().lower() \
+       and 'Module' not in cb_operation.get():
+        op2_label.grid(row=1, column=0, padx=padx, pady=pady, sticky='e')
+        op2_entry.grid(row=1, column=1, padx=padx, pady=pady, sticky='we')
+    else:
+        op2_label.grid_remove()
+        op2_entry.grid_remove()
 
 
-def calculate():
+def calculate(arg_base, arg_op):
     items_with_error = []
 
-    if cb_base.current() == 0:
+    if arg_base == 0:
         items_with_error.append('Base')
 
-    if cb_operation.current() == 0:
+    if arg_op == 0:
         items_with_error.append('Operation')
 
     if len(items_with_error) != 0:
@@ -57,22 +82,44 @@ def calculate():
     if op == cb_operation_op_addition:
         operation.addition(res, base, op1, op2)
     elif op == cb_operation_op_addition_module:
-        operation.addition(res, base, op1, op2, op3)
+        operation.addition(res, base, op1, op2, module)
     elif op == cb_operation_op_substraction:
         operation.substraction(res, base, op1, op2)
+    elif op == cb_operation_op_substraction_module:
+        operation.substraction(res, base, op1, op2, module)
     elif op == cb_operation_op_multiplication:
         operation.multiplication(res, base, op1, op2)
+    elif op == cb_operation_op_multiplication_module:
+        operation.multiplication(res, base, op1, op2, module)
     elif op == cb_operation_op_division:
         operation.division(res, base, op1, op2)
+    elif op == cb_operation_op_square_root:
+        operation.square_root(res, base, op1)
+    elif op == cb_operation_op_primitive_root:
+        operation.primitive_root(res, base, op1)
+    elif op == cb_operation_op_xor:
+        operation.xor(res, base, op1, op2)
+    elif op == cb_operation_op_mod_inverse:
+        operation.mod_inverse(res, base, op1, module)
+    elif op == cb_operation_op_exponentation:
+        operation.exponentation(res, base, op1, op2)
+    elif op == cb_operation_op_exponentation_module:
+        operation.exponentation(res, base, op1, op2, module)
+    elif op == cb_operation_op_module:
+        operation.module(res, base, op1, module)
+    elif op == cb_operation_op_gcd_2:
+        operation.module(res, base, op1, op2)
+    elif op == cb_operation_op_gcd_3:
+        operation.module(res, base, op1, op2, op3)
 
 
 def about():
-    MessageBox.showinfo(f'About {program_name}', f'{programa_description}')
+    MessageBox.showinfo(f'About {program_name}', f'{program_description}')
 
 
 root = Tk()
 # root.geometry('650x250')
-root.title(f'{program_name} - {programa_description}')
+root.title(f'{program_name} - {program_description}')
 root.resizable(1, 0)
 # root.iconbitmap(f'@{getcwd()}/img/icon.xbm')
 
@@ -88,32 +135,25 @@ style.theme_create('custom_style',
                    )
 style.theme_use('custom_style')
 
-menubar = Menu(root)
+menubar = Menu(root, bg=bg_color, fg=fg_color, borderwidth=1)
 root.config(menu=menubar)
 
-filemenu = Menu(menubar, tearoff=0)
-filemenu.add_command(label='New file')
-filemenu.add_command(label='Open file')
-filemenu.add_command(label='Save as')
-filemenu.add_separator()
-filemenu.add_command(label='Exit', command=root.quit)
+options_menu = Menu(menubar, tearoff=0)
+options_menu.add_command(label='Configuration')
+options_menu.add_separator()
+options_menu.add_command(label='Exit', command=root.quit)
 
-editmenu = Menu(menubar, tearoff=0)
-editmenu.add_command(label='Copy')
-editmenu.add_command(label='Paste')
+help_menu = Menu(menubar, tearoff=0)
+help_menu.add_command(label='View terms of use')
+help_menu.add_command(label='View license')
+help_menu.add_command(label='Documentation')
+help_menu.add_separator()
+help_menu.add_command(label=f'About {program_name}', command=about)
 
-helpmenu = Menu(menubar, tearoff=0)
-helpmenu.add_command(label='View terms of use')
-helpmenu.add_command(label='View license')
-helpmenu.add_command(label='Documentation')
-helpmenu.add_separator()
-helpmenu.add_command(label=f'About {program_name}', command=about)
+menubar.add_cascade(label='Options', menu=options_menu)
+menubar.add_cascade(label='Help', menu=help_menu)
 
-menubar.add_cascade(label='File', menu=filemenu)
-menubar.add_cascade(label='Edit', menu=editmenu)
-menubar.add_cascade(label='Help', menu=helpmenu)
-
-frame1 = Frame(root, cursor='arrow', bg='#00ff00', bd=5)
+frame1 = Frame(root, cursor='arrow', bg=bg_color, bd=5)
 frame1.pack(expand=True, fill='x')
 
 base = IntVar()
@@ -139,8 +179,19 @@ cb_operation_op_default = '-- Select operation --'
 cb_operation_op_addition = 'Addition'
 cb_operation_op_addition_module = 'Addition module'
 cb_operation_op_substraction = 'Substraction'
+cb_operation_op_substraction_module = 'Substraction module'
 cb_operation_op_multiplication = 'Multiplication'
+cb_operation_op_multiplication_module = 'Multiplication module'
 cb_operation_op_division = 'Division'
+cb_operation_op_square_root = 'Square root'
+cb_operation_op_primitive_root = 'Primitive root'
+cb_operation_op_xor = 'XOR'
+cb_operation_op_mod_inverse = 'Module inverse'
+cb_operation_op_exponentation = 'Exponentation'
+cb_operation_op_exponentation_module = 'Exponentation module'
+cb_operation_op_module = 'Module'
+cb_operation_op_gcd_2 = 'GCD 2 numbers'
+cb_operation_op_gcd_3 = 'GCD 3 numbers'
 
 cb_operation = Combobox(frame1, state='readonly')
 cb_operation['values'] = [
@@ -148,43 +199,61 @@ cb_operation['values'] = [
     cb_operation_op_addition,
     cb_operation_op_addition_module,
     cb_operation_op_substraction,
+    cb_operation_op_substraction_module,
     cb_operation_op_multiplication,
+    cb_operation_op_multiplication_module,
     cb_operation_op_division,
+    cb_operation_op_square_root,
+    cb_operation_op_primitive_root,
+    cb_operation_op_xor,
+    cb_operation_op_mod_inverse,
+    cb_operation_op_exponentation,
+    cb_operation_op_exponentation_module,
+    cb_operation_op_module,
+    cb_operation_op_gcd_2,
+    cb_operation_op_gcd_3
 ]
 cb_operation.current(0)
 cb_operation.bind('<<ComboboxSelected>>', set_operation)
 cb_operation.grid(row=0, column=1, padx=padx, pady=pady, sticky='w')
 
 
-frame2 = Frame(root, cursor='arrow', bg='#ff0000', bd=5)
+frame2 = Frame(root, cursor='arrow', bg=bg_color, bd=5)
 frame2.pack(expand=True, fill='x')
 frame2.grid_columnconfigure(1, weight=1)
 
 op1 = StringVar()
 op2 = StringVar()
 op3 = StringVar()
+module = StringVar()
 res = StringVar()
 
-label1 = Label(frame2, text='First number')
-label1.grid(row=0, column=0, padx=padx, pady=pady, sticky='e')
-entry1 = Entry(frame2, font=font, textvariable=op1)
-entry1.grid(row=0, column=1, padx=padx, pady=pady, sticky='we')
+op1_label = Label(frame2, text='First number', bg=bg_color, fg=fg_color)
+op1_label.grid(row=0, column=0, padx=padx, pady=pady, sticky='e')
+op1_entry = Entry(frame2, font=font, textvariable=op1)
+op1_entry.grid(row=0, column=1, padx=padx, pady=pady, sticky='we')
 
-label2 = Label(frame2, text='Second number')
-label2.grid(row=1, column=0, padx=padx, pady=pady, sticky='e')
-entry2 = Entry(frame2, font=font, textvariable=op2)
-entry2.grid(row=1, column=1, padx=padx, pady=pady, sticky='we')
+op2_label = Label(frame2, text='Second number', bg=bg_color, fg=fg_color)
+op2_entry = Entry(frame2, font=font, textvariable=op2)
 
-label3 = Label(frame2, text='Module')
-entry3 = Entry(frame2, font=font, textvariable=op3)
+op3_label = Label(frame2, text='Third number', bg=bg_color, fg=fg_color)
+op3_entry = Entry(frame2, font=font, textvariable=op3)
 
-label_res = Label(frame2, text='Result')
+module_label = Label(frame2, text='Module', bg=bg_color, fg=fg_color)
+module_entry = Entry(frame2, font=font, textvariable=module)
+
+label_res = Label(frame2, text='Result', bg=bg_color, fg=fg_color)
 label_res.grid(row=3, column=0, padx=padx, pady=pady, sticky='e')
 entry_res = Entry(frame2, font=font, textvariable=res,
                   state='readonly', readonlybackground='white')
 entry_res.grid(row=3, column=1, padx=padx, pady=pady, sticky='we')
 
-button = Button(frame2, text='Calulate', command=calculate)
+button = Button(frame2,
+                text='Calulate',
+                command=lambda: calculate(
+                    cb_base.current(),
+                    cb_operation.current())
+                )
 button.grid(row=4, column=1, padx=padx, pady=pady, sticky='w')
 
 root.mainloop()

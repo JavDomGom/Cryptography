@@ -1,7 +1,7 @@
-def addition(res, base, op1, op2, op3=None):
+def addition(res, base, op1, op2, module=None):
     import resources.Addition as la
 
-    if op3 is None:
+    if module is None:
         res.set(
             la.Addition(base.get())
               .integerAddition(op1.get(), op2.get())
@@ -9,26 +9,38 @@ def addition(res, base, op1, op2, op3=None):
     else:
         res.set(
             la.Addition(base.get())
-              .modularAddition(op1.get(), op2.get(), op3.get())
+              .modularAddition(op1.get(), op2.get(), module.get())
         )
 
 
-def substraction(res, base, op1, op2):
+def substraction(res, base, op1, op2, module=None):
     import resources.Substraction as ls
 
-    res.set(
-        ls.Substraction(base.get())
-          .integerSubtraction(op1.get(), op2.get())
-    )
+    if module is None:
+        res.set(
+            ls.Substraction(base.get())
+              .integerSubtraction(op1.get(), op2.get())
+        )
+    else:
+        res.set(
+            ls.Substraction(base.get())
+              .modularSubstraction(op1.get(), op2.get(), module.get())
+        )
 
 
-def multiplication(res, base, op1, op2):
+def multiplication(res, base, op1, op2, module=None):
     import resources.Multiplication as lm
 
-    res.set(
-        lm.Multiplication(base.get())
-          .integerMultiplication(op1.get(), op2.get())
-    )
+    if module is None:
+        res.set(
+            lm.Multiplication(base.get())
+              .integerMultiplication(op1.get(), op2.get())
+        )
+    else:
+        res.set(
+            lm.Multiplication(base.get())
+              .modularMultiplication(op1.get(), op2.get(), module.get())
+        )
 
 
 def division(res, base, op1, op2):
@@ -38,3 +50,78 @@ def division(res, base, op1, op2):
         ld.Division(base.get())
           .integerDivision(op1.get(), op2.get())
     )
+
+
+def square_root(res, base, op1):
+    import resources.SquareRoot as lsr
+
+    res.set(
+        lsr.SquareRoot(base.get())
+           .integerSquareRoot(op1.get())
+    )
+
+
+def primitive_root(res, base, op1):
+    import resources.PrimitiveRoot as lpr
+
+    res.set(
+        lpr.PrimitiveRoot(base.get())
+           .integerPrimitiveRoot(op1.get())
+    )
+
+
+def xor(res, base, op1, op2):
+    import resources.XOR as lxor
+
+    res.set(
+        lxor.XOR(base.get())
+            .xor(op1.get(), op2.get())
+    )
+
+
+def mod_inverse(res, base, op1, module):
+    import resources.ModInverse as lmi
+
+    res.set(
+        lmi.ModInverse(base.get())
+           .modInverse(op1.get(), module.get())
+    )
+
+
+def exponentation(res, base, op1, op2, module=None):
+    import resources.Exponentiation as le
+
+    if module is None:
+        res.set(
+            le.Exponentiation(base.get())
+              .integerExponentiation(op1.get(), op2.get())
+        )
+    else:
+        res.set(
+            le.Exponentiation(base.get())
+              .modularExponentiation(op1.get(), op2.get(), module.get())
+        )
+
+
+def module(res, base, op1, module):
+    import resources.Module as lmod
+
+    res.set(
+        lmod.Module(base.get())
+            .module(op1.get(), module.get())
+    )
+
+
+def gcd(res, base, op1, op2, op3=None):
+    import resources.GCD as lgcd
+
+    if op3 is None:
+        res.set(
+            lgcd.GCD(base.get())
+                .greatestCommonDivisor(op1.get(), op2.get())
+        )
+    else:
+        res.set(
+            lgcd.GCD(base.get())
+                .greatestCommonDivisor(op1.get(), op2.get(), op3.get())
+        )
