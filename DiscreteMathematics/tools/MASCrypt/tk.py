@@ -9,16 +9,17 @@ program_description = 'Modular Arithmetic Software for Cryptography'
 padx = 3
 pady = 3
 font = ('Courier New', 10)
-bg_color = '#423A2C'
-fg_color = '#F5F5F5'
+bg_color = '#C9C9C9'
+fg_color = '#000000'
+
+
+def clear_all_entries():
+    ''' Empty all entries when combobox is modified.'''
+    op1.set(''), op2.set(''), op3.set(''), module.set(''), res.set('')
 
 
 def set_base(event):
-    # Empty fields when combobox is modified.
-    op1.set('')
-    op2.set('')
-    module.set('')
-    res.set('')
+    clear_all_entries()
 
     b = cb_base.get()
 
@@ -33,8 +34,8 @@ def set_base(event):
 
 
 def set_operation(event):
-    # Empty only res field when combobox is modified.
-    res.set('')
+    clear_all_entries()
+
     print(f'cb_operation.get() = {cb_operation.get()}')
 
     if 'module' in cb_operation.get().lower():
@@ -44,15 +45,18 @@ def set_operation(event):
         module_label.grid_remove()
         module_entry.grid_remove()
 
-    if 'GCD 3' in cb_operation.get():
+    if any(op in cb_operation.get() for op in [
+        'GCD 3', 'LCM 3'
+    ]):
         op3_label.grid(row=2, column=0, padx=padx, pady=pady, sticky='e')
         op3_entry.grid(row=2, column=1, padx=padx, pady=pady, sticky='we')
     else:
         op3_label.grid_remove()
         op3_entry.grid_remove()
 
-    if 'root' not in cb_operation.get().lower() \
-       and 'Module' not in cb_operation.get():
+    if not any(op in cb_operation.get() for op in [
+        'root', 'Module', 'Primality', 'Factorization'
+    ]):
         op2_label.grid(row=1, column=0, padx=padx, pady=pady, sticky='e')
         op2_entry.grid(row=1, column=1, padx=padx, pady=pady, sticky='we')
     else:
@@ -108,9 +112,17 @@ def calculate(arg_base, arg_op):
     elif op == cb_operation_op_module:
         operation.module(res, base, op1, module)
     elif op == cb_operation_op_gcd_2:
-        operation.module(res, base, op1, op2)
+        operation.gcd(res, base, op1, op2)
     elif op == cb_operation_op_gcd_3:
-        operation.module(res, base, op1, op2, op3)
+        operation.gcd(res, base, op1, op2, op3)
+    elif op == cb_operation_op_lcm_2:
+        operation.lcm(res, base, op1, op2)
+    elif op == cb_operation_op_lcm_3:
+        operation.lcm(res, base, op1, op2, op3)
+    elif op == cb_operation_op_primality:
+        operation.primality(res, base, op1)
+    elif op == cb_operation_op_factorization:
+        operation.factorization(res, base, op1)
 
 
 def about():
@@ -192,6 +204,10 @@ cb_operation_op_exponentation_module = 'Exponentation module'
 cb_operation_op_module = 'Module'
 cb_operation_op_gcd_2 = 'GCD 2 numbers'
 cb_operation_op_gcd_3 = 'GCD 3 numbers'
+cb_operation_op_lcm_2 = 'LCM 2 numbers'
+cb_operation_op_lcm_3 = 'LCM 3 numbers'
+cb_operation_op_primality = 'Primality'
+cb_operation_op_factorization = 'Factorization'
 
 cb_operation = Combobox(frame1, state='readonly')
 cb_operation['values'] = [
@@ -211,7 +227,11 @@ cb_operation['values'] = [
     cb_operation_op_exponentation_module,
     cb_operation_op_module,
     cb_operation_op_gcd_2,
-    cb_operation_op_gcd_3
+    cb_operation_op_gcd_3,
+    cb_operation_op_lcm_2,
+    cb_operation_op_lcm_3,
+    cb_operation_op_primality,
+    cb_operation_op_factorization
 ]
 cb_operation.current(0)
 cb_operation.bind('<<ComboboxSelected>>', set_operation)
@@ -243,10 +263,10 @@ module_label = Label(frame2, text='Module', bg=bg_color, fg=fg_color)
 module_entry = Entry(frame2, font=font, textvariable=module)
 
 label_res = Label(frame2, text='Result', bg=bg_color, fg=fg_color)
-label_res.grid(row=3, column=0, padx=padx, pady=pady, sticky='e')
+label_res.grid(row=4, column=0, padx=padx, pady=pady, sticky='e')
 entry_res = Entry(frame2, font=font, textvariable=res,
                   state='readonly', readonlybackground='white')
-entry_res.grid(row=3, column=1, padx=padx, pady=pady, sticky='we')
+entry_res.grid(row=4, column=1, padx=padx, pady=pady, sticky='we')
 
 button = Button(frame2,
                 text='Calulate',
@@ -254,6 +274,6 @@ button = Button(frame2,
                     cb_base.current(),
                     cb_operation.current())
                 )
-button.grid(row=4, column=1, padx=padx, pady=pady, sticky='w')
+button.grid(row=6, column=1, padx=padx, pady=pady, sticky='w')
 
 root.mainloop()

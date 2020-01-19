@@ -125,3 +125,35 @@ def gcd(res, base, op1, op2, op3=None):
             lgcd.GCD(base.get())
                 .greatestCommonDivisor(op1.get(), op2.get(), op3.get())
         )
+
+
+def lcm(res, base, op1, op2, op3=None):
+    import resources.LCM as llcm
+
+    if op3 is None:
+        res.set(
+            llcm.LCM(base.get())
+                .leastCommonMultiple(op1.get(), op2.get())
+        )
+    else:
+        res.set(
+            llcm.LCM(base.get())
+                .leastCommonMultiple(op1.get(), op2.get(), op3.get())
+        )
+
+
+def primality(res, base, op1):
+    import resources.Primality as lp
+    if lp.Primality(base.get()).is_prime(op1.get()):
+        res.set('It\'s prime')
+    else:
+        res.set('It\'s not prime')
+
+
+def factorization(res, base, op1):
+    import resources.Factorization as lf
+
+    res.set(
+        lf.Factorization(base.get())
+          .factorization(op1.get())
+    )
