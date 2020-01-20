@@ -157,3 +157,12 @@ def factorization(res, base, op1):
         lf.Factorization(base.get())
           .factorization(op1.get())
     )
+
+
+def discreteLogarithm(res, base, op1, y, module):
+    import resources.DiscreteLogarithm as ldl
+
+    res.set(
+        ldl.DiscreteLogarithm(base.get())
+           .discreteLogarithm(op1.get(), y.get(), module.get())
+    )

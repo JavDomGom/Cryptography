@@ -15,7 +15,9 @@ fg_color = '#000000'
 
 def clear_all_entries():
     ''' Empty all entries when combobox is modified.'''
-    op1.set(''), op2.set(''), op3.set(''), module.set(''), res.set('')
+    ops = [op1, op2, op3, y, module, res]
+    for op in ops:
+        op.set('')
 
 
 def set_base(event):
@@ -38,12 +40,14 @@ def set_operation(event):
 
     print(f'cb_operation.get() = {cb_operation.get()}')
 
-    if 'module' in cb_operation.get().lower():
-        module_label.grid(row=3, column=0, padx=padx, pady=pady, sticky='e')
-        module_entry.grid(row=3, column=1, padx=padx, pady=pady, sticky='we')
+    if not any(op in cb_operation.get() for op in [
+        'root', 'Module', 'Primality', 'Factorization', 'Discrete Logarithm'
+    ]):
+        op2_label.grid(row=1, column=0, padx=padx, pady=pady, sticky='e')
+        op2_entry.grid(row=1, column=1, padx=padx, pady=pady, sticky='we')
     else:
-        module_label.grid_remove()
-        module_entry.grid_remove()
+        op2_label.grid_remove()
+        op2_entry.grid_remove()
 
     if any(op in cb_operation.get() for op in [
         'GCD 3', 'LCM 3'
@@ -54,14 +58,25 @@ def set_operation(event):
         op3_label.grid_remove()
         op3_entry.grid_remove()
 
-    if not any(op in cb_operation.get() for op in [
-        'root', 'Module', 'Primality', 'Factorization'
-    ]):
-        op2_label.grid(row=1, column=0, padx=padx, pady=pady, sticky='e')
-        op2_entry.grid(row=1, column=1, padx=padx, pady=pady, sticky='we')
+    if 'Discrete Logarithm' in cb_operation.get():
+        b_label.grid(row=3, column=0, padx=padx, pady=pady, sticky='e')
+        b_entry.grid(row=3, column=1, padx=padx, pady=pady, sticky='we')
+        y_label.grid(row=4, column=0, padx=padx, pady=pady, sticky='e')
+        y_entry.grid(row=4, column=1, padx=padx, pady=pady, sticky='we')
+        op1_label.grid_remove()
+        op1_entry.grid_remove()
     else:
-        op2_label.grid_remove()
-        op2_entry.grid_remove()
+        y_label.grid_remove()
+        y_entry.grid_remove()
+
+    if any(op in cb_operation.get() for op in [
+        'Module', 'module', 'Discrete Logarithm'
+    ]):
+        module_label.grid(row=5, column=0, padx=padx, pady=pady, sticky='e')
+        module_entry.grid(row=5, column=1, padx=padx, pady=pady, sticky='we')
+    else:
+        module_label.grid_remove()
+        module_entry.grid_remove()
 
 
 def calculate(arg_base, arg_op):
@@ -123,6 +138,8 @@ def calculate(arg_base, arg_op):
         operation.primality(res, base, op1)
     elif op == cb_operation_op_factorization:
         operation.factorization(res, base, op1)
+    elif op == cb_operation_op_discreteLogarithm:
+        operation.discreteLogarithm(res, base, b, y, module)
 
 
 def about():
@@ -208,6 +225,7 @@ cb_operation_op_lcm_2 = 'LCM 2 numbers'
 cb_operation_op_lcm_3 = 'LCM 3 numbers'
 cb_operation_op_primality = 'Primality'
 cb_operation_op_factorization = 'Factorization'
+cb_operation_op_discreteLogarithm = 'Discrete Logarithm'
 
 cb_operation = Combobox(frame1, state='readonly')
 cb_operation['values'] = [
@@ -231,7 +249,8 @@ cb_operation['values'] = [
     cb_operation_op_lcm_2,
     cb_operation_op_lcm_3,
     cb_operation_op_primality,
-    cb_operation_op_factorization
+    cb_operation_op_factorization,
+    cb_operation_op_discreteLogarithm
 ]
 cb_operation.current(0)
 cb_operation.bind('<<ComboboxSelected>>', set_operation)
@@ -245,6 +264,8 @@ frame2.grid_columnconfigure(1, weight=1)
 op1 = StringVar()
 op2 = StringVar()
 op3 = StringVar()
+b = StringVar()
+y = StringVar()
 module = StringVar()
 res = StringVar()
 
@@ -259,14 +280,20 @@ op2_entry = Entry(frame2, font=font, textvariable=op2)
 op3_label = Label(frame2, text='Third number', bg=bg_color, fg=fg_color)
 op3_entry = Entry(frame2, font=font, textvariable=op3)
 
+b_label = Label(frame2, text='Base', bg=bg_color, fg=fg_color)
+b_entry = Entry(frame2, font=font, textvariable=b)
+
+y_label = Label(frame2, text='Y', bg=bg_color, fg=fg_color)
+y_entry = Entry(frame2, font=font, textvariable=y)
+
 module_label = Label(frame2, text='Module', bg=bg_color, fg=fg_color)
 module_entry = Entry(frame2, font=font, textvariable=module)
 
 label_res = Label(frame2, text='Result', bg=bg_color, fg=fg_color)
-label_res.grid(row=4, column=0, padx=padx, pady=pady, sticky='e')
+label_res.grid(row=6, column=0, padx=padx, pady=pady, sticky='e')
 entry_res = Entry(frame2, font=font, textvariable=res,
                   state='readonly', readonlybackground='white')
-entry_res.grid(row=4, column=1, padx=padx, pady=pady, sticky='we')
+entry_res.grid(row=6, column=1, padx=padx, pady=pady, sticky='we')
 
 button = Button(frame2,
                 text='Calulate',
@@ -274,6 +301,6 @@ button = Button(frame2,
                     cb_base.current(),
                     cb_operation.current())
                 )
-button.grid(row=6, column=1, padx=padx, pady=pady, sticky='w')
+button.grid(row=7, column=1, padx=padx, pady=pady, sticky='w')
 
 root.mainloop()
