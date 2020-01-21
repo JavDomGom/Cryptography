@@ -159,10 +159,10 @@ def factorization(res, base, op1):
     )
 
 
-def discreteLogarithm(res, base, op1, y, module):
+def discreteLogarithm(res, base, b, y, module):
     import resources.DiscreteLogarithm as ldl
 
     res.set(
         ldl.DiscreteLogarithm(base.get())
-           .discreteLogarithm(op1.get(), y.get(), module.get())
+           .discreteLogarithm(b.get(), y.get(), module.get())
     )
