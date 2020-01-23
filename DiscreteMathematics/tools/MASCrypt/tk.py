@@ -1,7 +1,7 @@
 import resources.operations as operation
 # from os import getcwd
-from tkinter import Tk, IntVar, StringVar, Frame, Label, Entry, Button, Menu
-from tkinter.ttk import Combobox, Style
+from tkinter import Tk, Menu, IntVar, StringVar
+from tkinter import Frame, Grid, Label, Entry, Button
 from tkinter import messagebox as MessageBox
 
 program_name = 'MASCrypt'
@@ -11,6 +11,29 @@ pady = 3
 font = ('Courier New', 10)
 bg_color = '#C9C9C9'
 fg_color = '#000000'
+
+# All available operations.
+op_addition = ('Addition', '+')
+op_addition_module = ('Addition module', '+ mod')
+op_substraction = ('Substraction', '-')
+op_substraction_module = ('Substraction module', '- mod')
+op_multiplication = ('Multiplication', 'x')
+op_multiplication_module = ('Multiplication module', 'x mod')
+op_division = ('Division', '/')
+op_square_root = ('Square root', '√')
+op_primitive_root = ('Primitive root', '∝')
+op_xor = ('XOR', 'XOR')
+op_mod_inverse = ('Module inverse', 'Inv')
+op_exponentation = ('Exponentation', 'a^b')
+op_exponentation_module = ('Exponentation module', 'a^b mod')
+op_module = ('Module', 'mod')
+op_gcd_2 = ('GCD 2 numbers', 'gdc(a, b)')
+op_gcd_3 = ('GCD 3 numbers', 'gdc(a, b, c)')
+op_lcm_2 = ('LCM 2 numbers', 'lcm(a, b)')
+op_lcm_3 = ('LCM 3 numbers', 'lcm(a, b, c)')
+op_primality = ('Primality', 'Prime')
+op_factorization = ('Factorization', 'Fact')
+op_discreteLogarithm = ('Discrete Logarithm', 'dlp(b, y, n)')
 
 
 def clear_all_entries():
@@ -34,146 +57,143 @@ def clear_all_widgets():
         widget.grid_remove()
 
 
-def set_base(event):
+def set_base(selected_base):
     clear_all_entries()
 
-    b = cb_base.get()
-
-    if b == cb_base_base2:
+    if 'Binary' in selected_base:
         base.set(2)
-    elif b == cb_base_base10:
+    elif 'Decimal' in selected_base:
         base.set(10)
-    elif b == cb_base_base16:
+    elif 'Hexadecimal' in selected_base:
         base.set(16)
 
     print(f'base.get() = {base.get()}')
 
 
-def set_operation(event):
+def set_operation(selected_op):
     clear_all_widgets()
 
-    current_op = cb_operation.get()
+    # All operations include op1, res and bt_calculate widgets.
+    op1_label.grid(row=0, column=0, padx=padx, pady=pady, sticky='e')
+    op1_entry.grid(row=0, column=1, padx=padx, pady=pady, sticky='we')
 
-    print(f'cb_operation.get() = {current_op}')
-
-    # All operations include op1, res and button widgets.
-    if any(op == current_op for op in cb_operation['values']):
-        op1_label.grid(row=0, column=0, padx=padx, pady=pady, sticky='e')
-        op1_entry.grid(row=0, column=1, padx=padx, pady=pady, sticky='we')
-
-        res_label.grid(row=4, column=0, padx=padx, pady=pady, sticky='e')
-        res_entry.grid(row=4, column=1, padx=padx, pady=pady, sticky='we')
-
-        button.grid(row=5, column=1, padx=padx, pady=pady, sticky='w')
+    res_label.grid(row=4, column=0, padx=padx, pady=pady, sticky='e')
+    res_entry.grid(row=4, column=1, padx=padx, pady=pady, sticky='we')
 
     # Operations that use op2 widgets.
-    if any(op == current_op for op in [
-        cb_operation_addition,
-        cb_operation_addition_module,
-        cb_operation_substraction,
-        cb_operation_substraction_module,
-        cb_operation_multiplication,
-        cb_operation_multiplication_module,
-        cb_operation_division,
-        cb_operation_xor,
-        cb_operation_exponentation,
-        cb_operation_exponentation_module,
-        cb_operation_gcd_2,
-        cb_operation_gcd_3,
-        cb_operation_lcm_2,
-        cb_operation_lcm_3,
-        cb_operation_discreteLogarithm
-    ]):
+    if selected_op in [
+        op_addition[0],
+        op_addition_module[0],
+        op_substraction[0],
+        op_substraction_module[0],
+        op_multiplication[0],
+        op_multiplication_module[0],
+        op_division[0],
+        op_xor[0],
+        op_exponentation[0],
+        op_exponentation_module[0],
+        op_gcd_2[0],
+        op_gcd_3[0],
+        op_lcm_2[0],
+        op_lcm_3[0],
+        op_discreteLogarithm[0]
+    ]:
         op2_label.grid(row=1, column=0, padx=padx, pady=pady, sticky='e')
         op2_entry.grid(row=1, column=1, padx=padx, pady=pady, sticky='we')
 
     # Operations that use op3 widgets.
-    if any(op == current_op for op in [
-        cb_operation_gcd_3,
-        cb_operation_lcm_3
-    ]):
+    if selected_op in [
+        op_gcd_3[0],
+        op_lcm_3[0]
+    ]:
         op3_label.grid(row=2, column=0, padx=padx, pady=pady, sticky='e')
         op3_entry.grid(row=2, column=1, padx=padx, pady=pady, sticky='we')
 
     # Base and Y widgets only for Discrete Logarithm operation.
-    if current_op == cb_operation_discreteLogarithm:
+    if selected_op == op_discreteLogarithm[0]:
         op1_label['text'] = 'Base'
         op2_label['text'] = 'Y'
+    else:
+        op1_label['text'] = 'First operator'
+        op2_label['text'] = 'Second operator'
 
     # Operations that use module widgets.
-    if any(op == current_op for op in [
-        cb_operation_addition_module,
-        cb_operation_substraction_module,
-        cb_operation_multiplication_module,
-        cb_operation_mod_inverse,
-        cb_operation_exponentation_module,
-        cb_operation_module,
-        cb_operation_discreteLogarithm
-    ]):
+    if selected_op in [
+        op_addition_module[0],
+        op_substraction_module[0],
+        op_multiplication_module[0],
+        op_mod_inverse[0],
+        op_exponentation_module[0],
+        op_module[0],
+        op_discreteLogarithm[0]
+    ]:
         module_label.grid(row=3, column=0, padx=padx, pady=pady, sticky='e')
         module_entry.grid(row=3, column=1, padx=padx, pady=pady, sticky='we')
 
+    oper.set(selected_op)
 
-def calculate(arg_base, arg_op):
+    print(f'oper.get() = {oper.get()}')
+
+
+def calculate():
     items_with_error = []
+    op = oper.get()
 
-    if arg_base == 0:
+    if base.get() == 0:
         items_with_error.append('Base')
 
-    if arg_op == 0:
+    if op == 0:
         items_with_error.append('Operation')
 
     if len(items_with_error) != 0:
         MessageBox.showerror(
             title=f'Missing information:',
-            message=f'You have to select the following items from combo boxes:\
+            message=f'You have to select the following items:\
             \n\n{", ".join(items_with_error)}'
         )
         return
 
-    op = cb_operation.get()
-
-    if op == cb_operation_addition:
+    if op == op_addition[0]:
         operation.addition(res, base, op1, op2)
-    elif op == cb_operation_addition_module:
+    elif op == op_addition_module[0]:
         operation.addition(res, base, op1, op2, mod)
-    elif op == cb_operation_substraction:
+    elif op == op_substraction[0]:
         operation.substraction(res, base, op1, op2)
-    elif op == cb_operation_substraction_module:
+    elif op == op_substraction_module[0]:
         operation.substraction(res, base, op1, op2, mod)
-    elif op == cb_operation_multiplication:
+    elif op == op_multiplication[0]:
         operation.multiplication(res, base, op1, op2)
-    elif op == cb_operation_multiplication_module:
+    elif op == op_multiplication_module[0]:
         operation.multiplication(res, base, op1, op2, mod)
-    elif op == cb_operation_division:
+    elif op == op_division[0]:
         operation.division(res, base, op1, op2)
-    elif op == cb_operation_square_root:
+    elif op == op_square_root[0]:
         operation.square_root(res, base, op1)
-    elif op == cb_operation_primitive_root:
+    elif op == op_primitive_root[0]:
         operation.primitive_root(res, base, op1)
-    elif op == cb_operation_xor:
+    elif op == op_xor[0]:
         operation.xor(res, base, op1, op2)
-    elif op == cb_operation_mod_inverse:
+    elif op == op_mod_inverse[0]:
         operation.mod_inverse(res, base, op1, mod)
-    elif op == cb_operation_exponentation:
+    elif op == op_exponentation[0]:
         operation.exponentation(res, base, op1, op2)
-    elif op == cb_operation_exponentation_module:
+    elif op == op_exponentation_module[0]:
         operation.exponentation(res, base, op1, op2, mod)
-    elif op == cb_operation_module:
+    elif op == op_module[0]:
         operation.module(res, base, op1, mod)
-    elif op == cb_operation_gcd_2:
+    elif op == op_gcd_2[0]:
         operation.gcd(res, base, op1, op2)
-    elif op == cb_operation_gcd_3:
+    elif op == op_gcd_3[0]:
         operation.gcd(res, base, op1, op2, op3)
-    elif op == cb_operation_lcm_2:
+    elif op == op_lcm_2[0]:
         operation.lcm(res, base, op1, op2)
-    elif op == cb_operation_lcm_3:
+    elif op == op_lcm_3[0]:
         operation.lcm(res, base, op1, op2, op3)
-    elif op == cb_operation_primality:
+    elif op == op_primality[0]:
         operation.primality(res, base, op1)
-    elif op == cb_operation_factorization:
+    elif op == op_factorization[0]:
         operation.factorization(res, base, op1)
-    elif op == cb_operation_discreteLogarithm:
+    elif op == op_discreteLogarithm[0]:
         operation.discreteLogarithm(res, base, op1, op2, mod)
 
 
@@ -187,18 +207,6 @@ root.title(f'{program_name} - {program_description}')
 root.resizable(1, 0)
 # root.iconbitmap(f'@{getcwd()}/img/icon.xbm')
 
-style = Style()
-style.theme_create('custom_style',
-                   parent='default',
-                   settings={'TCombobox':
-                             {'configure':
-                              {'selectforeground': 'black',
-                               'selectbackground': 'white'}
-                              }
-                             }
-                   )
-style.theme_use('custom_style')
-
 menubar = Menu(root, bg=bg_color, fg=fg_color, borderwidth=1)
 root.config(menu=menubar)
 
@@ -206,6 +214,50 @@ options_menu = Menu(menubar, tearoff=0)
 options_menu.add_command(label='Configuration')
 options_menu.add_separator()
 options_menu.add_command(label='Exit', command=root.quit)
+
+base_list = [
+    'Base-2 (Binary)',
+    'Base-10 (Decimal)',
+    'Base-16 (Hexadecimal)'
+]
+
+base_menu = Menu(menubar, tearoff=0)
+
+for b in base_list:
+    base_menu.add_command(
+        label=f'{b}', command=lambda b=b: set_base(b)
+    )
+
+operation_list = [
+    op_addition,
+    op_addition_module,
+    op_substraction,
+    op_substraction_module,
+    op_multiplication,
+    op_multiplication_module,
+    op_division,
+    op_square_root,
+    op_primitive_root,
+    op_xor,
+    op_mod_inverse,
+    op_exponentation,
+    op_exponentation_module,
+    op_module,
+    op_gcd_2,
+    op_gcd_3,
+    op_lcm_2,
+    op_lcm_3,
+    op_primality,
+    op_factorization,
+    op_discreteLogarithm
+]
+
+operations_menu = Menu(menubar, tearoff=0)
+
+for o in operation_list:
+    operations_menu.add_command(
+        label=f'{o[0]}', command=lambda o=o[0]: set_operation(o)
+    )
 
 help_menu = Menu(menubar, tearoff=0)
 help_menu.add_command(label='View terms of use')
@@ -215,114 +267,85 @@ help_menu.add_separator()
 help_menu.add_command(label=f'About {program_name}', command=about)
 
 menubar.add_cascade(label='Options', menu=options_menu)
+menubar.add_cascade(label='Base', menu=base_menu)
+menubar.add_cascade(label='Operations', menu=operations_menu)
 menubar.add_cascade(label='Help', menu=help_menu)
 
-frame1 = Frame(root, cursor='arrow', bg=bg_color, bd=5)
-frame1.pack(expand=True, fill='x')
-
 base = IntVar()
-
-cb_base_default = '-- Select base --'
-cb_base_base2 = 'Binary (Base-2)'
-cb_base_base10 = 'Decimal (Base-10)'
-cb_base_base16 = 'Hexadecimal (Base-16)'
-
-cb_base = Combobox(frame1, state='readonly')
-cb_base['values'] = [
-    cb_base_default,
-    cb_base_base2,
-    cb_base_base10,
-    cb_base_base16
-]
-
-cb_base.current(0)
-cb_base.bind('<<ComboboxSelected>>', set_base)
-cb_base.grid(row=0, column=0, padx=padx, pady=pady, sticky='w')
-
-cb_operation_default = '-- Select operation --'
-cb_operation_addition = 'Addition'
-cb_operation_addition_module = 'Addition module'
-cb_operation_substraction = 'Substraction'
-cb_operation_substraction_module = 'Substraction module'
-cb_operation_multiplication = 'Multiplication'
-cb_operation_multiplication_module = 'Multiplication module'
-cb_operation_division = 'Division'
-cb_operation_square_root = 'Square root'
-cb_operation_primitive_root = 'Primitive root'
-cb_operation_xor = 'XOR'
-cb_operation_mod_inverse = 'Module inverse'
-cb_operation_exponentation = 'Exponentation'
-cb_operation_exponentation_module = 'Exponentation module'
-cb_operation_module = 'Module'
-cb_operation_gcd_2 = 'GCD 2 numbers'
-cb_operation_gcd_3 = 'GCD 3 numbers'
-cb_operation_lcm_2 = 'LCM 2 numbers'
-cb_operation_lcm_3 = 'LCM 3 numbers'
-cb_operation_primality = 'Primality'
-cb_operation_factorization = 'Factorization'
-cb_operation_discreteLogarithm = 'Discrete Logarithm'
-
-cb_operation = Combobox(frame1, state='readonly')
-cb_operation['values'] = [
-    cb_operation_default,
-    cb_operation_addition,
-    cb_operation_addition_module,
-    cb_operation_substraction,
-    cb_operation_substraction_module,
-    cb_operation_multiplication,
-    cb_operation_multiplication_module,
-    cb_operation_division,
-    cb_operation_square_root,
-    cb_operation_primitive_root,
-    cb_operation_xor,
-    cb_operation_mod_inverse,
-    cb_operation_exponentation,
-    cb_operation_exponentation_module,
-    cb_operation_module,
-    cb_operation_gcd_2,
-    cb_operation_gcd_3,
-    cb_operation_lcm_2,
-    cb_operation_lcm_3,
-    cb_operation_primality,
-    cb_operation_factorization,
-    cb_operation_discreteLogarithm
-]
-cb_operation.current(0)
-cb_operation.bind('<<ComboboxSelected>>', set_operation)
-cb_operation.grid(row=0, column=1, padx=padx, pady=pady, sticky='w')
-
-
-frame2 = Frame(root, cursor='arrow', bg=bg_color, bd=5)
-frame2.pack(expand=True, fill='x')
-frame2.grid_columnconfigure(1, weight=1)
-
+history = StringVar()
+oper = StringVar()
 op1 = StringVar()
 op2 = StringVar()
 op3 = StringVar()
 mod = StringVar()
 res = StringVar()
 
-op1_label = Label(frame2, text='First operator', bg=bg_color, fg=fg_color)
-op1_entry = Entry(frame2, font=font, textvariable=op1)
+frame_1 = Frame(root, bg='#ff0000', bd=5, height=170)
+frame_1.pack(expand=True, fill='both')
+frame_1.grid_propagate(False)
+frame_1.grid_columnconfigure(1, weight=1)
 
-op2_label = Label(frame2, text='Second operator', bg=bg_color, fg=fg_color)
-op2_entry = Entry(frame2, font=font, textvariable=op2)
+frame_1L = Frame(frame_1, bg='#00ff00', bd=5, height=170)
+frame_1L.pack(side='left', expand=True, fill='both')
+frame_1L.grid_propagate(False)
+frame_1L.grid_columnconfigure(1, weight=1)
 
-op3_label = Label(frame2, text='Third operator', bg=bg_color, fg=fg_color)
-op3_entry = Entry(frame2, font=font, textvariable=op3)
+frame_1R = Frame(frame_1, bg='#0000ff', bd=5, width=50, height=170)
+frame_1R.pack(side='right', expand=True, fill='both')
+frame_1R.grid_propagate(False)
+frame_1R.grid_columnconfigure(1, weight=1)
 
-module_label = Label(frame2, text='Module', bg=bg_color, fg=fg_color)
-module_entry = Entry(frame2, font=font, textvariable=mod)
+history = Entry(frame_1R, font=font, textvariable=history,
+                state='readonly', readonlybackground='white')
+history.grid(row=0, column=0, padx=padx, pady=pady, sticky='nsew')
 
-res_label = Label(frame2, text='Result', bg=bg_color, fg=fg_color)
-res_entry = Entry(frame2, font=font, textvariable=res,
+frame_1L1 = Frame(frame_1L, bg='#ffff00', bd=5, width=350, height=130)
+frame_1L1.pack(expand=True, fill='both')
+frame_1L1.grid_propagate(False)
+frame_1L1.grid_columnconfigure(1, weight=1)
+
+op1_label = Label(frame_1L1, text='First operator', bg=bg_color, fg=fg_color)
+op1_entry = Entry(frame_1L1, font=font, textvariable=op1)
+
+op2_label = Label(frame_1L1, text='Second operator', bg=bg_color, fg=fg_color)
+op2_entry = Entry(frame_1L1, font=font, textvariable=op2)
+
+op3_label = Label(frame_1L1, text='Third operator', bg=bg_color, fg=fg_color)
+op3_entry = Entry(frame_1L1, font=font, textvariable=op3)
+
+module_label = Label(frame_1L1, text='Module', bg=bg_color, fg=fg_color)
+module_entry = Entry(frame_1L1, font=font, textvariable=mod)
+
+res_label = Label(frame_1L1, text='Result', bg=bg_color, fg=fg_color)
+res_entry = Entry(frame_1L1, font=font, textvariable=res,
                   state='readonly', readonlybackground='white')
 
-button = Button(frame2,
-                text='Calulate',
-                command=lambda: calculate(
-                    cb_base.current(),
-                    cb_operation.current())
-                )
+frame_1L2 = Frame(frame_1L, bg='#00ffff', bd=5)
+frame_1L2.pack(expand=True, fill='both')
+frame_1L2.grid_columnconfigure(1, weight=1)
+
+bt_calculate = Button(
+    frame_1L2,
+    text='Calulate',
+    command=lambda: calculate()
+)
+bt_calculate.grid(row=0, column=0, padx=padx, pady=pady, sticky='w')
+
+
+frame_2 = Frame(root, bg=bg_color, bd=5)
+frame_2.pack(side='bottom', expand=True, fill='x')
+
+# Grid for buttons
+rows = 3
+cols = 7
+for i in range(rows):
+    for x, o in enumerate(operation_list[cols*i:cols*(i+1)]):
+        Grid.columnconfigure(frame_2, x, weight=1)
+        op_btn = Button(
+            frame_2,
+            text=o[1],
+            command=lambda o=o[0]: set_operation(o)
+        )
+        op_btn.grid(row=i, column=x, padx=padx, pady=pady, sticky='nsew')
 
 root.mainloop()
