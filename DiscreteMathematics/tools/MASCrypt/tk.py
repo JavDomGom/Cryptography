@@ -436,63 +436,53 @@ mod_active = IntVar()
 mod = StringVar()
 res = StringVar()
 
-frame_1 = Frame(
+frame_L = Frame(
     root,
-    bg='#ff0000',
-    bd=5,
-    height=frame_height
-)
-frame_1.pack(expand=True, fill='both')
-frame_1.grid_propagate(False)
-frame_1.grid_columnconfigure(1, weight=1)
-
-frame_1L = Frame(
-    frame_1,
     bg='#00ff00',
     bd=5,
     height=frame_height
 )
-frame_1L.pack(side='left', expand=True, fill='both')
-frame_1L.grid_propagate(False)
-frame_1L.grid_columnconfigure(1, weight=1)
+frame_L.pack(side='left', expand=True, fill='both')
+frame_L.grid_propagate(False)
+frame_L.grid_columnconfigure(1, weight=1)
 
-frame_1R = Frame(
-    frame_1,
+frame_R = Frame(
+    root,
     bg='#0000ff',
     bd=5,
     width=50,
     height=frame_height
 )
-frame_1R.pack(side='right', expand=True, fill='both')
-frame_1R.grid_propagate(False)
-frame_1R.grid_columnconfigure(0, weight=1)
-frame_1R.grid_rowconfigure(0, weight=1)
+frame_R.pack(side='right', expand=True, fill='both')
+frame_R.grid_propagate(False)
+frame_R.grid_columnconfigure(0, weight=1)
+frame_R.grid_rowconfigure(0, weight=1)
 
 history = Text(
-    frame_1R,
+    frame_R,
     font=font,
     state='normal',
     yscrollcommand='sdvaerg'
 )
-scrollb = Scrollbar(frame_1R)
+scrollb = Scrollbar(frame_R)
 scrollb.config(command=history.yview)
 history.config(yscrollcommand=scrollb.set)
 scrollb.grid(row=0, column=1, sticky='ns')
 history.grid(row=0, column=0, sticky='nsew')
 
-frame_1L1 = Frame(
-    frame_1L,
+frame_L1 = Frame(
+    frame_L,
     bg='#ffff00',
     bd=5,
     width=350,
     height=frame_height
 )
-frame_1L1.pack(expand=True, fill='both')
-frame_1L1.grid_propagate(False)
-frame_1L1.grid_columnconfigure(1, weight=1)
+frame_L1.pack(expand=True, fill='both')
+frame_L1.grid_propagate(False)
+frame_L1.grid_columnconfigure(1, weight=1)
 
 op1_label = Label(
-    frame_1L1,
+    frame_L1,
     anchor=label_anchor,
     text='First operator',
     width=label_width,
@@ -500,13 +490,13 @@ op1_label = Label(
     fg=fg_color
 )
 op1_entry = Entry(
-    frame_1L1,
+    frame_L1,
     font=font,
     textvariable=op1
 )
 
 op2_label = Label(
-    frame_1L1,
+    frame_L1,
     anchor=label_anchor,
     text='Second operator',
     width=label_width,
@@ -514,13 +504,13 @@ op2_label = Label(
     fg=fg_color
 )
 op2_entry = Entry(
-    frame_1L1,
+    frame_L1,
     font=font,
     textvariable=op2
 )
 
 op3_check = Checkbutton(
-    frame_1L1,
+    frame_L1,
     anchor=label_anchor,
     text='Third operator',
     width=label_width-3,
@@ -530,7 +520,7 @@ op3_check = Checkbutton(
     command=set_op3
 )
 op3_label = Label(
-    frame_1L1,
+    frame_L1,
     anchor=label_anchor,
     text='Third operator',
     width=label_width,
@@ -538,13 +528,13 @@ op3_label = Label(
     fg=fg_color
 )
 op3_entry = Entry(
-    frame_1L1,
+    frame_L1,
     font=font,
     textvariable=op3
 )
 
 module_check = Checkbutton(
-    frame_1L1,
+    frame_L1,
     anchor=label_anchor,
     text='Module',
     width=label_width-3,
@@ -554,7 +544,7 @@ module_check = Checkbutton(
     command=set_module
 )
 module_label = Label(
-    frame_1L1,
+    frame_L1,
     anchor=label_anchor,
     text='Module',
     width=label_width,
@@ -562,14 +552,14 @@ module_label = Label(
     fg=fg_color
 )
 module_entry = Entry(
-    frame_1L1,
+    frame_L1,
     state='disabled',
     font=font,
     textvariable=mod
 )
 
 res_label = Label(
-    frame_1L1,
+    frame_L1,
     anchor=label_anchor,
     text='Result',
     width=label_width,
@@ -577,50 +567,51 @@ res_label = Label(
     fg=fg_color
 )
 res_entry = Entry(
-    frame_1L1,
+    frame_L1,
     font=font,
     textvariable=res,
     state='readonly',
     readonlybackground='white'
 )
 
-frame_1L2 = Frame(
-    frame_1L,
+frame_L2 = Frame(
+    frame_L,
     bg='#00ffff',
     bd=5
 )
-frame_1L2.pack(expand=True, fill='both')
-frame_1L2.grid_columnconfigure(1, weight=1)
+frame_L2.pack(expand=True, fill='both')
+frame_L2.grid_columnconfigure(1, weight=1)
 
 bt_calculate = Button(
-    frame_1L2,
+    frame_L2,
     text='Calulate',
     command=lambda: calculate()
 )
 bt_calculate.grid(row=0, column=0, padx=padx, pady=pady, sticky='w')
 
 bt_clear_history = Button(
-    frame_1L2,
+    frame_L2,
     text='Clear history',
     command=lambda: history.delete('1.0', END)
 )
 bt_clear_history.grid(row=0, column=1, padx=padx, pady=pady, sticky='w')
 
-frame_2 = Frame(
-    root,
+frame_L3 = Frame(
+    frame_L,
     bg=bg_color,
     bd=5
 )
-frame_2.pack(side='bottom', expand=True, fill='x')
+frame_L3.pack(expand=True, fill='both')
+frame_L3.grid_columnconfigure(1, weight=1)
 
 # Grid for buttons
 rows = 3
 cols = 5
 for i in range(rows):
     for x, o in enumerate(operation_list[cols*i:cols*(i+1)]):
-        Grid.columnconfigure(frame_2, x, weight=1)
+        Grid.columnconfigure(frame_L3, x, weight=1)
         op_btn = Button(
-            frame_2,
+            frame_L3,
             text=o[1],
             command=lambda o=o[0]: set_operation(o)
         )
