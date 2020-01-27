@@ -17,6 +17,12 @@ font = ('Courier New', 10)
 bg_color = '#C9C9C9'
 fg_color = '#000000'
 
+# All available bases.
+base_default = ('-- Select base --', 0)
+base_base2 = ('Binary (Base-2)', 2)
+base_base10 = ('Decimal (Base-10)', 10)
+base_base16 = ('Hexadecimal (Base-16)', 16)
+
 # All available operations.
 op_addition = ('Addition', '+')
 op_substraction = ('Substraction', '-')
@@ -60,17 +66,25 @@ def clear_all_widgets():
         widget.grid_remove()
 
 
-def set_base(event):
+def set_base(event, b=None):
     clear_all_entries()
 
-    b = cb_base.get()
+    if not event:
+        # For menu select base.
+        base.set(b[1])
+        cb_base.current(cb_base['values'].index(b[0]))
+    else:
+        # For combobox select base.
+        b = cb_base.get()
 
-    if b == cb_base_base2:
-        base.set(2)
-    elif b == cb_base_base10:
-        base.set(10)
-    elif b == cb_base_base16:
-        base.set(16)
+        if b == base_default[0]:
+            base.set(0)
+        elif b == base_base2[0]:
+            base.set(2)
+        elif b == base_base10[0]:
+            base.set(10)
+        elif b == base_base16[0]:
+            base.set(16)
 
     print(f'base.get() = {base.get()}')
 
@@ -249,112 +263,133 @@ def calculate():
         if mod_active.get():
             operation.addition(res, base, op1, op2, mod)
             txt_history.insert(
-                END, f'{op1.get()} + {op2.get()} mod {mod.get()} = {res.get()}\n'
+                END,
+                f'{op1.get()} + {op2.get()} mod {mod.get()} = {res.get()}\n'
             )
         else:
             operation.addition(res, base, op1, op2)
             txt_history.insert(
-                END, f'{op1.get()} + {op2.get()} = {res.get()}\n'
+                END,
+                f'{op1.get()} + {op2.get()} = {res.get()}\n'
             )
     elif op == op_substraction[0]:
         if mod_active.get():
             operation.substraction(res, base, op1, op2, mod)
             txt_history.insert(
-                END, f'{op1.get()} - {op2.get()} mod {mod.get()} = {res.get()}\n'
+                END,
+                f'{op1.get()} - {op2.get()} mod {mod.get()} = {res.get()}\n'
             )
         else:
             operation.substraction(res, base, op1, op2)
             txt_history.insert(
-                END, f'{op1.get()} - {op2.get()} = {res.get()}\n'
+                END,
+                f'{op1.get()} - {op2.get()} = {res.get()}\n'
             )
     elif op == op_multiplication[0]:
         if mod_active.get():
             operation.multiplication(res, base, op1, op2, mod)
             txt_history.insert(
-                END, f'{op1.get()} x {op2.get()} mod {mod.get()} = {res.get()}\n'
+                END,
+                f'{op1.get()} x {op2.get()} mod {mod.get()} = {res.get()}\n'
             )
         else:
             operation.multiplication(res, base, op1, op2)
             txt_history.insert(
-                END, f'{op1.get()} x {op2.get()} = {res.get()}\n'
+                END,
+                f'{op1.get()} x {op2.get()} = {res.get()}\n'
             )
     elif op == op_division[0]:
         operation.division(res, base, op1, op2)
         txt_history.insert(
-            END, f'{op1.get()}/{op2.get()} = {res.get()}\n'
+            END,
+            f'{op1.get()}/{op2.get()} = {res.get()}\n'
         )
     elif op == op_square_root[0]:
         operation.square_root(res, base, op1)
         txt_history.insert(
-            END, f'√{op1.get()} = {res.get()}\n'
+            END,
+            f'√{op1.get()} = {res.get()}\n'
         )
     elif op == op_primitive_root[0]:
         operation.primitive_root(res, base, op1)
         txt_history.insert(
-            END, f'|∝|={len(eval(res.get()))}, {op1.get()} = {res.get()}\n'
+            END,
+            f'|∝|={len(eval(res.get()))}, {op1.get()} = {res.get()}\n'
         )
     elif op == op_xor[0]:
         operation.xor(res, base, op1, op2)
         txt_history.insert(
-            END, f'{op1.get()} XOR {op2.get()} = {res.get()}\n'
+            END,
+            f'{op1.get()} XOR {op2.get()} = {res.get()}\n'
         )
     elif op == op_mod_inverse[0]:
         operation.mod_inverse(res, base, op1, mod)
         txt_history.insert(
-            END, f'inv({op1.get()}, {mod.get()}) = {res.get()}\n'
+            END,
+            f'inv({op1.get()}, {mod.get()}) = {res.get()}\n'
         )
     elif op == op_exponentation[0]:
         if mod_active.get():
             operation.exponentation(res, base, op1, op2, mod)
             txt_history.insert(
-                END, f'{op1.get()}^{op2.get()} mod {mod.get()} = {res.get()}\n'
+                END,
+                f'{op1.get()}^{op2.get()} mod {mod.get()} = {res.get()}\n'
             )
         else:
             operation.exponentation(res, base, op1, op2)
             txt_history.insert(
-                END, f'{op1.get()}^{op2.get()} = {res.get()}\n'
+                END,
+                f'{op1.get()}^{op2.get()} = {res.get()}\n'
             )
     elif op == op_module[0]:
         operation.module(res, base, op1, mod)
         txt_history.insert(
-            END, f'{op1.get()} mod {mod.get()} = {res.get()}\n'
+            END,
+            f'{op1.get()} mod {mod.get()} = {res.get()}\n'
         )
     elif op == op_gcd[0]:
         if op3_active.get():
             operation.gcd(res, base, op1, op2, op3)
             txt_history.insert(
-                END, f'gdc({op1.get()}, {op2.get()}, {op3.get()}) = {res.get()}\n'
+                END,
+                f'gdc({op1.get()}, {op2.get()}, {op3.get()}) = {res.get()}\n'
             )
         else:
             operation.gcd(res, base, op1, op2)
             txt_history.insert(
-                END, f'gdc({op1.get()}, {op2.get()}) = {res.get()}\n'
+                END,
+                f'gdc({op1.get()}, {op2.get()}) = {res.get()}\n'
             )
     elif op == op_lcm[0]:
         if op3_active.get():
             operation.lcm(res, base, op1, op2, op3)
             txt_history.insert(
-                END, f'lcm({op1.get()}, {op2.get()}, {op3.get()}) = {res.get()}\n'
+                END,
+                f'lcm({op1.get()}, {op2.get()}, {op3.get()}) = {res.get()}\n'
             )
         else:
             operation.lcm(res, base, op1, op2)
             txt_history.insert(
-                END, f'lcm({op1.get()}, {op2.get()}) = {res.get()}\n'
+                END,
+                f'lcm({op1.get()}, {op2.get()}) = {res.get()}\n'
             )
     elif op == op_primality[0]:
         operation.primality(res, base, op1)
         txt_history.insert(
-            END, f'{op1.get()} {res.get().lower()}\n'
+            END,
+            f'{op1.get()} {res.get().lower()}\n'
         )
     elif op == op_factorization[0]:
         operation.factorization(res, base, op1)
         txt_history.insert(
-            END, f'{op1.get()} = {res.get()}\n'
+            END,
+            f'{op1.get()} = {res.get()}\n'
         )
     elif op == op_discreteLogarithm[0]:
         operation.discreteLogarithm(res, base, op1, op2, mod)
         txt_history.insert(
-            END, f'{op1.get()}^{res.get()} = {op2.get()} mod {mod.get()}\n'
+            END,
+            f'{op1.get()}^{res.get()} = {op2.get()} mod {mod.get()}\n'
         )
 
     txt_history.see(END)
@@ -402,16 +437,18 @@ mod = StringVar()
 res = StringVar()
 
 base_list = [
-    ('Base-2 (Binary)', 2),
-    ('Base-10 (Decimal)', 10),
-    ('Base-16 (Hexadecimal)', 16)
+    base_default,
+    base_base2,
+    base_base10,
+    base_base16
 ]
 
 base_menu = Menu(menubar, tearoff=0)
 
-for b in base_list:
+for b in base_list[1:]:
     base_menu.add_command(
-        label=f'{b[0]}', command=lambda b=b[1]: base.set(b)
+        # label=f'{b[0]}', command=lambda b=b[1]: base.set(b)
+        label=f'{b[0]}', command=lambda b=b: set_base(None, b)
     )
 
 operation_list = [
@@ -600,17 +637,12 @@ btn_calculate = Button(
 )
 btn_calculate.grid(row=0, column=0, padx=padx, pady=pady, sticky='w')
 
-cb_base_default = '-- Select base --'
-cb_base_base2 = 'Binary (Base-2)'
-cb_base_base10 = 'Decimal (Base-10)'
-cb_base_base16 = 'Hexadecimal (Base-16)'
-
 cb_base = Combobox(frm_L2, state='readonly')
 cb_base['values'] = [
-    cb_base_default,
-    cb_base_base2,
-    cb_base_base10,
-    cb_base_base16
+    base_default[0],
+    base_base2[0],
+    base_base10[0],
+    base_base16[0]
 ]
 
 cb_base.current(0)
