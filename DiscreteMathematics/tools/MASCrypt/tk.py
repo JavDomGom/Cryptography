@@ -1,6 +1,6 @@
 import resources.operations as operation
 # from os import getcwd
-from tkinter import Tk, Menu, Scrollbar, END, IntVar, StringVar
+from tkinter import Tk, Menu, Scrollbar, END, IntVar, StringVar, PhotoImage
 from tkinter import Frame, Grid, Label, Entry, Text, Checkbutton, Button
 from tkinter import messagebox as MessageBox
 from tkinter.ttk import Combobox, Style
@@ -24,22 +24,39 @@ base_base10 = ('Decimal (Base-10)', 10)
 base_base16 = ('Hexadecimal (Base-16)', 16)
 
 # All available operations.
-op_addition = ('Addition', '+')
-op_substraction = ('Substraction', '-')
-op_multiplication = ('Multiplication', 'x')
-op_division = ('Division', '/')
-op_square_root = ('Square root', '√')
-op_primitive_root = ('Primitive root', '∝')
-op_xor = ('XOR', 'XOR')
-op_mod_inverse = ('Module inverse', 'Inv')
-op_exponentation = ('Exponentation', 'a^b')
-op_module = ('Module', 'mod')
-op_gcd = ('GCD', 'GDC')
-op_lcm = ('LCM', 'LCM')
-op_primality = ('Primality', 'Prime')
-op_factorization = ('Factorization', 'Fact')
-op_discreteLogarithm = ('Discrete Logarithm', 'DLP')
+op_addition = ('Addition', '+', 'Control-Shift-A')
+op_substraction = ('Substraction', '-', 'Control-Shift-S')
+op_multiplication = ('Multiplication', 'x', 'Control-Shift-M')
+op_division = ('Division', '/', 'Control-Shift-D')
+op_square_root = ('Square root', '√', 'Control-Shift-Q')
+op_primitive_root = ('Primitive root', '∝', 'Control-Shift-R')
+op_xor = ('XOR', 'XOR', 'Control-Shift-X')
+op_mod_inverse = ('Module inverse', 'Inv', 'Control-Shift-I')
+op_exponentation = ('Exponentation', 'a^b', 'Control-Shift-E')
+op_module = ('Module', 'mod', 'Control-Shift-N')
+op_gcd = ('GCD', 'GDC', 'Control-Shift-G')
+op_lcm = ('LCM', 'LCM', 'Control-Shift-L')
+op_primality = ('Primality', 'Prime', 'Control-Shift-P')
+op_factorization = ('Factorization', 'Fact', 'Control-Shift-F')
+op_discreteLogarithm = ('Discrete Logarithm', 'DLP', 'Control-Shift-H')
 
+operation_list = [
+    op_addition,
+    op_substraction,
+    op_multiplication,
+    op_division,
+    op_square_root,
+    op_primitive_root,
+    op_xor,
+    op_mod_inverse,
+    op_exponentation,
+    op_module,
+    op_gcd,
+    op_lcm,
+    op_primality,
+    op_factorization,
+    op_discreteLogarithm
+]
 
 def clear_all_entries():
     ''' Empty all entries.'''
@@ -68,6 +85,7 @@ def clear_all_widgets():
 
 def set_base(event, b=None):
     clear_all_entries()
+    set_module()
 
     if not event:
         # For menu select base.
@@ -90,7 +108,11 @@ def set_base(event, b=None):
 
 
 def set_module():
-    if mod_active.get():
+    if mod_active.get() or oper.get() in [
+        op_mod_inverse[0],
+        op_module[0],
+        op_discreteLogarithm[0]
+    ]:
         ent_module.config(state='normal')
     else:
         ent_module.config(state='disabled')
@@ -105,6 +127,7 @@ def set_op3():
 
 def set_operation(selected_op):
     clear_all_widgets()
+    set_module()
 
     lbl_op_title['text'] = selected_op
 
@@ -215,6 +238,7 @@ def set_operation(selected_op):
                 padx=padx-1,
                 sticky=lbl_sticky
             )
+            ent_module.config(state='disable')
         elif selected_op in [
             op_mod_inverse[0],
             op_module[0],
@@ -238,6 +262,16 @@ def set_operation(selected_op):
         )
 
     oper.set(selected_op)
+
+    for op in operation_list:
+        if selected_op == op[0]:
+            filename = op[0].replace(' ', '_').lower()
+            print(f'{filename}.png')
+
+            op_formula = PhotoImage(file=f'img/{filename}.png')
+            lbl_formula.configure(image=op_formula)
+            lbl_formula.image = op_formula
+            break
 
     print(f'oper.get() = {oper.get()}')
 
@@ -399,6 +433,10 @@ def about():
     MessageBox.showinfo(f'About {program_name}', f'{program_description}')
 
 
+def op_shortcut_key_combination(event, selected_op):
+    set_operation(selected_op[0])
+
+
 root = Tk()
 # root.geometry('650x250')
 root.title(f'{program_name} - {program_description}')
@@ -419,6 +457,12 @@ style.theme_use('custom_style')
 
 menubar = Menu(root, bg=bg_color, fg=fg_color, borderwidth=1)
 root.config(menu=menubar)
+
+for op in operation_list:
+    root.bind(
+        f'<{op[2]}>',
+        lambda event, op=op: op_shortcut_key_combination(event, op)
+    )
 
 options_menu = Menu(menubar, tearoff=0)
 options_menu.add_command(label='Configuration')
@@ -447,33 +491,14 @@ base_menu = Menu(menubar, tearoff=0)
 
 for b in base_list[1:]:
     base_menu.add_command(
-        # label=f'{b[0]}', command=lambda b=b[1]: base.set(b)
         label=f'{b[0]}', command=lambda b=b: set_base(None, b)
     )
-
-operation_list = [
-    op_addition,
-    op_substraction,
-    op_multiplication,
-    op_division,
-    op_square_root,
-    op_primitive_root,
-    op_xor,
-    op_mod_inverse,
-    op_exponentation,
-    op_module,
-    op_gcd,
-    op_lcm,
-    op_primality,
-    op_factorization,
-    op_discreteLogarithm
-]
 
 operations_menu = Menu(menubar, tearoff=0)
 
 for op in operation_list:
     operations_menu.add_command(
-        label=f'{op[0]}', command=lambda op=op[0]: set_operation(op)
+        label=f'{op[0]:<23}{op[2]}', command=lambda op=op[0]: set_operation(op)
     )
 
 help_menu = Menu(menubar, tearoff=0)
@@ -570,6 +595,8 @@ chk_op3 = Checkbutton(
     anchor=lbl_anchor,
     text='Third operator',
     width=lbl_width-3,
+    highlightthickness=0,
+    activebackground=bg_color,
     bg=bg_color,
     fg=fg_color,
     variable=op3_active,
@@ -586,6 +613,8 @@ chk_module = Checkbutton(
     anchor=lbl_anchor,
     text='Module',
     width=lbl_width-3,
+    highlightthickness=0,
+    activebackground=bg_color,
     bg=bg_color,
     fg=fg_color,
     variable=mod_active,
@@ -628,7 +657,7 @@ frm_L2 = Frame(
     bd=5
 )
 frm_L2.pack(expand=True, fill='both')
-frm_L2.grid_columnconfigure(1, weight=1)
+frm_L2.grid_columnconfigure((1, 2), weight=1)
 
 btn_calculate = Button(
     frm_L2,
@@ -648,6 +677,12 @@ cb_base['values'] = [
 cb_base.current(0)
 cb_base.bind('<<ComboboxSelected>>', set_base)
 cb_base.grid(row=0, column=1, padx=padx, pady=pady, sticky='w')
+
+lbl_formula = Label(
+    frm_L2,
+    bg=bg_color
+)
+lbl_formula.grid(row=0, column=2, padx=padx, pady=pady, sticky='w')
 
 frm_L3 = Frame(
     frm_L,
