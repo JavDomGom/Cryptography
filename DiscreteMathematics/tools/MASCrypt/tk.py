@@ -2,10 +2,12 @@ import resources.operations as operation
 # from os import getcwd
 from tkinter import Tk, Menu, Scrollbar, END, IntVar, StringVar, PhotoImage
 from tkinter import Frame, Grid, Label, Entry, Text, Checkbutton, Button
+from tkinter import Toplevel
 from tkinter import messagebox as MessageBox
 from tkinter.ttk import Combobox, Style
 
 program_name = 'MASCrypt'
+program_version = '0.1.0'
 program_description = 'Modular Arithmetic Software for Cryptography'
 lbl_width = 14
 lbl_anchor = 'e'
@@ -14,7 +16,6 @@ entry_sticky = 'we'
 padx = 3
 pady = 3
 font = ('Courier New', 10)
-bg_color = '#C9C9C9'
 fg_color = '#000000'
 
 # All available bases.
@@ -429,12 +430,64 @@ def calculate():
     txt_history.see(END)
 
 
+# var = unicode('\U0001f12f', 'iso8859-1')
+
+
 def about():
-    MessageBox.showinfo(f'About {program_name}', f'{program_description}')
+    tpl_about = Toplevel(root)
+    tpl_about.resizable(0, 0)
+    tpl_about.title(f'About {program_name}')
+
+    tpl_msg = Label(
+        tpl_about,
+        width=35,
+        text=f'{program_name} v{program_version}\n\nUpdated: 2020/01/29',
+        justify='center'
+    )
+    tpl_msg.grid(row=0, column=0, padx=padx, pady=pady, sticky='we')
+
+    lbl_gplv3 = Label(
+        tpl_about,
+        text='''This program is free software: you can redistribute it
+and/or modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation, either
+version 3 of the License.''',
+        justify='center'
+    )
+    lbl_gplv3.grid(row=1, column=0, padx=padx, pady=pady)
+
+    img_gplv3 = PhotoImage(file=f'img/gplv3-127x51.png')
+
+    lbl_img_gplv3 = Label(tpl_about)
+    lbl_img_gplv3.grid(row=2, column=0, padx=padx, pady=pady)
+    lbl_img_gplv3.configure(image=img_gplv3)
+    lbl_img_gplv3.image = img_gplv3
+
+    tpl_button = Button(
+        tpl_about,
+        anchor='center',
+        text='Close',
+        command=tpl_about.destroy
+    )
+    tpl_button.grid(row=3, column=0, padx=padx, pady=pady)
 
 
 def op_shortcut_key_combination(event, selected_op):
     set_operation(selected_op[0])
+
+
+def table_primes():
+    table = Toplevel(root)
+    table.pack()
+    text = Text(
+        root,
+        font=font,
+        state='normal',
+        width=25,
+        height=15
+    )
+    text.pack()
+    # text.insert(END, "Hello.....")
 
 
 root = Tk()
@@ -455,7 +508,7 @@ style.theme_create('custom_style',
                    )
 style.theme_use('custom_style')
 
-menubar = Menu(root, bg=bg_color, fg=fg_color, borderwidth=1)
+menubar = Menu(root, fg=fg_color, borderwidth=1)
 root.config(menu=menubar)
 
 for op in operation_list:
@@ -501,6 +554,11 @@ for op in operation_list:
         label=f'{op[0]:<23}{op[2]}', command=lambda op=op[0]: set_operation(op)
     )
 
+tables_menu = Menu(menubar, tearoff=0)
+tables_menu.add_command(label='Primes', command=table_primes)
+tables_menu.add_command(label='Safe primes')
+tables_menu.add_command(label='ASCII')
+
 help_menu = Menu(menubar, tearoff=0)
 help_menu.add_command(label='View terms of use')
 help_menu.add_command(label='View license')
@@ -511,11 +569,11 @@ help_menu.add_command(label=f'About {program_name}', command=about)
 menubar.add_cascade(label='Options', menu=options_menu)
 menubar.add_cascade(label='Base', menu=base_menu)
 menubar.add_cascade(label='Operations', menu=operations_menu)
+menubar.add_cascade(label='Tables', menu=tables_menu)
 menubar.add_cascade(label='Help', menu=help_menu)
 
 frm_L = Frame(
     root,
-    bg=bg_color,
     bd=5
 )
 frm_L.pack(side='left', expand=True, fill='both')
@@ -524,7 +582,6 @@ frm_L.grid_columnconfigure(1, weight=1)
 
 frm_R = Frame(
     root,
-    bg=bg_color,
     bd=5,
     width=150
 )
@@ -535,7 +592,6 @@ frm_R.grid_rowconfigure(1, weight=1)
 
 frm_L1 = Frame(
     frm_L,
-    bg=bg_color,
     bd=5,
     width=550,
     height=167
@@ -550,7 +606,6 @@ lbl_op_title = Label(
     text='Please, select an operation.',
     font='Helvetica 13 bold',
     width=lbl_width,
-    bg=bg_color,
     fg=fg_color
 )
 lbl_op_title.grid(
@@ -567,7 +622,6 @@ lbl_op1 = Label(
     anchor=lbl_anchor,
     text='First operator',
     width=lbl_width,
-    bg=bg_color,
     fg=fg_color
 )
 ent_op1 = Entry(
@@ -581,7 +635,6 @@ lbl_op2 = Label(
     anchor=lbl_anchor,
     text='Second operator',
     width=lbl_width,
-    bg=bg_color,
     fg=fg_color
 )
 ent_op2 = Entry(
@@ -596,8 +649,6 @@ chk_op3 = Checkbutton(
     text='Third operator',
     width=lbl_width-3,
     highlightthickness=0,
-    activebackground=bg_color,
-    bg=bg_color,
     fg=fg_color,
     variable=op3_active,
     command=set_op3
@@ -614,8 +665,6 @@ chk_module = Checkbutton(
     text='Module',
     width=lbl_width-3,
     highlightthickness=0,
-    activebackground=bg_color,
-    bg=bg_color,
     fg=fg_color,
     variable=mod_active,
     command=set_module
@@ -625,7 +674,6 @@ lbl_module = Label(
     anchor=lbl_anchor,
     text='Module',
     width=lbl_width,
-    bg=bg_color,
     fg=fg_color
 )
 ent_module = Entry(
@@ -640,7 +688,6 @@ lbl_res = Label(
     anchor=lbl_anchor,
     text='Result',
     width=lbl_width,
-    bg=bg_color,
     fg=fg_color
 )
 ent_res = Entry(
@@ -653,7 +700,6 @@ ent_res = Entry(
 
 frm_L2 = Frame(
     frm_L,
-    bg=bg_color,
     bd=5
 )
 frm_L2.pack(expand=True, fill='both')
@@ -678,15 +724,11 @@ cb_base.current(0)
 cb_base.bind('<<ComboboxSelected>>', set_base)
 cb_base.grid(row=0, column=1, padx=padx, pady=pady, sticky='w')
 
-lbl_formula = Label(
-    frm_L2,
-    bg=bg_color
-)
+lbl_formula = Label(frm_L2)
 lbl_formula.grid(row=0, column=2, padx=padx, pady=pady, sticky='w')
 
 frm_L3 = Frame(
     frm_L,
-    bg=bg_color,
     bd=5
 )
 frm_L3.pack(expand=True, fill='both')
@@ -710,7 +752,6 @@ lbl_history = Label(
     anchor='center',
     text='History',
     width=lbl_width,
-    bg=bg_color,
     fg=fg_color
 )
 lbl_history.grid(
