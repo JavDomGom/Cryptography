@@ -17,6 +17,7 @@ padx = 3
 pady = 3
 font = ('Courier New', 10)
 fg_color = '#000000'
+table_primes = 'resources/table-primes.txt'
 
 # All available bases.
 base_default = ('-- Select base --', 0)
@@ -477,17 +478,25 @@ def op_shortcut_key_combination(event, selected_op):
 
 
 def table_primes():
-    table = Toplevel(root)
-    table.pack()
-    text = Text(
-        root,
+    tpl_table_primes = Toplevel(root)
+    tpl_table_primes.resizable(0, 0)
+    tpl_table_primes.title(f'Prime numbers table')
+
+    txt_table_primes_msg = Text(
+        tpl_table_primes,
         font=font,
         state='normal',
         width=25,
         height=15
     )
-    text.pack()
-    # text.insert(END, "Hello.....")
+    scrollb = Scrollbar(tpl_table_primes)
+    scrollb.config(command=txt_table_primes_msg.yview)
+    txt_table_primes_msg.config(yscrollcommand=scrollb.set)
+    scrollb.grid(row=1, column=1, pady=pady, sticky='nsew')
+    txt_table_primes_msg.grid(row=1, column=0, pady=pady, sticky='nsew')
+
+    with open(table_primes) as f:
+        pass
 
 
 root = Tk()
