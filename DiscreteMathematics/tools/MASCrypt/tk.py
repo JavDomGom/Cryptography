@@ -1,5 +1,4 @@
-import resources.operations as operation
-# from os import getcwd
+from resources import operations as operation
 from tkinter import Tk, Menu, Scrollbar, END, IntVar, StringVar, PhotoImage
 from tkinter import Frame, Grid, Label, Entry, Text, Checkbutton, Button
 from tkinter import Toplevel
@@ -8,7 +7,13 @@ from tkinter.ttk import Combobox, Style
 
 program_name = 'MASCrypt'
 program_version = '0.1.0'
+updated = 'Updated: 2020/01/29'
+copyleft = 'Copyleft 2020, Javier Domínguez Gómez'
 program_description = 'Modular Arithmetic Software for Cryptography'
+about_text = '''This program  is free software:  you  can  redistribute  it and/or
+modify  it under  the terms of the  GNU General Public License
+as published by the Free Software Foundation, either version 3
+of the License.'''
 lbl_width = 14
 lbl_anchor = 'e'
 lbl_sticky = 'e'
@@ -17,7 +22,23 @@ padx = 3
 pady = 3
 font = ('Courier New', 10)
 fg_color = '#000000'
-table_primes = 'resources/table-primes.txt'
+tables_path = 'resources/tables'
+table_primes_doc = (
+    f'{tables_path}/table_primes.txt',
+    'Prime numbers table'
+)
+table_safe_primes_doc = (
+    f'{tables_path}/table_safe_primes.txt',
+    'Safe prime numbers table'
+)
+table_ASCII_doc = (
+    f'{tables_path}/table_ASCII.txt',
+    'ASCII table'
+)
+license = (
+    'LICENSE',
+    f'{program_name} v{program_version} License'
+)
 
 # All available bases.
 base_default = ('-- Select base --', 0)
@@ -59,6 +80,7 @@ operation_list = [
     op_factorization,
     op_discreteLogarithm
 ]
+
 
 def clear_all_entries():
     ''' Empty all entries.'''
@@ -431,9 +453,6 @@ def calculate():
     txt_history.see(END)
 
 
-# var = unicode('\U0001f12f', 'iso8859-1')
-
-
 def about():
     tpl_about = Toplevel(root)
     tpl_about.resizable(0, 0)
@@ -442,20 +461,17 @@ def about():
     tpl_msg = Label(
         tpl_about,
         width=35,
-        text=f'{program_name} v{program_version}\n\nUpdated: 2020/01/29',
+        text=f'{program_name} v{program_version}\n{updated}\n\n{copyleft}',
         justify='center'
     )
     tpl_msg.grid(row=0, column=0, padx=padx, pady=pady, sticky='we')
 
     lbl_gplv3 = Label(
         tpl_about,
-        text='''This program is free software: you can redistribute it
-and/or modify it under the terms of the GNU General Public
-License as published by the Free Software Foundation, either
-version 3 of the License.''',
+        text=about_text,
         justify='center'
     )
-    lbl_gplv3.grid(row=1, column=0, padx=padx, pady=pady)
+    lbl_gplv3.grid(row=1, column=0, padx=padx+15, pady=pady)
 
     img_gplv3 = PhotoImage(file=f'img/gplv3-127x51.png')
 
@@ -477,33 +493,41 @@ def op_shortcut_key_combination(event, selected_op):
     set_operation(selected_op[0])
 
 
-def table_primes():
-    tpl_table_primes = Toplevel(root)
-    tpl_table_primes.resizable(0, 0)
-    tpl_table_primes.title(f'Prime numbers table')
+def show_doc(doc):
+    tpl_table = Toplevel(root)
+    tpl_table.resizable(1, 1)
+    tpl_table.title(f'{doc[1]}')
 
-    txt_table_primes_msg = Text(
-        tpl_table_primes,
-        font=font,
-        state='normal',
-        width=25,
-        height=15
+    frm_tpl = Frame(
+        tpl_table,
+        bd=5
     )
-    scrollb = Scrollbar(tpl_table_primes)
-    scrollb.config(command=txt_table_primes_msg.yview)
-    txt_table_primes_msg.config(yscrollcommand=scrollb.set)
-    scrollb.grid(row=1, column=1, pady=pady, sticky='nsew')
-    txt_table_primes_msg.grid(row=1, column=0, pady=pady, sticky='nsew')
+    frm_tpl.pack(expand=True, fill='both')
+    frm_tpl.grid_propagate(True)
+    frm_tpl.grid_columnconfigure(0, weight=1)
+    frm_tpl.grid_rowconfigure(0, weight=1)
 
-    with open(table_primes) as f:
-        pass
+    txt_table = Text(
+        frm_tpl,
+        font=font,
+        state='normal'
+    )
+    scrollb = Scrollbar(frm_tpl)
+    scrollb.config(command=txt_table.yview)
+    txt_table.config(yscrollcommand=scrollb.set)
+    scrollb.grid(row=0, column=1, pady=pady, sticky='nsew')
+    txt_table.grid(row=0, column=0, pady=pady, sticky='nsew')
+
+    with open(doc[0], 'r') as f:
+        txt_table.insert(
+            END,
+            f.read().rstrip()
+        )
 
 
 root = Tk()
-# root.geometry('650x250')
 root.title(f'{program_name} - {program_description}')
 root.resizable(1, 0)
-# root.iconbitmap(f'@{getcwd()}/img/icon.xbm')
 
 style = Style()
 style.theme_create('custom_style',
@@ -527,8 +551,8 @@ for op in operation_list:
     )
 
 options_menu = Menu(menubar, tearoff=0)
-options_menu.add_command(label='Configuration')
-options_menu.add_separator()
+# options_menu.add_command(label='Configuration')
+# options_menu.add_separator()
 options_menu.add_command(label='Exit', command=root.quit)
 
 base = IntVar()
@@ -564,14 +588,21 @@ for op in operation_list:
     )
 
 tables_menu = Menu(menubar, tearoff=0)
-tables_menu.add_command(label='Primes', command=table_primes)
-tables_menu.add_command(label='Safe primes')
-tables_menu.add_command(label='ASCII')
+tables_menu.add_command(
+    label='Primes',
+    command=lambda: show_doc(table_primes_doc)
+)
+tables_menu.add_command(
+    label='Safe primes',
+    command=lambda: show_doc(table_safe_primes_doc)
+)
+tables_menu.add_command(
+    label='ASCII',
+    command=lambda: show_doc(table_ASCII_doc)
+)
 
 help_menu = Menu(menubar, tearoff=0)
-help_menu.add_command(label='View terms of use')
-help_menu.add_command(label='View license')
-help_menu.add_command(label='Documentation')
+help_menu.add_command(label='View license', command=lambda: show_doc(license))
 help_menu.add_separator()
 help_menu.add_command(label=f'About {program_name}', command=about)
 
