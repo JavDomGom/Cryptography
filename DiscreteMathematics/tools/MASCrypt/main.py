@@ -57,7 +57,7 @@ op_xor = ('XOR', 'XOR', 'Control-Shift-X')
 op_mod_inverse = ('Module inverse', 'Inv', 'Control-Shift-I')
 op_exponentation = ('Exponentation', 'a^b', 'Control-Shift-E')
 op_module = ('Module', 'mod', 'Control-Shift-N')
-op_gcd = ('GCD', 'GDC', 'Control-Shift-G')
+op_gcd = ('GDC', 'GDC', 'Control-Shift-G')
 op_lcm = ('LCM', 'LCM', 'Control-Shift-L')
 op_primality = ('Primality', 'Prime', 'Control-Shift-P')
 op_factorization = ('Factorization', 'Fact', 'Control-Shift-F')
@@ -143,10 +143,28 @@ def set_module():
 
 
 def set_op3():
+    print(f'Estoy en set_op3: oper.get() = {oper.get()}')
     if op3_active.get():
         ent_op3.config(state='normal')
     else:
         ent_op3.config(state='disabled')
+
+
+def set_formula(selected_op, op3=False):
+    filename = selected_op.replace(" ", "_").lower()
+
+    if selected_op in [
+        'Addition',
+        'Substraction',
+        'Multiplication',
+        'Exponentation'
+    ] and op3:
+        filename = f'{filename}_mod'
+
+    print(f'{filename}.png')
+    op_formula = PhotoImage(file=f'img/{filename}.png')
+    lbl_formula.configure(image=op_formula)
+    lbl_formula.image = op_formula
 
 
 def set_operation(selected_op):
@@ -289,12 +307,7 @@ def set_operation(selected_op):
 
     for op in operation_list:
         if selected_op == op[0]:
-            filename = op[0].replace(' ', '_').lower()
-            print(f'{filename}.png')
-
-            op_formula = PhotoImage(file=f'img/{filename}.png')
-            lbl_formula.configure(image=op_formula)
-            lbl_formula.image = op_formula
+            set_formula(selected_op)
             break
 
     print(f'oper.get() = {oper.get()}')
@@ -507,19 +520,19 @@ def show_doc(doc):
     frm_tpl.grid_columnconfigure(0, weight=1)
     frm_tpl.grid_rowconfigure(0, weight=1)
 
-    txt_table = Text(
+    txt_doc = Text(
         frm_tpl,
         font=font,
         state='normal'
     )
     scrollb = Scrollbar(frm_tpl)
-    scrollb.config(command=txt_table.yview)
-    txt_table.config(yscrollcommand=scrollb.set)
+    scrollb.config(command=txt_doc.yview)
+    txt_doc.config(yscrollcommand=scrollb.set)
     scrollb.grid(row=0, column=1, pady=pady, sticky='nsew')
-    txt_table.grid(row=0, column=0, pady=pady, sticky='nsew')
+    txt_doc.grid(row=0, column=0, pady=pady, sticky='nsew')
 
     with open(doc[0], 'r') as f:
-        txt_table.insert(
+        txt_doc.insert(
             END,
             f.read().rstrip()
         )
