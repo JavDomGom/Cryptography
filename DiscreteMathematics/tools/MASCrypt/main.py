@@ -105,6 +105,10 @@ def clear_all_widgets():
     ]
     for widget in widgets:
         widget.grid_remove()
+        widget.configure(
+            highlightbackground=default_bg,
+            highlightcolor=default_bg
+        )
 
 
 def set_base(event, b=None):
@@ -143,7 +147,6 @@ def set_module():
 
 
 def set_op3():
-    print(f'Estoy en set_op3: oper.get() = {oper.get()}')
     if op3_active.get():
         ent_op3.config(state='normal')
     else:
@@ -313,14 +316,48 @@ def set_operation(selected_op):
     print(f'oper.get() = {oper.get()}')
 
 
-def calculate():
+def check_empty_entries(op):
+    widgets = [ent_op1, ent_op2, ent_op3, ent_module]
+    for widget in widgets:
+        if widget in [ent_op3, ent_module]:
+            if op3_active.get() and not ent_op3.get() or \
+               mod_active.get() and not ent_module.get() or \
+               op in [
+                op_discreteLogarithm[0],
+                op_mod_inverse[0],
+                op_module[0],
+                op_discreteLogarithm[0]
+               ] and not ent_module.get():
+                set_color = 'red'
+            else:
+                set_color = default_bg
+        else:
+            if not widget.get():
+                set_color = 'red'
+            else:
+                set_color = default_bg
+
+        widget.configure(
+            highlightbackground=set_color,
+            highlightcolor=set_color
+        )
+
+
+def check_items(op):
     items_with_error = []
-    op = oper.get()
+
     if not base.get():
         items_with_error.append('Base')
 
     if not op:
         items_with_error.append('Operation')
+
+    return items_with_error
+
+
+def calculate():
+    op = oper.get()
+    items_with_error = check_items(op)
 
     if len(items_with_error) != 0:
         MessageBox.showerror(
@@ -329,6 +366,8 @@ def calculate():
             \n\n{", ".join(items_with_error)}'
         )
         return
+
+    check_empty_entries(op)
 
     if op == op_addition[0]:
         if mod_active.get():
@@ -541,6 +580,7 @@ def show_doc(doc):
 root = Tk()
 root.title(f'{program_name} - {program_description}')
 root.resizable(1, 0)
+default_bg = root.cget('bg')
 
 style = Style()
 style.theme_create('custom_style',
