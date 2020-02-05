@@ -1,3 +1,4 @@
+import re
 from resources import operations as operation
 from tkinter import Tk, Menu, Scrollbar, END, IntVar, StringVar, PhotoImage
 from tkinter import Frame, Grid, Label, Entry, Text, Checkbutton, Button
@@ -114,7 +115,7 @@ def clear_all_widgets():
 def set_base(event, b=None):
     clear_all_entries()
     set_module()
-
+    entries = [ent_op1, ent_op2, ent_op3, ent_module]
     if not event:
         # For menu select base.
         base.set(b[1])
@@ -127,10 +128,16 @@ def set_base(event, b=None):
             base.set(0)
         elif b == base_base2[0]:
             base.set(2)
+            for ent in entries:
+                ent['validatecommand'] = (frm_L1.register(validate_bin), '%P')
         elif b == base_base10[0]:
             base.set(10)
+            for ent in entries:
+                ent['validatecommand'] = (frm_L1.register(validate_dec), '%P')
         elif b == base_base16[0]:
             base.set(16)
+            for ent in entries:
+                ent['validatecommand'] = (frm_L1.register(validate_hex), '%P')
 
     print(f'base.get() = {base.get()}')
 
@@ -577,6 +584,24 @@ def show_doc(doc):
         )
 
 
+def validate_bin(value):
+    if re.match(r'^[01]*$', value):
+        return True
+    return False
+
+
+def validate_dec(value):
+    if re.match(r'^[0-9]*$', value):
+        return True
+    return False
+
+
+def validate_hex(value):
+    if re.match(r'^[0-9a-fA-F]*$', value):
+        return True
+    return False
+
+
 root = Tk()
 root.title(f'{program_name} - {program_description}')
 root.resizable(1, 0)
@@ -720,7 +745,8 @@ lbl_op1 = Label(
 ent_op1 = Entry(
     frm_L1,
     font=font,
-    textvariable=op1
+    textvariable=op1,
+    validate='key'
 )
 
 lbl_op2 = Label(
@@ -733,7 +759,8 @@ lbl_op2 = Label(
 ent_op2 = Entry(
     frm_L1,
     font=font,
-    textvariable=op2
+    textvariable=op2,
+    validate='key'
 )
 
 chk_op3 = Checkbutton(
@@ -749,7 +776,8 @@ chk_op3 = Checkbutton(
 ent_op3 = Entry(
     frm_L1,
     font=font,
-    textvariable=op3
+    textvariable=op3,
+    validate='key'
 )
 
 chk_module = Checkbutton(
@@ -773,7 +801,8 @@ ent_module = Entry(
     frm_L1,
     state='disabled',
     font=font,
-    textvariable=mod
+    textvariable=mod,
+    validate='key'
 )
 
 lbl_res = Label(
