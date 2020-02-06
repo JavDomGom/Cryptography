@@ -25,7 +25,7 @@ class Division(Common):
 
         [d] = struct.unpack('>Q', struct.pack('>d', f))
 
-        return f'{d:064b}'
+        return f'0b{d:064b}'
 
     def hex2float(self, h):
         ''' Convert hexadecimal string to a float.
@@ -64,7 +64,7 @@ class Division(Common):
 
                 # Base-2 numeral system or binary:
                 ld.Division(2).integerDivision('01011001', '01000011')
-                # Returns 00111111111101010100000011110100100010011000110101011
+                # Returns 0b00111111111101010100000011110100100010011000110101011
                 11110000110
 
                 # Base-10 numeral system or decimal:
