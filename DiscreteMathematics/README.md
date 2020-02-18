@@ -219,16 +219,110 @@ o bien
 
 En aritmética modular en general no está permitida la división, en su lugar se usa **el clálculo de inversos**. Esto es debido a que dentro del módulo o cuerpo los resultados deben ser siempre números enteros.
 
-## Conjunto completo y reducido de restos.
-## Función de Euler.
-## Propiedades de las operaciones en Zn.
-## Homomorfismo de los enteros.
-## Inversos en un cuerpo.
-## Algoritmo extendido de Euclides (AEE).
-## Producto y potencia dentro de un módulo.
-## Algoritmo de exponenciación rápida (AER).
-## Anillos en un cuerpo.
-## Raíces primitivas o generadores.
-## Exponenciación modular.
-## Cálculos en campos de Galois.
-## Curvas elípticas en criptografía.
+## Números primos y números compuestos
+Las operaciones modulares en criptografía se realizarán dentro de un cuerpo o módulo de cifra cuyo número puede ser primo `p` o compuesto `n`.
+
+Existe una gran cantidad de tipos de primos, como por ejemplo, primos gemelos, primos seguros, primos fuertes, primos de Fermat, primos de Mersenne, primos de Sophie Germain, primos sexy, etc.
+
+Los primos seguros tendrán utilidad en ciertos algoritmos de cifra como por ejemplo RSA. Un número primo es seguro si:
+```
+p = 2 * p' + 1 (con p' también primo)
+```
+Por ejemplo:
+```
+Si p' = 11, luego p = 2 * 11 + 1 = 23 (es primo y seguro)
+```
+Dicho de otra manera, cualquier número primo multiplicado por `2` y sumándole `1` da como resultado un primo seguro.
+
+Por el teorema de los números primos, se tiene que la probabilidad de encontrar números primos a medida que estos se hacen más grandes es menor. En el intevalo `[2, x]` habrá `(x/ln(x))` números primos. A continuación un sencillo [programa Python](https://github.com/JavierDominguezGomez/Cryptography/DiscreteMathematics/tools/blob/master/primes_between_2_numbers.py) en el que se obtiene el porcentaje de números primos en el intervalo `[5, 12]` para `n`:
+```python
+import math
+
+
+def per_diff(a, b):
+    return round((b*100)/a, 2)
+
+
+for i in range(5, 12+1):
+    x = pow(2, i)
+    lnx = round(math.log(x), 2)
+    y = round(x/lnx, 2)
+    print(
+        f'[2, 2^{i:<2}] = {x:<4}\tx/ln x = {x}/{lnx} = {y} \t{per_diff(x, y)}%'
+    )
+```
+```
+[2, 2^5 ] = 32    x/ln x = 32/3.47 = 9.22       28.81%
+[2, 2^6 ] = 64    x/ln x = 64/4.16 = 15.38      24.03%
+[2, 2^7 ] = 128   x/ln x = 128/4.85 = 26.39     20.62%
+[2, 2^8 ] = 256   x/ln x = 256/5.55 = 46.13     18.02%
+[2, 2^9 ] = 512   x/ln x = 512/6.24 = 82.05     16.03%
+[2, 2^10] = 1024  x/ln x = 1024/6.93 = 147.76   14.43%
+[2, 2^11] = 2048  x/ln x = 2048/7.62 = 268.77   13.12%
+[2, 2^12] = 4096  x/ln x = 4096/8.32 = 492.31   12.02%
+```
+
+## Conjunto Completo de Restos (CCR)
+El CCR de un número entero `n` es el número de estados que tiene `n` desde `0` hasta `n-1`.
+```
+CCR(n) = {0, 1, ... n-2, n-1}
+```
+Es decir:
+
+![equation](https://latex.codecogs.com/png.latex?\forall&space;\&space;a&space;\in&space;\mathbb{Z}&space;\quad&space;\exists!r_{i}&space;\in&space;\text{CCR}/a&space;\equiv&space;r_{i}&space;\bmod&space;n)
+
+Por ejemplo:
+```
+CCR(11) = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+CCR(6)  = {0, 1, 2, 3, 4, 5} = {12, -5, 20, 9, 16, 35}
+```
+En el segundo conjunto de restos `{12, -5, 20, 9, 16, 35}` en `n = 6` es equivalente al primer conjunto de restos `{0, 1, 2, 3, 4, 5}` porque:
+* `12` es equivalente a `0` porque `12 mod 6 = 0`.
+* `-5` es equivalente a `1` porque `-5 mod 6 = 1`.
+* `20` es equivalente a `2` porque `20 mod 6 = 2`, etc.
+
+A continuación un sencillo [programa Python](https://github.com/JavierDominguezGomez/Cryptography/DiscreteMathematics/tools/blob/master/complete_residue_system_modulo_n.py) en el que se obtienen diferentes restos equivalentes en el intervalo `[2, 11]` para `n`.
+```python
+from random import randint
+
+Z = range(2, 11+1)
+
+for n in Z:
+    CRS1 = {i for i in range(n)}
+    CRS2 = []
+    for r in CRS1:
+        while True:
+            k = randint(-99, 99)
+            if (k % n) == r:
+                CRS2.append(k)
+                break
+
+    print(f'CRS1({n}) = {CRS1} = CCR2 = {CRS2}')
+```
+```
+CRS1(2) = {0, 1} = CCR2 = [58, -81]
+CRS1(3) = {0, 1, 2} = CCR2 = [-54, -20, 71]
+CRS1(4) = {0, 1, 2, 3} = CCR2 = [44, 89, -2, -69]
+CRS1(5) = {0, 1, 2, 3, 4} = CCR2 = [-70, -19, 62, 98, 79]
+CRS1(6) = {0, 1, 2, 3, 4, 5} = CCR2 = [-84, 7, -82, -33, -44, 95]
+CRS1(7) = {0, 1, 2, 3, 4, 5, 6} = CCR2 = [70, 78, 37, -74, 32, 61, -29]
+CRS1(8) = {0, 1, 2, 3, 4, 5, 6, 7} = CCR2 = [-88, -55, -6, -53, 60, 37, 86, -57]
+CRS1(9) = {0, 1, 2, 3, 4, 5, 6, 7, 8} = CCR2 = [-81, -8, -7, -96, 31, -85, -84, -92, -1]
+CRS1(10) = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9} = CCR2 = [80, -69, 12, 3, -16, -35, -54, -73, -12, 59]
+CRS1(11) = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10} = CCR2 = [0, -65, -42, 58, 92, -72, -38, -59, -14, 86, -56]
+```
+## Conjunto Reducido de Restos (CRR)
+
+
+## Función de Euler
+## Propiedades de las operaciones en Zn
+## Homomorfismo de los enteros
+## Inversos en un cuerpo
+## Algoritmo extendido de Euclides (AEE)
+## Producto y potencia dentro de un módulo
+## Algoritmo de exponenciación rápida (AER)
+## Anillos en un cuerpo
+## Raíces primitivas o generadores
+## Exponenciación modular
+## Cálculos en campos de Galois
+## Curvas elípticas en criptografía
