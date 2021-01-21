@@ -2,18 +2,19 @@
 
 1. Reducción a módulo.
 2. Cálculos inversos.
-  1. Aditivos.
-  2. XOR.
-  3. Multiplicativos.
-3. Potencia (exponenciación).
-4. Raíces primitivas de un número primo.
+3. Aditivos.
+4. XOR.
+5. Multiplicativos.
+6. Potencia (exponenciación).
+7. Raíces primitivas de un número primo.
 
 ## Operaciones modulares
+
 En criptografía clásica y moderna la mayoría de los algoritmos realizan sus operaciones de cifrado y descifrado usando **números dentro de un cuerpo de cifra o módulo, normalmente denominado `n` y expresado como `mod n` si se trata de un número compuesto o `mod p` si el cuerpo de cifra es un número primo.**
 
-|Cuerpo de cifra compuesto|Cuerpo de cifra primo|
-|-|-|
-|`mod n`|`mod p`|
+| Cuerpo de cifra compuesto | Cuerpo de cifra primo |
+| ------------------------- | --------------------- |
+| `mod n`                   | `mod p`               |
 
 ```python
 import string
@@ -21,6 +22,7 @@ import string
 for n,c in enumerate(string.ascii_uppercase):
     print(f'{c} \u2194 {n:>2}   \u2192   {n:>2} mod 27 = {n%27:>2}')
 ```
+
 ```bash
 A ↔  0   →    0 mod 27 =  0
 B ↔  1   →    1 mod 27 =  1
@@ -76,6 +78,7 @@ for i in range(rows):
     print('{}{}{}'.format(u'\u2551', row, u'\u2551'))
 print(hline_d)
 ```
+
 ```
 ╔═══════════════════════════════════════════════════════════════════════════════════════════════╗
 ║                                  ASCII + extended code table                                  ║
@@ -114,8 +117,11 @@ print(hline_d)
 ║  31 '\x1f'║  63 '?'   ║  95 '_'   ║ 127 '\x7f'║ 159 '\x9f'║ 191 '¿'   ║ 223 'ß'   ║ 255 'ÿ'   ║
 ╚═══════════╩═══════════╩═══════════╩═══════════╩═══════════╩═══════════╩═══════════╩═══════════╝
 ```
+
 ### Reducción a módulo
+
 **a mod b** = "resto de dividir **a** entre **b**"
+
 ```python
 n = 27
 print(f' 12 mod {n} = {12%n}')
@@ -123,6 +129,7 @@ print(f' 31 mod {n} = {31%n}')
 print(f' 54 mod {n} = {54%n}')
 print(f'-10 mod {n} = {-10%n}')
 ```
+
 ```
  12 mod 27 = 12
  31 mod 27 = 4
@@ -131,6 +138,7 @@ print(f'-10 mod {n} = {-10%n}')
 ```
 
 ### Suma
+
 ```python
 n = 27
 print(f'35 + 61 mod {n} \u2192 96 mod {n} = {(35+61)%n}')
@@ -138,6 +146,7 @@ print('o bien')
 print(f'35 + 61 mod {n} → (35 mod {n} + 61 mod {n}) mod {n} →')
 print(f'8 + 7 mod {n} → 15 mod {n} = {(35%n+61%n)%n}')
 ```
+
 ```
 35 + 61 mod 27 → 96 mod 27 = 15
 o bien
@@ -146,7 +155,9 @@ o bien
 ```
 
 ### Suma XOR (o mod 2)
+
 Tabla de la verdad XOR:
+
 ```
 p q | p ⊕ q
 -----------
@@ -155,6 +166,7 @@ p q | p ⊕ q
 1 0 |   1
 1 1 |   0
 ```
+
 ```python
 p = 14
 q = 9
@@ -162,6 +174,7 @@ print(f'{p} = {bin(p)}')
 print(f'{q} = {bin(q)}')
 print(f'{bin(p)} XOR {bin(q)} = {p^q}')
 ```
+
 ```
 14 = 0b1110
  9 = 0b1001
@@ -169,6 +182,7 @@ print(f'{bin(p)} XOR {bin(q)} = {p^q}')
 ```
 
 ### Resta
+
 ```python
 n = 27
 print(f'43 - 52 mod {n} → -9 mod {n} = {(43-52)%n}')
@@ -176,6 +190,7 @@ print('o bien')
 print(f'43 - 52 mod {n} → (43 mod {n} - 52 mod {n}) mod {n} →')
 print(f'16 - 25 mod {n} → -9 mod {n} = {(43%n-52%n)%n}')
 ```
+
 ```
 43 - 52 mod 27 → -9 mod 27 = 18
 o bien
@@ -184,6 +199,7 @@ o bien
 ```
 
 ### Producto
+
 ```python
 n = 27
 print(f'100 * 30 mod {n} → 3000 mod {n} = {(100*30)%n}')
@@ -191,6 +207,7 @@ print('o bien')
 print(f'100 * 30 mod {n} → (100 mod {n} * 30 mod {n}) mod {n} →')
 print(f'19 * 3 mod {n} → 57 mod {n} = {(100%n*30%n)%n}')
 ```
+
 ```
 100 * 30 mod 27 → 3000 mod 27 = 3
 o bien
@@ -199,6 +216,7 @@ o bien
 ```
 
 ### Potencia
+
 ```python
 import math
 
@@ -209,6 +227,7 @@ print(f'30⁵ mod {n} → [(30² mod {n}) * (30² mod {n}) * 30 mod {n}] mod {n}
 print(f'[(900 mod {n}) * (900 mod {n}) * 30 mod {n}] mod {n} → 9 * 9 * 3 mod {n}')
 print(f'243 mod {n} = {((900%n)*(900%n)*30%n)%n}')
 ```
+
 ```
 30⁵ mod 27 → 24.300.000 mod 27 = 0
 o bien
@@ -220,21 +239,27 @@ o bien
 En aritmética modular en general no está permitida la división, en su lugar se usa **el clálculo de inversos**. Esto es debido a que dentro del módulo o cuerpo los resultados deben ser siempre números enteros.
 
 ## Números primos y números compuestos
+
 Las operaciones modulares en criptografía se realizarán dentro de un cuerpo o módulo de cifra cuyo número puede ser primo `p` o compuesto `n`.
 
 Existe una gran cantidad de tipos de primos, como por ejemplo, primos gemelos, primos seguros, primos fuertes, primos de Fermat, primos de Mersenne, primos de Sophie Germain, primos sexy, etc.
 
 Los primos seguros tendrán utilidad en ciertos algoritmos de cifra como por ejemplo RSA. Un número primo es seguro si:
+
 ```
 p = 2 * p' + 1 (con p' también primo)
 ```
+
 Por ejemplo:
+
 ```
 Si p' = 11, luego p = 2 * 11 + 1 = 23 (es primo y seguro)
 ```
+
 Dicho de otra manera, cualquier número primo multiplicado por `2` y sumándole `1` da como resultado un primo seguro.
 
-Por el teorema de los números primos, se tiene que la probabilidad de encontrar números primos a medida que estos se hacen más grandes es menor. En el intevalo `[2, x]` habrá `(x/ln(x))` números primos. A continuación un sencillo [programa Python](https://github.com/JavierDominguezGomez/Cryptography/blob/master/DiscreteMathematics/tools/primes_between_2_numbers.py) en el que se obtiene el porcentaje de números primos en el intervalo `[5, 12]` para `n`:
+Por el teorema de los números primos, se tiene que la probabilidad de encontrar números primos a medida que estos se hacen más grandes es menor. En el intevalo `[2, x]` habrá `(x/ln(x))` números primos. A continuación un sencillo [programa Python](https://github.com/JavDomGom/Cryptography/blob/master/DiscreteMathematics/tools/primes_between_2_numbers.py) en el que se obtiene el porcentaje de números primos en el intervalo `[5, 12]` para `n`:
+
 ```python
 import math
 
@@ -251,6 +276,7 @@ for i in range(5, 12+1):
         f'[2, 2^{i:<2}] = {x:<4}\tx/ln x = {x}/{lnx} = {y} \t{per_diff(x, y)}%'
     )
 ```
+
 ```
 [2, 2^5 ] = 32    x/ln x = 32/3.47 = 9.22       28.81%
 [2, 2^6 ] = 64    x/ln x = 64/4.16 = 15.38      24.03%
@@ -263,25 +289,32 @@ for i in range(5, 12+1):
 ```
 
 ## Conjunto Completo de Restos (CCR)
+
 El CCR de un número entero `n` es el número de estados que tiene `n` desde `0` hasta `n-1`.
+
 ```
 CCR(n) = {0, 1, ... n-2, n-1}
 ```
+
 Es decir:
 
-![equation](https://latex.codecogs.com/png.latex?\forall&space;\&space;a&space;\in&space;\mathbb{Z}&space;\quad&space;\exists!r_{i}&space;\in&space;\text{CCR}/a&space;\equiv&space;r_{i}&space;\bmod&space;n)
+![equation](https://latex.codecogs.com/png.latex?\forall&space;&space;a&space;\in&space;\mathbb{Z}&space;\quad&space;\exists!r_{i}&space;\in&space;\text{CCR}/a&space;\equiv&space;r_{i}&space;\bmod&space;n)
 
 Por ejemplo:
+
 ```
 CCR(11) = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 CCR(6)  = {0, 1, 2, 3, 4, 5} = {12, -5, 20, 9, 16, 35}
 ```
-En el segundo conjunto de restos `{12, -5, 20, 9, 16, 35}` en `n = 6` es equivalente al primer conjunto de restos `{0, 1, 2, 3, 4, 5}` porque:
-* `12` es equivalente a `0` porque `12 mod 6 = 0`.
-* `-5` es equivalente a `1` porque `-5 mod 6 = 1`.
-* `20` es equivalente a `2` porque `20 mod 6 = 2`, etc.
 
-A continuación un sencillo [programa Python](https://github.com/JavierDominguezGomez/Cryptography/blob/master/DiscreteMathematics/tools/complete_residue_system_modulo_n.py) en el que se obtienen diferentes restos equivalentes en el intervalo `[2, 11]` para `n`.
+En el segundo conjunto de restos `{12, -5, 20, 9, 16, 35}` en `n = 6` es equivalente al primer conjunto de restos `{0, 1, 2, 3, 4, 5}` porque:
+
+- `12` es equivalente a `0` porque `12 mod 6 = 0`.
+- `-5` es equivalente a `1` porque `-5 mod 6 = 1`.
+- `20` es equivalente a `2` porque `20 mod 6 = 2`, etc.
+
+A continuación un sencillo [programa Python](https://github.com/JavDomGom/Cryptography/blob/master/DiscreteMathematics/tools/complete_residue_system_modulo_n.py) en el que se obtienen diferentes restos equivalentes en el intervalo `[2, 11]` para `n`.
+
 ```python
 from random import randint
 
@@ -299,6 +332,7 @@ for n in Z:
 
     print(f'CRS1({n}) = {CRS1} = CCR2 = {CRS2}')
 ```
+
 ```
 CRS1(2) = {0, 1} = CCR2 = [58, -81]
 CRS1(3) = {0, 1, 2} = CCR2 = [-54, -20, 71]
@@ -311,18 +345,29 @@ CRS1(9) = {0, 1, 2, 3, 4, 5, 6, 7, 8} = CCR2 = [-81, -8, -7, -96, 31, -85, -84, 
 CRS1(10) = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9} = CCR2 = [80, -69, 12, 3, -16, -35, -54, -73, -12, 59]
 CRS1(11) = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10} = CCR2 = [0, -65, -42, 58, 92, -72, -38, -59, -14, 86, -56]
 ```
+
 ## Conjunto Reducido de Restos (CRR)
 
-
 ## Función de Euler
+
 ## Propiedades de las operaciones en Zn
+
 ## Homomorfismo de los enteros
+
 ## Inversos en un cuerpo
+
 ## Algoritmo extendido de Euclides (AEE)
+
 ## Producto y potencia dentro de un módulo
+
 ## Algoritmo de exponenciación rápida (AER)
+
 ## Anillos en un cuerpo
+
 ## Raíces primitivas o generadores
+
 ## Exponenciación modular
+
 ## Cálculos en campos de Galois
+
 ## Curvas elípticas en criptografía
