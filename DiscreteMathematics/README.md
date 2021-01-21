@@ -234,7 +234,7 @@ Si p' = 11, luego p = 2 * 11 + 1 = 23 (es primo y seguro)
 ```
 Dicho de otra manera, cualquier número primo multiplicado por `2` y sumándole `1` da como resultado un primo seguro.
 
-Por el teorema de los números primos, se tiene que la probabilidad de encontrar números primos a medida que estos se hacen más grandes es menor. En el intevalo `[2, x]` habrá `(x/ln(x))` números primos. A continuación un sencillo [programa Python](https://github.com/JavierDominguezGomez/Cryptography/DiscreteMathematics/tools/blob/master/primes_between_2_numbers.py) en el que se obtiene el porcentaje de números primos en el intervalo `[5, 12]` para `n`:
+Por el teorema de los números primos, se tiene que la probabilidad de encontrar números primos a medida que estos se hacen más grandes es menor. En el intevalo `[2, x]` habrá `(x/ln(x))` números primos. A continuación un sencillo [programa Python](https://github.com/JavierDominguezGomez/Cryptography/blob/master/DiscreteMathematics/tools/primes_between_2_numbers.py) en el que se obtiene el porcentaje de números primos en el intervalo `[5, 12]` para `n`:
 ```python
 import math
 
@@ -281,7 +281,7 @@ En el segundo conjunto de restos `{12, -5, 20, 9, 16, 35}` en `n = 6` es equival
 * `-5` es equivalente a `1` porque `-5 mod 6 = 1`.
 * `20` es equivalente a `2` porque `20 mod 6 = 2`, etc.
 
-A continuación un sencillo [programa Python](https://github.com/JavierDominguezGomez/Cryptography/DiscreteMathematics/tools/blob/master/complete_residue_system_modulo_n.py) en el que se obtienen diferentes restos equivalentes en el intervalo `[2, 11]` para `n`.
+A continuación un sencillo [programa Python](https://github.com/JavierDominguezGomez/Cryptography/blob/master/DiscreteMathematics/tools/complete_residue_system_modulo_n.py) en el que se obtienen diferentes restos equivalentes en el intervalo `[2, 11]` para `n`.
 ```python
 from random import randint
 
